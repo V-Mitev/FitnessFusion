@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Meal>
+
+<h1>Списък с храни</h1>
+
+<p>
+    <a asp-action="Create">Добави нова храна</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Име</th>
+            <th>Тегло</th>
+            <th>Калории</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var food in Model)
+        {
+            <tr>
+                <td>@food.Name</td>
+                <td>@food.Weight</td>
+                <td>@food.Calories</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@food.Id">Детайли</a> |
+                    <a asp-action="Edit" asp-route-id="@food.Id">Редактирай</a> |
+                    <a asp-action="Delete" asp-route-id="@food.Id" onclick="return confirm('Сигурни ли сте, че искате да изтриете тази храна?')">Изтрий</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
