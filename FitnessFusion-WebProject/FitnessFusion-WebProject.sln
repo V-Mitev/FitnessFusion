@@ -3,19 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessFusion.Web", "FitnessFusion\FitnessFusion.Web.csproj", "{FA34398C-7CF4-4A2C-B065-F3774A1D1853}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FitnessFusion.Web", "FitnessFusion\FitnessFusion.Web.csproj", "{FA34398C-7CF4-4A2C-B065-F3774A1D1853}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessFusion.Common", "FitnessFusion.Common\FitnessFusion.Common.csproj", "{E18ED9C3-F71F-4D34-BBC2-8C759EF6E54B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FitnessFusion.Common", "FitnessFusion.Common\FitnessFusion.Common.csproj", "{E18ED9C3-F71F-4D34-BBC2-8C759EF6E54B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{A9D686DE-BD2B-478C-8350-962A794E073F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{F08C2CC5-E5A4-43B8-8117-F984109A2933}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessFusion.Data", "FitnessFusion.Data\FitnessFusion.Data.csproj", "{9F25D7AD-EAC1-4423-85DA-C0A4AF2F7C2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FitnessFusion.Data", "FitnessFusion.Data\FitnessFusion.Data.csproj", "{9F25D7AD-EAC1-4423-85DA-C0A4AF2F7C2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessFusion.Data.Models", "FitnessFusion.Data.Models\FitnessFusion.Data.Models.csproj", "{28A5A095-D43C-43A8-B467-9E71ECEB6106}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FitnessFusion.Data.Models", "FitnessFusion.Data.Models\FitnessFusion.Data.Models.csproj", "{28A5A095-D43C-43A8-B467-9E71ECEB6106}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessFusion.Web.ViewModels", "FitnessFusion.Web.ViewModels\FitnessFusion.Web.ViewModels.csproj", "{CF61C85F-B416-4A12-9E84-DCED9A5F5D4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FitnessFusion.Web.ViewModels", "FitnessFusion.Web.ViewModels\FitnessFusion.Web.ViewModels.csproj", "{CF61C85F-B416-4A12-9E84-DCED9A5F5D4A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{9D506395-9427-4B17-9061-ACA99C12DC75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessFusion.Services.Data", "FitnessFusion.Services.Data\FitnessFusion.Services.Data.csproj", "{B62255C3-EA72-4AC5-B36A-A12F06F484EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +47,10 @@ Global
 		{CF61C85F-B416-4A12-9E84-DCED9A5F5D4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF61C85F-B416-4A12-9E84-DCED9A5F5D4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF61C85F-B416-4A12-9E84-DCED9A5F5D4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B62255C3-EA72-4AC5-B36A-A12F06F484EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B62255C3-EA72-4AC5-B36A-A12F06F484EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B62255C3-EA72-4AC5-B36A-A12F06F484EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B62255C3-EA72-4AC5-B36A-A12F06F484EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,6 +60,7 @@ Global
 		{9F25D7AD-EAC1-4423-85DA-C0A4AF2F7C2D} = {F08C2CC5-E5A4-43B8-8117-F984109A2933}
 		{28A5A095-D43C-43A8-B467-9E71ECEB6106} = {F08C2CC5-E5A4-43B8-8117-F984109A2933}
 		{CF61C85F-B416-4A12-9E84-DCED9A5F5D4A} = {A9D686DE-BD2B-478C-8350-962A794E073F}
+		{B62255C3-EA72-4AC5-B36A-A12F06F484EE} = {9D506395-9427-4B17-9061-ACA99C12DC75}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EDEEDF78-7FF3-4B02-9298-DC34A1B2117D}

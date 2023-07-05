@@ -1,9 +1,9 @@
-﻿using FitnessFusion.Data.Models.Enums;
-using System.ComponentModel.DataAnnotations;
-using static FitnessFusion.Common.EntityValidationConstants.Meal;
-
-namespace FitnessFusion.Data.Models
+﻿namespace FitnessFusion.Data.Models
 {
+    using FitnessFusion.Data.Models.Enums;
+    using System.ComponentModel.DataAnnotations;
+    using static FitnessFusion.Common.EntityValidationConstants.Meal;
+
     public class Meal
     {
         [Key]
@@ -12,8 +12,6 @@ namespace FitnessFusion.Data.Models
         [Required]
         [MaxLength(NameMaxLength)]
         public string Name { get; set; } = null!;
-
-        public double Weight { get; set; }
 
         [Required]
         [MaxLength(ImageUrlMaxLength)]

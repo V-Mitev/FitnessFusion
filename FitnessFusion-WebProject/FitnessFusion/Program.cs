@@ -1,9 +1,11 @@
-using FitnessFusion.Data;
-using FitnessFusion.Data.Models;
-using Microsoft.EntityFrameworkCore;
-
 namespace FitnessFusion
 {
+    using FitnessFusion.Data;
+    using FitnessFusion.Data.Models;
+    using FitnessFusion.Services.Data;
+    using FitnessFusion.Services.Data.Interfaces;
+    using Microsoft.EntityFrameworkCore;
+
     public class Program
     {
         public static void Main(string[] args)
@@ -23,6 +25,8 @@ namespace FitnessFusion
             })
                 .AddEntityFrameworkStores<FitnessFusionDbContext>();
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddScoped<IMealService, MealService>();
 
             var app = builder.Build();
 

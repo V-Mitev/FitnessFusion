@@ -1,10 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-#nullable disable
+﻿#nullable disable
 
 namespace FitnessFusion.Data.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class AddTwoTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

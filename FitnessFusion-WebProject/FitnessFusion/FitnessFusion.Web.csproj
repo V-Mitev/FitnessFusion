@@ -17,7 +17,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FitnessFusion.Common\FitnessFusion.Common.csproj" />
+    <ProjectReference Include="..\FitnessFusion.Data.Models\FitnessFusion.Data.Models.csproj" />
     <ProjectReference Include="..\FitnessFusion.Data\FitnessFusion.Data.csproj" />
+    <ProjectReference Include="..\FitnessFusion.Services.Data\FitnessFusion.Services.Data.csproj" />
     <ProjectReference Include="..\FitnessFusion.Web.ViewModels\FitnessFusion.Web.ViewModels.csproj" />
   </ItemGroup>
 

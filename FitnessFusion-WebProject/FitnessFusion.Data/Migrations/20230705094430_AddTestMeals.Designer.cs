@@ -4,6 +4,7 @@ using FitnessFusion.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitnessFusion.Data.Migrations
 {
     [DbContext(typeof(FitnessFusionDbContext))]
-    partial class FitnessFusionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230705094430_AddTestMeals")]
+    partial class AddTestMeals
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -150,6 +152,9 @@ namespace FitnessFusion.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<double>("Weight")
+                        .HasColumnType("float");
+
                     b.HasKey("Id");
 
                     b.ToTable("Meals");
@@ -161,7 +166,8 @@ namespace FitnessFusion.Data.Migrations
                             Calories = 300.0,
                             ImageUrl = "aaaaaaaaa",
                             MealType = 1,
-                            Name = "TestBreakfast"
+                            Name = "TestBreakfast",
+                            Weight = 100.0
                         },
                         new
                         {
@@ -169,7 +175,8 @@ namespace FitnessFusion.Data.Migrations
                             Calories = 300.0,
                             ImageUrl = "aaaaaaaaa",
                             MealType = 2,
-                            Name = "TestLunch"
+                            Name = "TestLunch",
+                            Weight = 100.0
                         },
                         new
                         {
@@ -177,7 +184,8 @@ namespace FitnessFusion.Data.Migrations
                             Calories = 300.0,
                             ImageUrl = "aaaaaaaaa",
                             MealType = 4,
-                            Name = "TestDinner"
+                            Name = "TestDinner",
+                            Weight = 100.0
                         },
                         new
                         {
@@ -185,7 +193,8 @@ namespace FitnessFusion.Data.Migrations
                             Calories = 300.0,
                             ImageUrl = "aaaaaaaaa",
                             MealType = 3,
-                            Name = "TestSnack"
+                            Name = "TestSnack",
+                            Weight = 100.0
                         });
                 });
 

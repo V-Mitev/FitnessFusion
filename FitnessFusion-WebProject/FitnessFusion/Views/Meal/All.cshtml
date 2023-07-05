@@ -1,33 +1,88 @@
-﻿@model IEnumerable<Meal>
+﻿@model IEnumerable<AllMealsViewModel>
 
-<h1>Списък с храни</h1>
+<h1>Menu</h1>
 
-<p>
-    <a asp-action="Create">Добави нова храна</a>
-</p>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Име</th>
-            <th>Тегло</th>
-            <th>Калории</th>
-            <th>Действия</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var food in Model)
+<div class="meal-type">
+    <h2 class="meal-type-title">Breakfast</h2>
+    <div class="meal-list">
+        @foreach (var meal in Model.Where(m => m.MealType == "Breakfast"))
         {
-            <tr>
-                <td>@food.Name</td>
-                <td>@food.Weight</td>
-                <td>@food.Calories</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@food.Id">Детайли</a> |
-                    <a asp-action="Edit" asp-route-id="@food.Id">Редактирай</a> |
-                    <a asp-action="Delete" asp-route-id="@food.Id" onclick="return confirm('Сигурни ли сте, че искате да изтриете тази храна?')">Изтрий</a>
-                </td>
-            </tr>
+            <div class="meal-item">
+                <div class="meal-name">@meal.Name</div>
+                <div class="meal-details">
+                    <span class="meal-calories">@meal.Calories</span> calories на 100гр.
+                </div>
+                <div class="meal-actions">
+                    <button class="btn btn-primary">Edit</button>
+                    <button class="btn btn-danger" onclick="confirmDelete('@meal.Name')">Delete</button>
+                </div>
+            </div>
         }
-    </tbody>
-</table>
+    </div>
+</div>
+
+<div class="meal-type">
+    <h2 class="meal-type-title">Lunch</h2>
+    <div class="meal-list">
+        @foreach (var meal in Model.Where(m => m.MealType == "Lunch"))
+        {
+            <div class="meal-item">
+                <div class="meal-name">@meal.Name</div>
+                <div class="meal-details">
+                    <span class="meal-calories">@meal.Calories</span> calories
+                </div>
+                <div class="meal-actions">
+                    <button class="btn btn-primary">Edit</button>
+                    <button class="btn btn-danger" onclick="confirmDelete('@meal.Name')">Delete</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="meal-type">
+    <h2 class="meal-type-title">Dinner</h2>
+    <div class="meal-list">
+        @foreach (var meal in Model.Where(m => m.MealType == "Dinner"))
+        {
+            <div class="meal-item">
+                <div class="meal-name">@meal.Name</div>
+                <div class="meal-details">
+                    <span class="meal-calories">@meal.Calories</span> calories
+                </div>
+                <div class="meal-actions">
+                    <button class="btn btn-primary">Edit</button>
+                    <button class="btn btn-danger" onclick="confirmDelete('@meal.Name')">Delete</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="meal-type">
+    <h2 class="meal-type-title">Snack</h2>
+    <div class="meal-list">
+        @foreach (var meal in Model.Where(m => m.MealType == "Snack"))
+        {
+            <div class="meal-item">
+                <div class="meal-name">@meal.Name</div>
+                <div class="meal-details">
+                    <span class="meal-calories">@meal.Calories</span> calories
+                </div>
+                <div class="meal-actions">
+                    <button class="btn btn-primary">Edit</button>
+                    <button class="btn btn-danger" onclick="confirmDelete('@meal.Name')">Delete</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<a asp-controller="Meal" asp-action="Add" class="btn btn-primary">Add</a>
+
+<script>
+    function confirmDelete(mealName) {
+        if (confirm("Are you sure you want to delete this meal: " + mealName + "?")) {
+        }
+    }
+</script>

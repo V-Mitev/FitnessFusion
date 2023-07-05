@@ -1,9 +1,8 @@
-﻿using FitnessFusion.Data.Models.Enums;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace FitnessFusion.Data.Models
+﻿namespace FitnessFusion.Data.Models
 {
+    using FitnessFusion.Data.Models.Enums;
+    using System.ComponentModel.DataAnnotations;
+
     public class CaloriesCalculator
     {
         [Key]
