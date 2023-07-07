@@ -2,7 +2,6 @@
 {
     using FitnessFusion.Services.Data.Interfaces;
     using FitnessFusion.Web.ViewModels.Meal;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     public class MealController : Controller
@@ -17,7 +16,7 @@
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            var meals = await mealService.All();
+            var meals = await mealService.AllAsync();
 
             return View(meals);
         }

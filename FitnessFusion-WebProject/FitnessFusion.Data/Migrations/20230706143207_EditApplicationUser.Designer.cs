@@ -4,6 +4,7 @@ using FitnessFusion.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitnessFusion.Data.Migrations
 {
     [DbContext(typeof(FitnessFusionDbContext))]
-    partial class FitnessFusionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230706143207_EditApplicationUser")]
+    partial class EditApplicationUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,9 +32,6 @@ namespace FitnessFusion.Data.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
-
-                    b.Property<string>("Calories")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -110,7 +109,7 @@ namespace FitnessFusion.Data.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
-                    b.Property<double?>("CaloriesIntake")
+                    b.Property<double>("CaloriesIntake")
                         .HasColumnType("float");
 
                     b.Property<int>("Gender")
@@ -207,7 +206,7 @@ namespace FitnessFusion.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a348a117-9e20-4699-8ff2-c7d3c0b71662"),
+                            Id = new Guid("5303ec7f-0a32-4202-bc3b-4de9b7583081"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "aaaaaaaaa",
                             MealName = "TestBreakfast",
@@ -215,7 +214,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("834cbf48-1d94-496a-90d1-8558be2c94a7"),
+                            Id = new Guid("70006d43-4fbc-4e8e-a015-d35f50bd437c"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "aaaaaaaaa",
                             MealName = "TestLunch",
@@ -223,7 +222,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d52a3777-e165-4793-8d01-d84dddf684d7"),
+                            Id = new Guid("420fbd13-4158-4933-ad38-ab722644e12d"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "aaaaaaaaa",
                             MealName = "TestDinner",
@@ -231,7 +230,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("cc4046f0-d530-4f68-8662-de4a354d724d"),
+                            Id = new Guid("78b5d3fc-fcf0-4d17-b2e2-37216d1116f2"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "aaaaaaaaa",
                             MealName = "TestSnack",
@@ -243,6 +242,9 @@ namespace FitnessFusion.Data.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ApplicationUserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ClientId")
@@ -269,7 +271,7 @@ namespace FitnessFusion.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("TrainerId");
 
@@ -327,6 +329,9 @@ namespace FitnessFusion.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ApplicationUserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("ClientId")
                         .HasColumnType("uniqueidentifier");
 
@@ -351,7 +356,7 @@ namespace FitnessFusion.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("TrainerId");
 
@@ -516,38 +521,30 @@ namespace FitnessFusion.Data.Migrations
 
             modelBuilder.Entity("FitnessFusion.Data.Models.MealPlan", b =>
                 {
-                    b.HasOne("FitnessFusion.Data.Models.ApplicationUser", "ApplicationUser")
+                    b.HasOne("FitnessFusion.Data.Models.ApplicationUser", null)
                         .WithMany("MealPlans")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApplicationUserId");
 
                     b.HasOne("FitnessFusion.Data.Models.Trainer", "Trainer")
                         .WithMany("MealPlans")
                         .HasForeignKey("TrainerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("ApplicationUser");
 
                     b.Navigation("Trainer");
                 });
 
             modelBuilder.Entity("FitnessFusion.Data.Models.TrainingPlan", b =>
                 {
-                    b.HasOne("FitnessFusion.Data.Models.ApplicationUser", "ApplicationUser")
+                    b.HasOne("FitnessFusion.Data.Models.ApplicationUser", null)
                         .WithMany("TrainingPlans")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApplicationUserId");
 
                     b.HasOne("FitnessFusion.Data.Models.Trainer", "Trainer")
                         .WithMany("TrainingPlans")
                         .HasForeignKey("TrainerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("ApplicationUser");
 
                     b.Navigation("Trainer");
                 });

@@ -21,8 +21,8 @@
 
         public double Weight { get; set; }
 
-        public double BMR { get; set; }
+        public GoalType Goal { get; set; }
 
-        public double ColrieIntake { get; set; }
+        public double? CaloriesIntake { get; set; }
     }
 }

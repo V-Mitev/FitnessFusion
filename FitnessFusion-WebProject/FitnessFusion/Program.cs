@@ -21,12 +21,16 @@ namespace FitnessFusion
 
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             {
-                options.SignIn.RequireConfirmedAccount = true;
+                options.SignIn.RequireConfirmedAccount = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
             })
                 .AddEntityFrameworkStores<FitnessFusionDbContext>();
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddScoped<IMealService, MealService>();
+            builder.Services.AddScoped<ICaloriesCalculatorService, CaloriesCalculatorService>();
 
             var app = builder.Build();
 

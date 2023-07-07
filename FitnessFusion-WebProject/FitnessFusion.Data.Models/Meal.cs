@@ -6,18 +6,24 @@
 
     public class Meal
     {
+        public Meal()
+        {
+            Id = Guid.NewGuid();
+        }
+
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [MaxLength(NameMaxLength)]
-        public string Name { get; set; } = null!;
+        public string MealName { get; set; } = null!;
 
         [Required]
         [MaxLength(ImageUrlMaxLength)]
         public string ImageUrl { get; set; } = null!;
-        
-        public double Calories { get; set; }
+
+        [Range(CaloriesMinValue, CaloriesMaxValue)]
+        public double CaloriesPer100g { get; set; }
 
         public MealType MealType { get; set; }
     }

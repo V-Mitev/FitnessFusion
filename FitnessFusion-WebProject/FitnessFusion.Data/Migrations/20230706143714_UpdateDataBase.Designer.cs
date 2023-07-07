@@ -4,6 +4,7 @@ using FitnessFusion.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitnessFusion.Data.Migrations
 {
     [DbContext(typeof(FitnessFusionDbContext))]
-    partial class FitnessFusionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230706143714_UpdateDataBase")]
+    partial class UpdateDataBase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,9 +32,6 @@ namespace FitnessFusion.Data.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
-
-                    b.Property<string>("Calories")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -110,7 +109,7 @@ namespace FitnessFusion.Data.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
-                    b.Property<double?>("CaloriesIntake")
+                    b.Property<double>("CaloriesIntake")
                         .HasColumnType("float");
 
                     b.Property<int>("Gender")
@@ -207,7 +206,7 @@ namespace FitnessFusion.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a348a117-9e20-4699-8ff2-c7d3c0b71662"),
+                            Id = new Guid("b01c6424-73ca-4f59-8232-f29e1954ab96"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "aaaaaaaaa",
                             MealName = "TestBreakfast",
@@ -215,7 +214,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("834cbf48-1d94-496a-90d1-8558be2c94a7"),
+                            Id = new Guid("e5bf0c41-a559-46d7-9824-7657987dded1"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "aaaaaaaaa",
                             MealName = "TestLunch",
@@ -223,7 +222,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d52a3777-e165-4793-8d01-d84dddf684d7"),
+                            Id = new Guid("17af74a8-ca50-4af8-bac7-46481b2350b8"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "aaaaaaaaa",
                             MealName = "TestDinner",
@@ -231,7 +230,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("cc4046f0-d530-4f68-8662-de4a354d724d"),
+                            Id = new Guid("1c0943e3-3c81-45cf-84c9-3d2f5abbc388"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "aaaaaaaaa",
                             MealName = "TestSnack",

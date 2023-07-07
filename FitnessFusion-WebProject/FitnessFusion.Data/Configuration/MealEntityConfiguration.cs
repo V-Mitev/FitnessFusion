@@ -19,40 +19,36 @@
 
             meal = new Meal()
             {
-                Id = 1,
-                Name = "TestBreakfast",
+                MealName = "TestBreakfast",
                 ImageUrl = "aaaaaaaaa",
-                Calories = 300,
+                CaloriesPer100g = 300,
                 MealType = Models.Enums.MealType.Breakfast
             };
             meals.Add(meal);
 
             meal = new Meal()
             {
-                Id = 2,
-                Name = "TestLunch",
+                MealName = "TestLunch",
                 ImageUrl = "aaaaaaaaa",
-                Calories = 300,
+                CaloriesPer100g = 300,
                 MealType = Models.Enums.MealType.Lunch
             };
             meals.Add(meal);
 
             meal = new Meal()
             {
-                Id = 3,
-                Name = "TestDinner",
+                MealName = "TestDinner",
                 ImageUrl = "aaaaaaaaa",
-                Calories = 300,
+                CaloriesPer100g = 300,
                 MealType = Models.Enums.MealType.Dinner
             };
             meals.Add(meal);
 
             meal = new Meal()
             {
-                Id = 4,
-                Name = "TestSnack",
+                MealName = "TestSnack",
                 ImageUrl = "aaaaaaaaa",
-                Calories = 300,
+                CaloriesPer100g = 300,
                 MealType = Models.Enums.MealType.Snack
             };
             meals.Add(meal);

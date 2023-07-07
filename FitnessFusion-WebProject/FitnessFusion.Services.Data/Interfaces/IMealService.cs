@@ -4,7 +4,7 @@
 
     public interface IMealService
     {
-        public Task<ICollection<AllMealsViewModel>> All();
+        public Task<ICollection<AllMealsViewModel>> AllAsync();
 
         public Task AddMealAsync(AddMealViewModel meal);
     }

@@ -21,9 +21,9 @@
         {
             Meal newMeal = new Meal()
             {
-                Name = meal.Name,
+                MealName = meal.Name,
                 ImageUrl = meal.ImageUrl,
-                Calories = meal.Calories,
+                CaloriesPer100g = meal.Calories,
                 MealType = meal.MealType
             };
 
@@ -31,13 +31,13 @@
             await data.SaveChangesAsync();
         }
 
-        public async Task<ICollection<AllMealsViewModel>> All()
+        public async Task<ICollection<AllMealsViewModel>> AllAsync()
         {
             var meals = await data.Meals
                 .Select(m => new AllMealsViewModel()
                 {
-                    Name = m.Name,
-                    Calories = m.Calories,
+                    Name = m.MealName,
+                    Calories = m.CaloriesPer100g,
                     MealType = m.MealType.ToString(),
                 })
                 .ToListAsync();
