@@ -7,5 +7,11 @@
         public Task<ICollection<AllMealsViewModel>> AllAsync();
 
         public Task AddMealAsync(AddMealViewModel meal);
+
+        public Task DeleteMealAsync(string mealId);
+
+        public Task<AddMealViewModel> FindMealAsync(string mealId);
+
+        public Task EditMealAsync(string mealId, AddMealViewModel model);
     }
 }

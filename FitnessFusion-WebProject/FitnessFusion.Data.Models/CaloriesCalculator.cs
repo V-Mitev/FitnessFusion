@@ -23,6 +23,6 @@
 
         public GoalType Goal { get; set; }
 
-        public double? CaloriesIntake { get; set; }
+        public double CaloriesIntake { get; set; }
     }
 }

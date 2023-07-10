@@ -60,7 +60,7 @@ else
 {
         <div class="result-container">
             <h3>Your daily calorie intake:</h3>
-        <p>@string.Format("{0:F2}", Model.CaloriesIntake)</p>
+        <p>@Model.CaloriesIntake</p>
             <form method="get" asp-action="Calculate" asp-controller="CaloriesCalculator" autocomplete="off">
                 <button type="submit" class="btn btn-primary">Calculate Again</button>
             </form>

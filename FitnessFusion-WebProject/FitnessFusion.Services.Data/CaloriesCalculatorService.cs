@@ -44,12 +44,9 @@
             var user = 
                 await dbContext.ApplicationUsers.FirstAsync(a => a.Id == Guid.Parse(userId));
 
-            if (user.Calories != cc.CaloriesIntake || user.Calories == cc.CaloriesIntake)
-            {
-                user.Calories = cc.CaloriesIntake;
+                user.Calories = string.Format("{0:f2}", cc.CaloriesIntake);
 
                 await dbContext.SaveChangesAsync();
-            }
         }
 
         public double CalculateCalories(GenderType gender, int age, double height, double weight, ActivityLevelType activityLevel, GoalType goal)

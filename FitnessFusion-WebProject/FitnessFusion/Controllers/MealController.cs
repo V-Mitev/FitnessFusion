@@ -42,5 +42,34 @@
 
             return RedirectToAction("All", "Meal");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            await mealService.DeleteMealAsync(id);
+
+            return RedirectToAction("All", "Meal");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
+        {
+            var meal = await mealService.FindMealAsync(id);
+
+            return View(meal);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(string id, AddMealViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                throw new InvalidOperationException("Meal is not valid");
+            }
+
+            await mealService.EditMealAsync(id, model);
+
+            return RedirectToAction("All");
+        }
     }
 }

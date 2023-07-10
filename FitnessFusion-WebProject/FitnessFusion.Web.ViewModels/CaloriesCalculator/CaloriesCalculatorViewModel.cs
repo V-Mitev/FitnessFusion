@@ -1,6 +1,5 @@
 ﻿namespace FitnessFusion.Web.ViewModels.CaloriesCalculator
 {
-    using FitnessFusion.Data.Models.Enums;
     using System.ComponentModel.DataAnnotations;
     using static Common.EntityValidationConstants.CaloriesCalculator;
 
@@ -23,6 +22,6 @@
 
         public string Goal { get; set; } = null!;
 
-        public string? CaloriesIntake { get; set; }
+        public string CaloriesIntake { get; set; } = null!;
     }
 }

@@ -23,8 +23,4 @@
     <ProjectReference Include="..\FitnessFusion.Web.ViewModels\FitnessFusion.Web.ViewModels.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\img\" />
-  </ItemGroup>
-
 </Project>

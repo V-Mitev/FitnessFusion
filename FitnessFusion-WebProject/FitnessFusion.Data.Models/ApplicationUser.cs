@@ -1,9 +1,6 @@
 ﻿namespace FitnessFusion.Data.Models
 {
     using Microsoft.AspNetCore.Identity;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using static Common.EntityValidationConstants.ApplicationUser;
 
     public class ApplicationUser : IdentityUser<Guid>
     {

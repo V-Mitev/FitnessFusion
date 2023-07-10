@@ -20,7 +20,7 @@
             meal = new Meal()
             {
                 MealName = "TestBreakfast",
-                ImageUrl = "aaaaaaaaa",
+                ImageUrl = "/img/musli.png",
                 CaloriesPer100g = 300,
                 MealType = Models.Enums.MealType.Breakfast
             };
