@@ -15,7 +15,9 @@ namespace FitnessFusion
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
             builder.Services.AddDbContext<FitnessFusionDbContext>(options =>
-                options.UseSqlServer(connectionString));
+            {
+                options.UseSqlServer(connectionString);
+            });
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

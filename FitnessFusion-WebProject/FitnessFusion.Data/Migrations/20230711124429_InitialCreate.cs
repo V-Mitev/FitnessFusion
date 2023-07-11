@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FitnessFusion.Data.Migrations
 {
-    public partial class CreateDatabase : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -24,41 +24,52 @@ namespace FitnessFusion.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CaloriesCalculators",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Age = table.Column<int>(type: "int", nullable: false),
-                    Gender = table.Column<int>(type: "int", nullable: false),
-                    ActivityLevel = table.Column<int>(type: "int", nullable: false),
-                    Height = table.Column<double>(type: "float", nullable: false),
-                    Weight = table.Column<double>(type: "float", nullable: false),
-                    Goal = table.Column<int>(type: "int", nullable: false),
-                    CaloriesIntake = table.Column<double>(type: "float", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CaloriesCalculators", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MealPlans",
+                name: "AspNetUsers",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TrainerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsValid = table.Column<bool>(type: "bit", nullable: false),
-                    TotalCalories = table.Column<double>(type: "float", nullable: false)
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImgUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CurrentCaloriesGoal = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsTrainer = table.Column<bool>(type: "bit", nullable: false),
+                    IsSubscribeValid = table.Column<bool>(type: "bit", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MealPlans", x => x.Id);
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Meals",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false),
+                    CaloriesPer100g = table.Column<double>(type: "float", nullable: false),
+                    MealType = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Meals", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -67,29 +78,13 @@ namespace FitnessFusion.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false)
+                    TypeOfSubscription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
+                    PeriodOfSubscription = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Subscriptions", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TrainingPlans",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TrainerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TrainingDays = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsValid = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TrainingPlans", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -111,81 +106,6 @@ namespace FitnessFusion.Data.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Meals",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    MealName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false),
-                    CaloriesPer100g = table.Column<double>(type: "float", nullable: false),
-                    MealType = table.Column<int>(type: "int", nullable: false),
-                    MealPlanId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Meals", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Meals_MealPlans_MealPlanId",
-                        column: x => x.MealPlanId,
-                        principalTable: "MealPlans",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SubscriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AspNetUsers_Subscriptions_SubscriptionId",
-                        column: x => x.SubscriptionId,
-                        principalTable: "Subscriptions",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Exercises",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    VideoLink = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: false),
-                    Difficulty = table.Column<int>(type: "int", nullable: false),
-                    MuscleGroup = table.Column<int>(type: "int", nullable: false),
-                    TrainingPlanId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Exercises", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Exercises_TrainingPlans_TrainingPlanId",
-                        column: x => x.TrainingPlanId,
-                        principalTable: "TrainingPlans",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -273,16 +193,92 @@ namespace FitnessFusion.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "TrainingPlans",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TrainerForeignKey = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TrainingPlans", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TrainingPlans_AspNetUsers_TrainerForeignKey",
+                        column: x => x.TrainerForeignKey,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ApplicationUserSubscription",
+                columns: table => new
+                {
+                    SubscriptionsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UsersId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationUserSubscription", x => new { x.SubscriptionsId, x.UsersId });
+                    table.ForeignKey(
+                        name: "FK_ApplicationUserSubscription_AspNetUsers_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ApplicationUserSubscription_Subscriptions_SubscriptionsId",
+                        column: x => x.SubscriptionsId,
+                        principalTable: "Subscriptions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Exercises",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    VideoLink = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: false),
+                    Difficulty = table.Column<int>(type: "int", nullable: false),
+                    MuscleGroup = table.Column<int>(type: "int", nullable: false),
+                    ExerciseId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    TrainingPlanId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Exercises", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Exercises_Exercises_ExerciseId",
+                        column: x => x.ExerciseId,
+                        principalTable: "Exercises",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Exercises_TrainingPlans_TrainingPlanId",
+                        column: x => x.TrainingPlanId,
+                        principalTable: "TrainingPlans",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.InsertData(
                 table: "Meals",
-                columns: new[] { "Id", "CaloriesPer100g", "ImageUrl", "MealName", "MealPlanId", "MealType" },
+                columns: new[] { "Id", "CaloriesPer100g", "ImageUrl", "MealType", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("0db99003-7075-4a6d-ae4b-245160b9bd66"), 300.0, "aaaaaaaaa", "TestLunch", null, 1 },
-                    { new Guid("3e4394f2-3cd7-4fc6-a3f1-e97aba173f10"), 300.0, "aaaaaaaaa", "TestBreakfast", null, 0 },
-                    { new Guid("86d2bd17-4c0c-44ce-a927-66cf96ea83ac"), 300.0, "aaaaaaaaa", "TestSnack", null, 2 },
-                    { new Guid("b4bad234-8d12-4bdd-88c3-9cd0db12f54a"), 300.0, "aaaaaaaaa", "TestDinner", null, 3 }
+                    { new Guid("52977bd2-2bb5-41f1-b738-102b397f7d59"), 300.0, "Musli.png", 0, "TestBreakfast" },
+                    { new Guid("5d4de28f-261f-4eb7-b228-2c2c97a3e8a3"), 300.0, "aaaaaaaaa", 3, "TestDinner" },
+                    { new Guid("85be5c0d-1068-4c7f-b58d-a29a6604d807"), 300.0, "aaaaaaaaa", 2, "TestSnack" },
+                    { new Guid("96e47207-c3bc-41fb-9888-5d023b017ff0"), 300.0, "Egg.png", 1, "TestLunch" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApplicationUserSubscription_UsersId",
+                table: "ApplicationUserSubscription",
+                column: "UsersId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -317,11 +313,6 @@ namespace FitnessFusion.Data.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_SubscriptionId",
-                table: "AspNetUsers",
-                column: "SubscriptionId");
-
-            migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
@@ -329,18 +320,26 @@ namespace FitnessFusion.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Exercises_ExerciseId",
+                table: "Exercises",
+                column: "ExerciseId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Exercises_TrainingPlanId",
                 table: "Exercises",
                 column: "TrainingPlanId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Meals_MealPlanId",
-                table: "Meals",
-                column: "MealPlanId");
+                name: "IX_TrainingPlans_TrainerForeignKey",
+                table: "TrainingPlans",
+                column: "TrainerForeignKey");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ApplicationUserSubscription");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -357,28 +356,22 @@ namespace FitnessFusion.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CaloriesCalculators");
-
-            migrationBuilder.DropTable(
                 name: "Exercises");
 
             migrationBuilder.DropTable(
                 name: "Meals");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "Subscriptions");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "TrainingPlans");
 
             migrationBuilder.DropTable(
-                name: "MealPlans");
-
-            migrationBuilder.DropTable(
-                name: "Subscriptions");
+                name: "AspNetUsers");
         }
     }
 }

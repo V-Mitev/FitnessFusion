@@ -44,10 +44,12 @@
             var user = 
                 await dbContext.ApplicationUsers.FirstAsync(a => a.Id == Guid.Parse(userId));
 
-                user.Calories = string.Format("{0:f2}", cc.CaloriesIntake);
+                user.CurrentCaloriesGoal = string.Format("{0:f2}", cc.CaloriesIntake);
 
                 await dbContext.SaveChangesAsync();
         }
+
+        // UnitTests
 
         public double CalculateCalories(GenderType gender, int age, double height, double weight, ActivityLevelType activityLevel, GoalType goal)
         {
@@ -100,6 +102,5 @@
 
             return calories;
         }
-
     }
 }

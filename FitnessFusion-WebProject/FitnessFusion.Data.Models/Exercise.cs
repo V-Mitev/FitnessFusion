@@ -6,8 +6,14 @@
 
     public class Exercise
     {
+        public Exercise()
+        {
+            Id = Guid.NewGuid();
+            TrainingPlans =  new List<TrainingPlan>();
+        }
+
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [MaxLength(NameMaxLength)]
@@ -24,5 +30,7 @@
         public ExerciseLevelOfDificulty Difficulty { get; set; }
 
         public MuscleGroups MuscleGroup { get; set; }
+
+        public ICollection<TrainingPlan> TrainingPlans { get; set; }
     }
 }

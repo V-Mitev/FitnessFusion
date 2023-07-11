@@ -21,7 +21,7 @@
         {
             Meal newMeal = new Meal()
             {
-                MealName = meal.Name,
+                Name = meal.Name,
                 ImageUrl = meal.ImageUrl,
                 CaloriesPer100g = meal.Calories,
                 MealType = meal.MealType,
@@ -37,7 +37,7 @@
                 .Select(m => new AllMealsViewModel()
                 {
                     Id = m.Id.ToString(),
-                    Name = m.MealName,
+                    Name = m.Name,
                     Calories = m.CaloriesPer100g,
                     MealType = m.MealType.ToString(),
                     Image = m.ImageUrl
@@ -70,7 +70,7 @@
             }
 
             mealToEdit.Id = Guid.Parse(mealId);
-            mealToEdit.MealName = model.Name;
+            mealToEdit.Name = model.Name;
             mealToEdit.CaloriesPer100g = model.Calories;
             mealToEdit.MealType = model.MealType;
             mealToEdit.ImageUrl = model.ImageUrl;
@@ -89,7 +89,7 @@
 
             AddMealViewModel mealsViewModel = new AddMealViewModel()
             {
-                Name = meal.MealName,
+                Name = meal.Name,
                 Calories = meal.CaloriesPer100g,
                 MealType = meal.MealType,
                 ImageUrl = meal.ImageUrl

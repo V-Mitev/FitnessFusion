@@ -19,8 +19,8 @@
 
             meal = new Meal()
             {
-                MealName = "TestBreakfast",
-                ImageUrl = "/img/musli.png",
+                Name = "TestBreakfast",
+                ImageUrl = "Musli.png",
                 CaloriesPer100g = 300,
                 MealType = Models.Enums.MealType.Breakfast
             };
@@ -28,8 +28,8 @@
 
             meal = new Meal()
             {
-                MealName = "TestLunch",
-                ImageUrl = "aaaaaaaaa",
+                Name = "TestLunch",
+                ImageUrl = "Egg.png",
                 CaloriesPer100g = 300,
                 MealType = Models.Enums.MealType.Lunch
             };
@@ -37,7 +37,7 @@
 
             meal = new Meal()
             {
-                MealName = "TestDinner",
+                Name = "TestDinner",
                 ImageUrl = "aaaaaaaaa",
                 CaloriesPer100g = 300,
                 MealType = Models.Enums.MealType.Dinner
@@ -46,7 +46,7 @@
 
             meal = new Meal()
             {
-                MealName = "TestSnack",
+                Name = "TestSnack",
                 ImageUrl = "aaaaaaaaa",
                 CaloriesPer100g = 300,
                 MealType = Models.Enums.MealType.Snack

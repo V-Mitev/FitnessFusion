@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitnessFusion.Data.Migrations
 {
     [DbContext(typeof(FitnessFusionDbContext))]
-    [Migration("20230704130025_AddTwoTables")]
-    partial class AddTwoTables
+    [Migration("20230711124429_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,21 @@ namespace FitnessFusion.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("ApplicationUserSubscription", b =>
+                {
+                    b.Property<Guid>("SubscriptionsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UsersId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("SubscriptionsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("ApplicationUserSubscription");
+                });
 
             modelBuilder.Entity("FitnessFusion.Data.Models.ApplicationUser", b =>
                 {
@@ -37,12 +52,40 @@ namespace FitnessFusion.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CurrentCaloriesGoal")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsSubscribeValid")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsTrainer")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -88,55 +131,59 @@ namespace FitnessFusion.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("ApplicationUser");
                 });
 
-            modelBuilder.Entity("FitnessFusion.Data.Models.CaloriesCalculator", b =>
+            modelBuilder.Entity("FitnessFusion.Data.Models.Exercise", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ActivityLevel")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
-
-                    b.Property<double>("BMR")
-                        .HasColumnType("float");
-
-                    b.Property<double>("ColrieIntake")
-                        .HasColumnType("float");
-
-                    b.Property<int>("Gender")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Height")
-                        .HasColumnType("float");
-
-                    b.Property<string>("UserId")
+                    b.Property<string>("Description")
                         .IsRequired()
+                        .HasMaxLength(5000)
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Weight")
-                        .HasColumnType("float");
+                    b.Property<int>("Difficulty")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("ExerciseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("MuscleGroup")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<Guid?>("TrainingPlanId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("VideoLink")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("CaloriesCalculators");
+                    b.HasIndex("ExerciseId");
+
+                    b.HasIndex("TrainingPlanId");
+
+                    b.ToTable("Exercises");
                 });
 
             modelBuilder.Entity("FitnessFusion.Data.Models.Meal", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<double>("Calories")
+                    b.Property<double>("CaloriesPer100g")
                         .HasColumnType("float");
 
                     b.Property<string>("ImageUrl")
@@ -152,12 +199,89 @@ namespace FitnessFusion.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<double>("Weight")
-                        .HasColumnType("float");
-
                     b.HasKey("Id");
 
                     b.ToTable("Meals");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("52977bd2-2bb5-41f1-b738-102b397f7d59"),
+                            CaloriesPer100g = 300.0,
+                            ImageUrl = "Musli.png",
+                            MealType = 0,
+                            Name = "TestBreakfast"
+                        },
+                        new
+                        {
+                            Id = new Guid("96e47207-c3bc-41fb-9888-5d023b017ff0"),
+                            CaloriesPer100g = 300.0,
+                            ImageUrl = "Egg.png",
+                            MealType = 1,
+                            Name = "TestLunch"
+                        },
+                        new
+                        {
+                            Id = new Guid("5d4de28f-261f-4eb7-b228-2c2c97a3e8a3"),
+                            CaloriesPer100g = 300.0,
+                            ImageUrl = "aaaaaaaaa",
+                            MealType = 3,
+                            Name = "TestDinner"
+                        },
+                        new
+                        {
+                            Id = new Guid("85be5c0d-1068-4c7f-b58d-a29a6604d807"),
+                            CaloriesPer100g = 300.0,
+                            ImageUrl = "aaaaaaaaa",
+                            MealType = 2,
+                            Name = "TestSnack"
+                        });
+                });
+
+            modelBuilder.Entity("FitnessFusion.Data.Models.Subscription", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PeriodOfSubscription")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<string>("TypeOfSubscription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Subscriptions");
+                });
+
+            modelBuilder.Entity("FitnessFusion.Data.Models.TrainingPlan", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("TrainerForeignKey")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TrainerForeignKey");
+
+                    b.ToTable("TrainingPlans");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -295,6 +419,54 @@ namespace FitnessFusion.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("FitnessFusion.Data.Models.Trainer", b =>
+                {
+                    b.HasBaseType("FitnessFusion.Data.Models.ApplicationUser");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("Trainer");
+                });
+
+            modelBuilder.Entity("ApplicationUserSubscription", b =>
+                {
+                    b.HasOne("FitnessFusion.Data.Models.Subscription", null)
+                        .WithMany()
+                        .HasForeignKey("SubscriptionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FitnessFusion.Data.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FitnessFusion.Data.Models.Exercise", b =>
+                {
+                    b.HasOne("FitnessFusion.Data.Models.Exercise", null)
+                        .WithMany("Exercises")
+                        .HasForeignKey("ExerciseId");
+
+                    b.HasOne("FitnessFusion.Data.Models.TrainingPlan", null)
+                        .WithMany("Exercises")
+                        .HasForeignKey("TrainingPlanId");
+                });
+
+            modelBuilder.Entity("FitnessFusion.Data.Models.TrainingPlan", b =>
+                {
+                    b.HasOne("FitnessFusion.Data.Models.Trainer", "PreparedBy")
+                        .WithMany("TrainingPlans")
+                        .HasForeignKey("TrainerForeignKey")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PreparedBy");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
@@ -344,6 +516,21 @@ namespace FitnessFusion.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("FitnessFusion.Data.Models.Exercise", b =>
+                {
+                    b.Navigation("Exercises");
+                });
+
+            modelBuilder.Entity("FitnessFusion.Data.Models.TrainingPlan", b =>
+                {
+                    b.Navigation("Exercises");
+                });
+
+            modelBuilder.Entity("FitnessFusion.Data.Models.Trainer", b =>
+                {
+                    b.Navigation("TrainingPlans");
                 });
 #pragma warning restore 612, 618
         }

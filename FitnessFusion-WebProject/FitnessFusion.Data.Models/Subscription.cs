@@ -18,7 +18,12 @@
         public string Name { get; set; } = null!;
 
         [Required]
+        public string TypeOfSubscription { get; set; } = null!;
+
+        [Required]
         public decimal Price { get; set; }
+
+        public int PeriodOfSubscription { get; set; }
 
         public ICollection<ApplicationUser> Users { get; set; }
     }
