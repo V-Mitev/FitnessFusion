@@ -34,6 +34,7 @@ namespace FitnessFusion
 
             builder.Services.AddScoped<IMealService, MealService>();
             builder.Services.AddScoped<ICaloriesCalculatorService, CaloriesCalculatorService>();
+            builder.Services.AddScoped<IExerciseService, ExerciseService>();
 
             var app = builder.Build();
 
