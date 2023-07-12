@@ -41,7 +41,7 @@
                     <img src="@($"/img/{@meal.Image}")" class="card-img-top" alt="Meal Image">
                     <div class="card-body">
                         <h5 class="card-title">@meal.Name</h5>
-                        <p class="card-text">Calories: @meal.Calories</p>
+                        <p class="card-text">Calories per 100 grams: @meal.Calories</p>
                         <div class="d-flex justify-content-between">
                             <a asp-controller="Meal" asp-action="Edit" asp-route-id="@meal.Id" class="btn btn-warning">Edit</a>
                             <form class="delete-form" asp-controller="Meal" asp-action="Delete" asp-route-id="@meal.Id">
@@ -63,7 +63,7 @@
                     <img src="@($"/img/{@meal.Image}")" class="card-img-top" alt="Meal Image">
                     <div class="card-body">
                         <h5 class="card-title">@meal.Name</h5>
-                        <p class="card-text">Calories: @meal.Calories</p>
+                        <p class="card-text">Calories per 100 grams: @meal.Calories</p>
                         <div class="d-flex justify-content-between">
                             <a asp-controller="Meal" asp-action="Edit" asp-route-id="@meal.Id" class="btn btn-warning">Edit</a>
                             <form class="delete-form" asp-controller="Meal" asp-action="Delete" asp-route-id="@meal.Id">
@@ -85,7 +85,7 @@
                     <img src="@($"/img/{@meal.Image}")" class="card-img-top" alt="Meal Image">
                     <div class="card-body">
                         <h5 class="card-title">@meal.Name</h5>
-                        <p class="card-text">Calories: @meal.Calories</p>
+                        <p class="card-text">Calories per 100 grams: @meal.Calories</p>
                         <div class="d-flex justify-content-between">
                             <a asp-controller="Meal" asp-action="Edit" asp-route-id="@meal.Id" class="btn btn-warning">Edit</a>
                             <form class="delete-form" asp-controller="Meal" asp-action="Delete" asp-route-id="@meal.Id">
@@ -102,11 +102,3 @@
 <br />
 
 <a asp-controller="Meal" asp-action="Add" class="btn btn-primary">Add new meal</a>
-
-<script>
-    function confirmDelete(mealName) {
-        if (confirm("Are you sure you want to delete this meal: " + mealName + "?")) {
-
-        }
-    }
-</script>
