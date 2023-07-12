@@ -1,7 +1,6 @@
 ﻿namespace FitnessFusion.Services.Data
 {
     using FitnessFusion.Data;
-    using FitnessFusion.Data.Models;
     using FitnessFusion.Data.Models.Enums;
     using FitnessFusion.Services.Data.Interfaces;
     using FitnessFusion.Web.ViewModels.CaloriesCalculator;
@@ -26,31 +25,17 @@
 
             var goalParse = (GoalType)Enum.Parse(typeof(GoalType), cc.Goal);
 
-            CaloriesCalculator caloriesCalculator = new CaloriesCalculator()
-            {
-                Id = cc.Id,
-                UserId = userId,
-                Age = cc.Age,
-                Height = cc.Height,
-                Weight = cc.Weight,
-                Gender = genderParse,
-                ActivityLevel = activityLevelParse,
-                Goal = goalParse,
-                CaloriesIntake = CalculateCalories(genderParse, cc.Age, cc.Height, cc.Weight, activityLevelParse, goalParse)
-            };
+            cc.CaloriesIntake = CalculateCalories(genderParse, cc.Age, cc.Height, cc.Weight, activityLevelParse, goalParse).ToString();
 
-            cc.CaloriesIntake = caloriesCalculator.CaloriesIntake.ToString();
-
-            var user = 
+            var user =
                 await dbContext.ApplicationUsers.FirstAsync(a => a.Id == Guid.Parse(userId));
 
-                user.CurrentCaloriesGoal = string.Format("{0:f2}", cc.CaloriesIntake);
+            user.CurrentCaloriesGoal = string.Format("{0:f2}", cc.CaloriesIntake);
 
-                await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
         }
 
         // UnitTests
-
         public double CalculateCalories(GenderType gender, int age, double height, double weight, ActivityLevelType activityLevel, GoalType goal)
         {
             double bmr = 0;

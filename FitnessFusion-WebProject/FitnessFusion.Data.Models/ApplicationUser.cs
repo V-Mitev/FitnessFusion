@@ -1,23 +1,23 @@
 ﻿namespace FitnessFusion.Data.Models
 {
     using Microsoft.AspNetCore.Identity;
-    using System.ComponentModel.DataAnnotations;
 
     public class ApplicationUser : IdentityUser<Guid>
     {
         public ApplicationUser()
         {
             Subscriptions = new List<Subscription>();
+            IsTrainer = false;
+            IsSubscribeValid = false;
         }
 
-        public string FirstName { get; set; } = null!;
+        public string? FirstName { get; set; }
 
-        public string LastName { get; set; } = null!;
+        public string? LastName { get; set; }
 
-        [Required]
-        public string ImgUrl { get; set; } = null!;
+        public string? ImgUrl { get; set; }
 
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
 
         public string? CurrentCaloriesGoal { get; set; }
 

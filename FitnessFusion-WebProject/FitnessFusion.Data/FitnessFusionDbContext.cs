@@ -29,6 +29,8 @@
         {
             builder.ApplyConfiguration<Meal>(new MealEntityConfiguration());
 
+            //builder.ApplyConfiguration<ApplicationUser>(new ApplicationUserConfiguration());
+
             builder.Entity<Subscription>()
                 .Property(t => t.Price)
                 .HasPrecision(5, 2);
