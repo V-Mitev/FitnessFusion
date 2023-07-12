@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using FitnessFusion.Data;
 namespace FitnessFusion
 {
     using FitnessFusion.Data;
@@ -29,6 +32,7 @@ namespace FitnessFusion
                 options.Password.RequireUppercase = false;
             })
                 .AddEntityFrameworkStores<FitnessFusionDbContext>();
+
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddScoped<IMealService, MealService>();

@@ -34,7 +34,7 @@ namespace FitnessFusion.Data.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("ApplicationUserSubscription");
+                    b.ToTable("ApplicationUserSubscription", (string)null);
                 });
 
             modelBuilder.Entity("ExerciseTrainingPlan", b =>
@@ -49,7 +49,7 @@ namespace FitnessFusion.Data.Migrations
 
                     b.HasIndex("TrainingPlansId");
 
-                    b.ToTable("ExerciseTrainingPlan");
+                    b.ToTable("ExerciseTrainingPlan", (string)null);
                 });
 
             modelBuilder.Entity("FitnessFusion.Data.Models.ApplicationUser", b =>
@@ -174,7 +174,7 @@ namespace FitnessFusion.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Exercises");
+                    b.ToTable("Exercises", (string)null);
                 });
 
             modelBuilder.Entity("FitnessFusion.Data.Models.Meal", b =>
@@ -201,7 +201,7 @@ namespace FitnessFusion.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Meals");
+                    b.ToTable("Meals", (string)null);
 
                     b.HasData(
                         new
@@ -261,7 +261,7 @@ namespace FitnessFusion.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Subscriptions");
+                    b.ToTable("Subscriptions", (string)null);
                 });
 
             modelBuilder.Entity("FitnessFusion.Data.Models.TrainingPlan", b =>
@@ -281,7 +281,7 @@ namespace FitnessFusion.Data.Migrations
 
                     b.HasIndex("TrainerId");
 
-                    b.ToTable("TrainingPlans");
+                    b.ToTable("TrainingPlans", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
