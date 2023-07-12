@@ -1,6 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using FitnessFusion.Data;
 namespace FitnessFusion
 {
     using FitnessFusion.Data;
