@@ -38,7 +38,7 @@
             meal = new Meal()
             {
                 Name = "TestDinner",
-                ImageUrl = "aaaaaaaaa",
+                ImageUrl = "Egg.png",
                 CaloriesPer100g = 300,
                 MealType = Models.Enums.MealType.Dinner
             };
@@ -47,7 +47,7 @@
             meal = new Meal()
             {
                 Name = "TestSnack",
-                ImageUrl = "aaaaaaaaa",
+                ImageUrl = "Egg.png",
                 CaloriesPer100g = 300,
                 MealType = Models.Enums.MealType.Snack
             };

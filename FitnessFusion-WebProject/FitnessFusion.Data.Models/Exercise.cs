@@ -1,6 +1,7 @@
 ﻿namespace FitnessFusion.Data.Models
 {
     using FitnessFusion.Data.Models.Enums;
+    using Microsoft.AspNetCore.Http;
     using System.ComponentModel.DataAnnotations;
     using static Common.EntityValidationConstants.Exercise;
 
@@ -26,6 +27,9 @@
         [Required]
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; } = null!;
+
+        [Required]
+        public string ImagePath { get; set; } = null!;
 
         public ExerciseLevelOfDificulty Difficulty { get; set; }
 

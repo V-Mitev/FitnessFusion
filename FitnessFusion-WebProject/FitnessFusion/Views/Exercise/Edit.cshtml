@@ -1,0 +1,54 @@
+﻿@model AddExerciseViewModel
+
+@{
+    ViewData["Title"] = "Edit Exercise";
+}
+
+<h1>Edit Exercise</h1>
+
+<form asp-controller="Exercise" asp-action="Edit" method="post">
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="Name" class="form-control" value="@Model.Name" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" name="Description" class="form-control" required>@Model.Description</textarea>
+    </div>
+    
+    <div class="form-group">
+        <label asp-for="Image">Image:</label>
+        <input type="file" class="form-control" asp-for="Image" accept="image/*" required>
+        <span asp-validation-for="Image" class="text-danger"></span>
+    </div>
+    
+    <div class="form-group">
+        <label for="videoUrl">Video URL</label>
+        <input type="text" id="videoUrl" name="VideoUrl" class="form-control" value="@Model.VideoUrl" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="muscleGroup">Muscle Group</label>
+        <select id="muscleGroup" name="MuscleGroup" class="form-control" required>
+            <option value="">Select a muscle group</option>
+            @foreach (var muscleGroup in Enum.GetValues(typeof(FitnessFusion.Data.Models.Enums.MuscleGroups)))
+            {
+                <option value="@muscleGroup">@muscleGroup</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="difficultyGroup">Difficult Of Exercise</label>
+        <select id="difficultyGroup" name="DifficultyGroup" class="form-control" required>
+            <option value="">Select a diffucult of exercise</option>
+            @foreach (var difficulty in Enum.GetValues(typeof(FitnessFusion.Data.Models.Enums.ExerciseLevelOfDificulty)))
+            {
+                <option value="@difficulty">@difficulty</option>
+            }
+        </select>
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>

@@ -4,6 +4,7 @@ using FitnessFusion.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitnessFusion.Data.Migrations
 {
     [DbContext(typeof(FitnessFusionDbContext))]
-    partial class FitnessFusionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230713122833_AddImageToExercise")]
+    partial class AddImageToExercise
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -183,17 +185,17 @@ namespace FitnessFusion.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("885f4b9b-9446-4acd-ac01-a68fa7cea0df"),
+                            Id = new Guid("00f62bb7-61ab-4344-869f-bc639e16b936"),
                             Description = "It involves lying on a bench and pressing weight upward using either a barbell or a pair of dumbbells. During a bench press, you lower the weight down to chest level and then press upwards while extending your arms.",
                             Difficulty = 1,
-                            ImagePath = "BenchPress.jfif",
+                            ImagePath = "BenchPress",
                             MuscleGroup = 0,
                             Name = "Bench press",
                             VideoLink = "https://youtu.be/gRVjAtPip0Y"
                         },
                         new
                         {
-                            Id = new Guid("dc1f9b01-8476-40a8-b1d2-da11713f6af3"),
+                            Id = new Guid("90c158be-f3ab-41c4-a48b-2142f19d794a"),
                             Description = "An exercise in which a standing person lowers to a position in which the torso is erect and the knees are deeply bent and then rises to an upright position.",
                             Difficulty = 1,
                             ImagePath = "Squat",
@@ -203,7 +205,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("03b5b9b6-646b-4d57-a0c1-36c571a78a81"),
+                            Id = new Guid("50d9fcbd-96b5-403f-8dd5-09a519c07c74"),
                             Description = "A pull-up is an upper-body exercise that involves hanging from a pull-up bar by your hands with your palms facing away from you, and lifting your entire body up with your arm and back muscles until your chest touches the bar.",
                             Difficulty = 1,
                             ImagePath = "PullUp",
@@ -242,7 +244,7 @@ namespace FitnessFusion.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("bcb3f812-b561-4d72-84e5-8b9543ae1001"),
+                            Id = new Guid("c9e33729-6e61-4fcb-9d26-6ab62eaf8169"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "Musli.png",
                             MealType = 0,
@@ -250,7 +252,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("4a7b7f0d-9abb-40ae-9637-df9abd995069"),
+                            Id = new Guid("9e5593ca-67c9-445f-a1c1-46f62a9f0372"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "Egg.png",
                             MealType = 1,
@@ -258,7 +260,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("2c375dbd-6850-4a03-bfdf-742889f7f851"),
+                            Id = new Guid("2cf9c96d-6b44-4982-ab45-b5b8eb1e3d9e"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "aaaaaaaaa",
                             MealType = 3,
@@ -266,7 +268,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("7b78ce84-3d9a-491a-9b1b-33a29314810d"),
+                            Id = new Guid("3fb68d90-f501-4f6e-acf5-19dac494543b"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "aaaaaaaaa",
                             MealType = 2,
