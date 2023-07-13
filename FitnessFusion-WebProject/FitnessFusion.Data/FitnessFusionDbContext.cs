@@ -29,7 +29,7 @@
         {
             builder.ApplyConfiguration<Meal>(new MealEntityConfiguration());
 
-            //builder.ApplyConfiguration<ApplicationUser>(new ApplicationUserConfiguration());
+            builder.ApplyConfiguration<Exercise>(new ExerciseConfiguration());
 
             builder.Entity<Subscription>()
                 .Property(t => t.Price)

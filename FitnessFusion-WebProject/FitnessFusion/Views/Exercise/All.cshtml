@@ -1,0 +1,37 @@
+﻿@model IEnumerable<FitnessFusion.Web.ViewModels.Exercise.AllExercisesViewModel>
+
+@{
+    ViewData["Title"] = "All Exercises";
+}
+
+<h1>All Exercises</h1>
+
+@foreach (var group in Model.GroupBy(e => e.MuscleGroup))
+{
+    <div class="exercise-group">
+        <h2>@group.Key</h2>
+        <div class="exercise-list">
+            @foreach (var exercise in group)
+            {
+                <div class="exercise-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">@exercise.Name</h3>
+                            <p class="card-text">@exercise.Description</p>
+                            <a href="@exercise.VideoUrl" class="btn btn-primary">Watch Video</a>
+                            <a asp-controller="Exercise" asp-action="Edit" asp-route-id="@exercise.Id" class="btn btn-warning">Edit</a>
+                            <a asp-controller="Exercise" asp-action="Delete" asp-route-id="@exercise.Id"></a>
+                            <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete exercise: @exercise.Name')" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+<br />
+
+<div class="add-exercise">
+    <a href="@Url.Action("Create", "Exercise")" class="btn btn-success">Add New Exercise</a>
+</div>
