@@ -1,7 +1,6 @@
 ﻿namespace FitnessFusion.Data.Models
 {
     using FitnessFusion.Data.Models.Enums;
-    using Microsoft.AspNetCore.Http;
     using System.ComponentModel.DataAnnotations;
     using static Common.EntityValidationConstants.Exercise;
 

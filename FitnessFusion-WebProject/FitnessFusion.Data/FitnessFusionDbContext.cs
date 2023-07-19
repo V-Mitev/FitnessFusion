@@ -31,6 +31,8 @@
 
             builder.ApplyConfiguration<Exercise>(new ExerciseConfiguration());
 
+            builder.ApplyConfiguration<Trainer>(new TrainerConfiguration());
+
             builder.Entity<Subscription>()
                 .Property(t => t.Price)
                 .HasPrecision(5, 2);

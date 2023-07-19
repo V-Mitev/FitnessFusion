@@ -22,6 +22,9 @@
 
         public Trainer Trainer { get; set; } = null!;
 
+        [Required]
+        public string DescriptionОfЕxercises { get; set; } = null!;
+
         public ICollection<Exercise> Exercises { get; set; }
     }
 }

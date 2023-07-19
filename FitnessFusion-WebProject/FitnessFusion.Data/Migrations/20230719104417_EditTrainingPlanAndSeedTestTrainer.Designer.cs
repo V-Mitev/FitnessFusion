@@ -4,6 +4,7 @@ using FitnessFusion.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitnessFusion.Data.Migrations
 {
     [DbContext(typeof(FitnessFusionDbContext))]
-    partial class FitnessFusionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230719104417_EditTrainingPlanAndSeedTestTrainer")]
+    partial class EditTrainingPlanAndSeedTestTrainer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -183,7 +185,7 @@ namespace FitnessFusion.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2385a59d-524b-478e-a26d-041052107d91"),
+                            Id = new Guid("ce7d818c-2179-4518-8a21-c1656d85df3c"),
                             Description = "It involves lying on a bench and pressing weight upward using either a barbell or a pair of dumbbells. During a bench press, you lower the weight down to chest level and then press upwards while extending your arms.",
                             Difficulty = 1,
                             ImagePath = "BenchPress.jfif",
@@ -193,7 +195,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("26151384-8d77-4197-8841-744957dfb758"),
+                            Id = new Guid("188cf1df-8c94-402f-a1fa-fbabae0c326a"),
                             Description = "An exercise in which a standing person lowers to a position in which the torso is erect and the knees are deeply bent and then rises to an upright position.",
                             Difficulty = 1,
                             ImagePath = "Squat.jfif",
@@ -203,7 +205,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("96db6580-9bb1-4da1-9719-b05fa8b3a901"),
+                            Id = new Guid("39b3f4bf-2eed-41bd-8a98-f0b0b94e2881"),
                             Description = "A pull-up is an upper-body exercise that involves hanging from a pull-up bar by your hands with your palms facing away from you, and lifting your entire body up with your arm and back muscles until your chest touches the bar.",
                             Difficulty = 1,
                             ImagePath = "PullUp.jfif",
@@ -242,7 +244,7 @@ namespace FitnessFusion.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("c991d8c8-382b-4f1b-9694-6ab9122affc2"),
+                            Id = new Guid("5ef4f5d5-beb0-43d1-b1a8-68281b019a05"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "Musli.png",
                             MealType = 0,
@@ -250,7 +252,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("e8b8609c-5f56-4004-a556-26ec18c0d2f5"),
+                            Id = new Guid("ace45836-0627-4c4c-b6e7-28a234ea98dc"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "Egg.png",
                             MealType = 1,
@@ -258,7 +260,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("4c4d9f1a-e7c0-4630-8ee5-e5d1da1008ef"),
+                            Id = new Guid("e1d101c7-1de5-4d7e-a9e0-d25820287a33"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "Egg.png",
                             MealType = 3,
@@ -266,7 +268,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("42a01ea8-4f3c-4e84-8b7c-1834c0450f8f"),
+                            Id = new Guid("fb5685ca-4c13-46f5-90a9-f0c843be0ee4"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "Egg.png",
                             MealType = 2,
@@ -468,25 +470,6 @@ namespace FitnessFusion.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("Trainer");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("06bc952c-75a0-4fa2-a004-123c6b98000f"),
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "9f5e1b24-3434-40e8-9c39-7e2e131b5727",
-                            Email = "trainer@abv.bg",
-                            EmailConfirmed = true,
-                            FirstName = "Test",
-                            IsSubscribeValid = true,
-                            IsTrainer = true,
-                            LastName = "Trainer",
-                            LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEPhh0pr831mLCefuSmLpO1vo18sVbiOgLcYVO9MZA/tO5tJDSf7TjXu1WfRX55DdQQ==",
-                            PhoneNumberConfirmed = false,
-                            TwoFactorEnabled = false,
-                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vestibulum sollicitudin est, varius vehicula erat pulvinar vel. Morbi molestie accumsan dolor, in bibendum mauris faucibus eu. Donec finibus a quam consectetur fermentum. Pellentesque faucibus at neque et iaculis. Sed consequat urna pulvinar feugiat finibus."
-                        });
                 });
 
             modelBuilder.Entity("ApplicationUserSubscription", b =>

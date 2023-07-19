@@ -8,22 +8,25 @@
 
 <form method="post" action="/Exercise/Add">
     <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" id="name" name="Name" class="form-control" required>
+        <label asp-for="@Model.Name" class="form-label-add-edit">Name</label>
+        <input asp-for="@Model.Name" class="form-control" aria-required="true" />
+        <span asp-validation-for="@Model.Name" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label for="description">Description</label>
+        <label asp-for="@Model.Description">Description</label>
         <textarea id="description" name="Description" class="form-control" required></textarea>
+        <span asp-validation-for="@Model.Description" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label for="videoUrl">Video Link</label>
+        <label asp-for="@Model.VideoUrl">Video Link</label>
         <input type="text" id="videoUrl" name="videoUrl" class="form-control" required>
+        <span asp-validation-for="@Model.VideoUrl" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label for="muscleGroup">Muscle Group</label>
+        <label asp-for="@Model.MuscleGroup">Muscle Group</label>
         <select id="muscleGroup" name="MuscleGroup" class="form-control" required>
             <option value="">Select a muscle group</option>
             @foreach (var muscleGroup in Enum.GetValues(typeof(FitnessFusion.Data.Models.Enums.MuscleGroups)))
@@ -34,7 +37,7 @@
     </div>
 
     <div class="form-group">
-        <label for="difficultyGroup">Difficult Of Exercise</label>
+        <label asp-for="@Model.Dificulty">Difficult Of Exercise</label>
         <select id="difficultyGroup" name="DifficultyGroup" class="form-control" required>
             <option value="">Select a diffucult of exercise</option>
             @foreach (var difficulty in Enum.GetValues(typeof(FitnessFusion.Data.Models.Enums.ExerciseLevelOfDificulty)))
@@ -50,7 +53,11 @@
         <span asp-validation-for="Image" class="text-danger"></span>
     </div>
 
-<br />
+    <br />
 
     <button type="submit" class="btn btn-primary">Add Exercise</button>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

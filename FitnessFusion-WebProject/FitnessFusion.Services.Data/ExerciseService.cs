@@ -68,7 +68,8 @@
 
         public async Task<AddExerciseViewModel> FindExerciseAsync(string exerciseId)
         {
-            var exercise = await dbContext.Exercises.FirstOrDefaultAsync(e => e.Id.ToString() == exerciseId);
+            var exercise = 
+                await dbContext.Exercises.FirstOrDefaultAsync(e => e.Id.ToString() == exerciseId);
 
             if (exercise == null)
             {
@@ -104,6 +105,5 @@
 
             return exercises;
         }
-
     }
 }
