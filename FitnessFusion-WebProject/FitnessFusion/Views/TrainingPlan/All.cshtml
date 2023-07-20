@@ -1,1 +1,22 @@
-﻿
+﻿@model ICollection<AllTrainingPlansViewModel>
+
+<h2>Списък с тренировъчни планове</h2>
+<table>
+    <tr>
+        <th>Име</th>
+        <th>Треньор</th>
+        <th>Снимка</th>
+        <th>Детайли</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.Trainer</td>
+            <td><img src="@item.Image" alt="Снимка"></td>
+            <td><a asp-action="Details" asp-route-id="@item.Id">Повече детайли</a></td>
+        </tr>
+    }
+</table>
+
+<a asp-controller="TrainingPlan" asp-action="Add" class="btn btn-primary">Create new training plan</a>

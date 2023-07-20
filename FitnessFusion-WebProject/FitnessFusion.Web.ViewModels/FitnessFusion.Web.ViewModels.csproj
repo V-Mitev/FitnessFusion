@@ -11,8 +11,4 @@
     <ProjectReference Include="..\FitnessFusion.Data.Models\FitnessFusion.Data.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="TrainingPlan\" />
-  </ItemGroup>
-
 </Project>

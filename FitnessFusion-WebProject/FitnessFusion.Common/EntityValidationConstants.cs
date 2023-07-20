@@ -52,8 +52,11 @@
 
         public static class TrainingPlan
         {
-            public const int TrainingDayMinValue = 0;
-            public const int TrainingDayMaxValue = 7;
+            public const int NameMinLength = 3;
+            public const int NameMaxLength = 50;
+
+            public const int DescriptionMinLength = 5;
+            public const int DescriptionMaxLength = 50;
         }
     }
 }

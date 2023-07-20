@@ -105,5 +105,18 @@
 
             return exercises;
         }
+
+        public async Task<ICollection<ExerciseViewModel>> GetAllExercisesAsyncForTrainingPlan()
+        {
+            var exercises = await dbContext.Exercises
+                .Select(e => new ExerciseViewModel()
+                {
+                    Id = e.Id.ToString(),
+                    Name = e.Name
+                })
+                .ToListAsync();
+
+            return exercises;
+        }
     }
 }

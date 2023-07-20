@@ -1,0 +1,71 @@
+﻿@model FitnessFusion.Web.ViewModels.TrainingPlan.TrainingPlanViewModel
+
+<h1>Add Training Plan</h1>
+@using (Html.BeginForm("Add", "TrainingPlan", FormMethod.Post))
+{
+    <div>
+        <label for="planName">Training Plan Name:</label>
+        <input type="text" id="planName" name="Name" required />
+    </div>
+
+    <div>
+        <label for="description">Description of Exercises:</label>
+        <textarea id="description" name="DescriptionOfExercises" required></textarea>
+    </div>
+
+    <div>
+        <label for="availableExercises">Available Exercises:</label>
+        <select id="availableExercises" name="AvailableExerciseId">
+            <option value="">-- Select an exercise --</option>
+            @foreach (var exercise in Model.AvailableExercises)
+            {
+                <option value="@exercise.Id">@exercise.Name</option>
+            }
+        </select>
+        <button type="button" onclick="addExercise()">Add Exercise</button>
+    </div>
+
+    <div>
+        <label for="selectedExercises">Selected Exercises:</label>
+        <ul id="selectedExercisesList">
+            @foreach (var exercise in Model.AddedExercises)
+            {
+                <li>@exercise.Name <input type="hidden" name="AddedExerciseIds" value="@exercise.Id" /></li>
+            }
+        </ul>
+    </div>
+
+    <input type="hidden" name="Action" value="Save Training Plan" />
+    <input type="submit" value="Save Training Plan" />
+}
+
+<script>
+    function addExercise() {
+        var selectedExerciseId = document.getElementById("availableExercises").value;
+        if (!selectedExerciseId) {
+            alert("Please select an exercise to add.");
+            return;
+        }
+
+        var selectedExerciseName = document.getElementById("availableExercises").options[document.getElementById("availableExercises").selectedIndex].text;
+
+        var addedExerciseIds = document.querySelectorAll("input[name='AddedExerciseIds']");
+        var hasDuplicate = false;
+        addedExerciseIds.forEach(function (exerciseId) {
+            if (exerciseId.value === selectedExerciseId) {
+                hasDuplicate = true;
+                return;
+            }
+        });
+
+        if (hasDuplicate) {
+            alert("Exercise '" + selectedExerciseName + "' is already added.");
+            return;
+        }
+
+        var selectedExercisesList = document.getElementById("selectedExercisesList");
+        var listItem = document.createElement("li");
+        listItem.innerHTML = selectedExerciseName + " <input type='hidden' name='AddedExerciseIds' value='" + selectedExerciseId + "' />";
+        selectedExercisesList.appendChild(listItem);
+    }
+</script>
