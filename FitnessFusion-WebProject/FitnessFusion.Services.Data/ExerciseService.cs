@@ -23,8 +23,8 @@
             {
                 Name = model.Name,
                 Description = model.Description,
-                ImagePath = model.Image,
-                VideoLink = model.VideoUrl,
+                ImagePath = model.ImagePath,
+                VideoLink = model.VideoLink,
                 MuscleGroup = model.MuscleGroup,
                 Difficulty = model.Dificulty
             };
@@ -59,8 +59,8 @@
             exerciseToEdit.Name = model.Name;
             exerciseToEdit.Description = model.Description;
             exerciseToEdit.Difficulty = model.Dificulty;
-            exerciseToEdit.VideoLink = model.VideoUrl;
-            exerciseToEdit.ImagePath = model.Image;
+            exerciseToEdit.VideoLink = model.VideoLink;
+            exerciseToEdit.ImagePath = model.ImagePath;
             exerciseToEdit.MuscleGroup = model.MuscleGroup;
 
             await dbContext.SaveChangesAsync();
@@ -80,8 +80,8 @@
             {
                 Name = exercise.Name,
                 Description = exercise.Description,
-                Image = exercise.ImagePath,
-                VideoUrl = exercise.VideoLink,
+                ImagePath = exercise.ImagePath,
+                VideoLink = exercise.VideoLink,
                 Dificulty = exercise.Difficulty,
                 MuscleGroup = exercise.MuscleGroup
             };

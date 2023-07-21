@@ -1,0 +1,71 @@
+﻿@model FitnessFusion.Web.ViewModels.TrainingPlan.TrainingPlanViewModel
+@{
+    ViewData["Title"] = "Add Training Plan";
+}
+
+<h1>Add Training Plan</h1>
+
+<form asp-action="Add" asp-controller="TrainingPlan" method="post">
+    <div>
+        <label asp-for="Name">Name:</label>
+        <input asp-for="Name" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="DescriptionOfExercises">Description of Exercises:</label>
+        <input asp-for="DescriptionOfExercises" />
+        <span asp-validation-for="DescriptionOfExercises" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="AvailableExerciseId">Available Exercises:</label>
+        <select asp-for="AvailableExerciseId" asp-items="@(new SelectList(Model.AvailableExercises, "Id", "Name"))">
+            <option value="">-- Select an exercise --</option>
+        </select>
+        <a asp-controller="TrainingPlan" asp-action="AddExercises" />
+    </div>
+
+    <div>
+        <label>Added Exercises:</label>
+        <ul id="addedExercisesList">
+            @foreach (var exercise in Model.AddedExercises)
+            {
+                <li>@exercise.Name</li>
+            }
+        </ul>
+    </div>
+
+    <input type="submit" value="Save Training Plan" />
+</form>
+
+@section Scripts {
+    <script>
+        function addExercise() {
+            var selectedExerciseId = $("#AvailableExerciseId").val();
+            if (selectedExerciseId !== "") {
+                $.ajax({
+                    url: "@Url.Action("AddExercises", "TrainingPlan")",
+                    type: "POST",
+                    data: { "model": @Html.Raw(Json.Serialize(Model)), "exerciseId": selectedExerciseId },
+                    success: function (data) {
+                        updateAddedExercisesList(data);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            }
+        }
+
+        function updateAddedExercisesList(data) {
+            var list = $("#addedExercisesList");
+            list.empty();
+
+            // Използваме цикъл за добавяне на всички добавени упражнения към списъка
+            $.each(data.addedExercises, function (index, exercise) {
+                list.append("<li>" + exercise.name + "</li>");
+            });
+        }
+    </script>
+}

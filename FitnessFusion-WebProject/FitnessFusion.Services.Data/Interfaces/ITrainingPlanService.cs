@@ -7,5 +7,7 @@
         public Task<ICollection<AllTrainingPlansViewModel>> GetAllTrainingPlansAsync();
 
         public Task AddTrainingPlanAsync(TrainingPlanViewModel model, string trainerId);
+
+        public void AddExerciseToTrainingPlan(TrainingPlanExercises model, TrainingPlanViewModel trainingPlan);
     }
 }

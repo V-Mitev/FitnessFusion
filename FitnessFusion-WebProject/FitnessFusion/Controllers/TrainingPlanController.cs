@@ -1,7 +1,6 @@
 ﻿namespace FitnessFusion.Web.Controllers
 {
     using FitnessFusion.Services.Data.Interfaces;
-    using FitnessFusion.Web.ViewModels.Exercise;
     using FitnessFusion.Web.ViewModels.TrainingPlan;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -11,14 +10,13 @@
     public class TrainingPlanController : Controller
     {
         private readonly ITrainingPlanService trainingPlanService;
-        private readonly IExerciseService exerciseService;
 
-        public TrainingPlanController(ITrainingPlanService trainingPlanService, IExerciseService exerciseService)
+        public TrainingPlanController(ITrainingPlanService trainingPlanService)
         {
             this.trainingPlanService = trainingPlanService;
-            this.exerciseService = exerciseService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> All()
         {
             var trainingPlans = await trainingPlanService.GetAllTrainingPlansAsync();
@@ -27,62 +25,47 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> Add()
+        public IActionResult CreateTrainingPlan()
         {
             TrainingPlanViewModel model = new TrainingPlanViewModel();
-
-            model.AvailableExercises = await GetAvailableExercises();
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(TrainingPlanViewModel model, string Action)
+        public async Task<IActionResult> CreateTrainingPlan(TrainingPlanViewModel model)
         {
             var trainerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            model.AvailableExercises = await exerciseService.GetAllExercisesAsyncForTrainingPlan();
-
-            if (Action == "Add Exercise" && !string.IsNullOrEmpty(model.AvailableExerciseId))
+            if (!ModelState.IsValid)
             {
-                var selectedExercise = model.AvailableExercises.FirstOrDefault(e => e.Id == model.AvailableExerciseId);
-                if (selectedExercise != null && !model.AddedExercises.Any(e => e.Id == model.AvailableExerciseId))
-                {
-                    model.AddedExercises.Add(selectedExercise);
-                }
 
-                // Изчистваме стойността на AvailableExerciseId, за да може да се добавят още упражнения
-                model.AvailableExerciseId = string.Empty;
             }
-            else if (Action == "Save Training Plan")
-            {
-                if (string.IsNullOrEmpty(model.Name) || string.IsNullOrEmpty(model.DescriptionOfExercises))
-                {
-                    ModelState.AddModelError(string.Empty, "Name and Description are required.");
-                }
-                else
-                {
-                    var addedExerciseIdsSet = new HashSet<string>(model.AddedExercises.Select(e => e.Id));
 
-                    if (addedExerciseIdsSet.Count != model.AddedExercises.Count)
-                    {
-                        ModelState.AddModelError(string.Empty, "Cannot add duplicate exercises.");
-                    }
-                    else if (ModelState.IsValid)
-                    {
-                        await trainingPlanService.AddTrainingPlanAsync(model, trainerId);
-                    }
-                }
-            }
+            await trainingPlanService.AddTrainingPlanAsync(model, trainerId);
+
+            return RedirectToAction("All");
+        }
+
+        [HttpGet]
+        public IActionResult AddExercise()
+        {
+            TrainingPlanExercises model = new TrainingPlanExercises();
 
             return View(model);
         }
 
-        private async Task<ICollection<ExerciseViewModel>> GetAvailableExercises()
+        [HttpPost]
+        public IActionResult AddExercise(TrainingPlanExercises model, TrainingPlanViewModel trainingPlan)
         {
-            var exercises = await exerciseService.GetAllExercisesAsyncForTrainingPlan();
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("AddExercise");
+            }
 
-            return exercises;
+            trainingPlanService.AddExerciseToTrainingPlan(model, trainingPlan);
+
+            return RedirectToAction("Add");
         }
     }
 }

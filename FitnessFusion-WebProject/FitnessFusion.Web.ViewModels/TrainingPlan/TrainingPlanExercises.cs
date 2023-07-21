@@ -1,10 +1,10 @@
-﻿namespace FitnessFusion.Web.ViewModels.Exercise
+﻿namespace FitnessFusion.Web.ViewModels.TrainingPlan
 {
     using FitnessFusion.Data.Models.Enums;
     using System.ComponentModel.DataAnnotations;
     using static Common.EntityValidationConstants.Exercise;
 
-    public class AddExerciseViewModel
+    public class TrainingPlanExercises
     {
         [Required]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
@@ -15,10 +15,6 @@
         public string Description { get; set; } = null!;
 
         [Required]
-        [StringLength(ImageUrlMaxLength, MinimumLength = ImageUrlMinLength)]
-        public string ImagePath { get; set; } = null!;
-
-        [Required]
         [StringLength(VideoUrlMaxLength, MinimumLength = VideoUrlMinLength)]
         public string VideoLink { get; set; } = null!;
 
@@ -26,6 +22,6 @@
         public MuscleGroups MuscleGroup { get; set; }
 
         [Required]
-        public ExerciseLevelOfDificulty Dificulty { get; set; }
+        public string SetsAndReps { get; set; } = null!;
     }
 }
