@@ -8,6 +8,6 @@
 
         public string Trainer { get; set; } = null!;
 
-        public string Image { get; set; } = null!;
+        public string? Image { get; set; }
     }
 }

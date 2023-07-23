@@ -1,12 +1,12 @@
-﻿@model AddExerciseViewModel
+﻿@model TrainingPlanExercises
 
 @{
-    ViewData["Title"] = "Add Exercise";
+    ViewData["Title"] = "Add exercise to training plan";
 }
 
 <h1>@ViewData["Title"]</h1>
 
-<form method="post" action="/Exercise/Add">
+<form asp-controller="TrainingPlan" asp-action="AddExercise" method="post">
     <div class="form-group">
         <label asp-for="@Model.Name" class="form-label-add-edit">Name</label>
         <input asp-for="@Model.Name" class="form-control" aria-required="true" />
@@ -20,9 +20,21 @@
     </div>
 
     <div class="form-group">
+        <label asp-for="Image">Image:</label>
+        <input type="file" class="form-control" asp-for="Image" accept="image/*" required>
+        <span asp-validation-for="Image" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
         <label asp-for="@Model.VideoLink">Video Link</label>
-        <input type="text" id="videoUrl" name="videoUrl" class="form-control" required>
+        <textarea id="videoLink" name="VideoLink" class="form-control" required></textarea>
         <span asp-validation-for="@Model.VideoLink" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.SetsAndReps">Sets and reps</label>
+        <textarea id="SetsAndReps" name="SetsAndReps" class="form-control" required></textarea>
+        <span asp-validation-for="@Model.SetsAndReps" class="text-danger"></span>
     </div>
 
     <div class="form-group">
@@ -34,23 +46,6 @@
                 <option value="@muscleGroup">@muscleGroup</option>
             }
         </select>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="@Model.Dificulty">Difficult Of Exercise</label>
-        <select id="difficultyGroup" name="DifficultyGroup" class="form-control" required>
-            <option value="">Select a diffucult of exercise</option>
-            @foreach (var difficulty in Enum.GetValues(typeof(FitnessFusion.Data.Models.Enums.ExerciseLevelOfDificulty)))
-            {
-                <option value="@difficulty">@difficulty</option>
-            }
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="ImagePath">Image:</label>
-        <input type="file" class="form-control" asp-for="ImagePath" accept="image/*" required>
-        <span asp-validation-for="ImagePath" class="text-danger"></span>
     </div>
 
     <br />

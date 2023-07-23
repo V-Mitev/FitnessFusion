@@ -25,8 +25,7 @@
         [Required]
         public string SetsAndReps { get; set; } = null!;
 
-        [Required]
-        public string Image { get; set; } = null!;
+        public string? Image { get; set; }
 
         public ICollection<Exercise> Exercises { get; set; }
     }

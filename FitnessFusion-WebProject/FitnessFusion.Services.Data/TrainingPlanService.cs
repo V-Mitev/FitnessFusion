@@ -26,7 +26,7 @@
         {
             var exercisesToAdd = model.AddedExercises
                 .Select(e => new Exercise()
-                {
+                {   
                     Name = e.Name,
                     Description = e.Description,
                     VideoLink = e.VideoLink,

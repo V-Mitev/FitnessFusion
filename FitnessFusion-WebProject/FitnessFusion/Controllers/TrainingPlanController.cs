@@ -27,6 +27,7 @@
         [HttpGet]
         public IActionResult CreateTrainingPlan()
         {
+            //var model = HttpContext.Session.GetObject<TrainingPlanViewModel>(SessionKeyTrainingPlan);
             TrainingPlanViewModel model = new TrainingPlanViewModel();
 
             return View(model);
@@ -65,7 +66,7 @@
 
             trainingPlanService.AddExerciseToTrainingPlan(model, trainingPlan);
 
-            return RedirectToAction("Add");
+            return RedirectToAction("CreateTrainingPlan");
         }
     }
 }

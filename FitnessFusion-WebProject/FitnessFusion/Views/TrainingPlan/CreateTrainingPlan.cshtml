@@ -3,7 +3,7 @@
     ViewData["Title"] = "Add Training Plan";
 }
 
-<h1>Add Training Plan</h1>
+<h1>@ViewData["Title"]</h1>
 
 <form asp-action="Add" asp-controller="TrainingPlan" method="post">
     <div>
@@ -12,60 +12,37 @@
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
 
-    <div>
-        <label asp-for="DescriptionOfExercises">Description of Exercises:</label>
-        <input asp-for="DescriptionOfExercises" />
-        <span asp-validation-for="DescriptionOfExercises" class="text-danger"></span>
+    <div class="form-group">
+        <label asp-for="Image">Image:</label>
+        <input type="file" class="form-control" asp-for="Image" accept="image/*" formnovalidate>
+        <span asp-validation-for="Image" class="text-danger"></span>
     </div>
 
-    <div>
-        <label asp-for="AvailableExerciseId">Available Exercises:</label>
-        <select asp-for="AvailableExerciseId" asp-items="@(new SelectList(Model.AvailableExercises, "Id", "Name"))">
-            <option value="">-- Select an exercise --</option>
-        </select>
-        <a asp-controller="TrainingPlan" asp-action="AddExercises" />
-    </div>
-
-    <div>
-        <label>Added Exercises:</label>
-        <ul id="addedExercisesList">
+    <h3>Added Exercises</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Video Link</th>
+                <th>Sets and Reps</th>
+                <th>Muscle Group</th>
+            </tr>
+        </thead>
+        <tbody id="addedExercisesTableBody">
             @foreach (var exercise in Model.AddedExercises)
             {
-                <li>@exercise.Name</li>
+                <tr>
+                    <td>@exercise.Name</td>
+                    <td>@exercise.Description</td>
+                    <td>@exercise.VideoLink</td>
+                    <td>@exercise.SetsAndReps</td>
+                    <td>@exercise.MuscleGroup</td>
+                </tr>
             }
-        </ul>
-    </div>
+        </tbody>
+    </table>
 
-    <input type="submit" value="Save Training Plan" />
+    <a asp-controller="TrainingPlan" asp-action="AddExercise" class="btn btn-primary">Add Exercise</a>
+    <button type="submit" class="btn btn-primary">Create Training Plan</button>
 </form>
-
-@section Scripts {
-    <script>
-        function addExercise() {
-            var selectedExerciseId = $("#AvailableExerciseId").val();
-            if (selectedExerciseId !== "") {
-                $.ajax({
-                    url: "@Url.Action("AddExercises", "TrainingPlan")",
-                    type: "POST",
-                    data: { "model": @Html.Raw(Json.Serialize(Model)), "exerciseId": selectedExerciseId },
-                    success: function (data) {
-                        updateAddedExercisesList(data);
-                    },
-                    error: function (xhr, status, error) {
-                        console.error(error);
-                    }
-                });
-            }
-        }
-
-        function updateAddedExercisesList(data) {
-            var list = $("#addedExercisesList");
-            list.empty();
-
-            // Използваме цикъл за добавяне на всички добавени упражнения към списъка
-            $.each(data.addedExercises, function (index, exercise) {
-                list.append("<li>" + exercise.name + "</li>");
-            });
-        }
-    </script>
-}

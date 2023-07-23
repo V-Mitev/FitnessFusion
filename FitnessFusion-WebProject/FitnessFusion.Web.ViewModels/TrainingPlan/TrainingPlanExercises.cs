@@ -15,6 +15,9 @@
         public string Description { get; set; } = null!;
 
         [Required]
+        public string Image { get; set; } = null!;
+
+        [Required]
         [StringLength(VideoUrlMaxLength, MinimumLength = VideoUrlMinLength)]
         public string VideoLink { get; set; } = null!;
 
