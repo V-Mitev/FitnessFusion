@@ -19,31 +19,38 @@
 
         public void AddExerciseToTrainingPlan(TrainingPlanExercises model, TrainingPlanViewModel trainingPlan)
         {
-            trainingPlan.AddedExercises.Add(model);
+            trainingPlan.AddedExercises!.Add(model);
         }
 
-        public async Task AddTrainingPlanAsync(TrainingPlanViewModel model, string trainerId)
+        public async Task AddTrainingPlanAsync(TrainingPlanViewModel model, string userId)
         {
-            var exercisesToAdd = model.AddedExercises
+            var trainer = await dbContext.Trainers.FirstOrDefaultAsync(t => t.Id.ToString() == userId);
+
+            if (trainer!.IsTrainer == true)
+            {
+                var exercisesToAdd = model.AddedExercises!
                 .Select(e => new Exercise()
-                {   
+                {
                     Name = e.Name,
                     Description = e.Description,
+                    ImagePath = e.Image,
                     VideoLink = e.VideoLink,
                     MuscleGroup = e.MuscleGroup
                 })
                 .ToList();
 
-            TrainingPlan trainingPlan = new TrainingPlan()
-            {
-                Name = model.Name,
-                TrainerId = Guid.Parse(trainerId),
-                Exercises =  exercisesToAdd
-            };
+                TrainingPlan trainingPlan = new TrainingPlan()
+                {
+                    Name = model.Name,
+                    TrainerId = trainer.Id,
+                    Exercises = exercisesToAdd,
+                    Image = model.Image
+                };
 
-            await dbContext.TrainingPlans.AddAsync(trainingPlan);
+                await dbContext.TrainingPlans.AddAsync(trainingPlan);
 
-            await dbContext.SaveChangesAsync();
+                await dbContext.SaveChangesAsync();
+            }
         }
 
         public async Task<ICollection<AllTrainingPlansViewModel>> GetAllTrainingPlansAsync()

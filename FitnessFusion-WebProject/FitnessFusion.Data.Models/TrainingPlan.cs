@@ -2,6 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using static Common.EntityValidationConstants.TrainingPlan;
 
     public class TrainingPlan
     {
@@ -15,6 +16,7 @@
         public Guid Id { get; set; }
 
         [Required]
+        [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
         public string Name { get; set; } = null!;
 
         [ForeignKey(nameof(Trainer))]
@@ -23,9 +25,7 @@
         public Trainer Trainer { get; set; } = null!;
 
         [Required]
-        public string SetsAndReps { get; set; } = null!;
-
-        public string? Image { get; set; }
+        public string Image { get; set; } = null!;
 
         public ICollection<Exercise> Exercises { get; set; }
     }

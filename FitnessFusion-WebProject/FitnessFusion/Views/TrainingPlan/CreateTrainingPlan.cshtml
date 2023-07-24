@@ -5,7 +5,7 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<form asp-action="Add" asp-controller="TrainingPlan" method="post">
+<form asp-action="CreateTrainingPlan" asp-controller="TrainingPlan" method="post">
     <div>
         <label asp-for="Name">Name:</label>
         <input asp-for="Name" />
@@ -14,7 +14,7 @@
 
     <div class="form-group">
         <label asp-for="Image">Image:</label>
-        <input type="file" class="form-control" asp-for="Image" accept="image/*" formnovalidate>
+        <input type="file" class="form-control" asp-for="Image" accept="image/*">
         <span asp-validation-for="Image" class="text-danger"></span>
     </div>
 
@@ -30,7 +30,7 @@
             </tr>
         </thead>
         <tbody id="addedExercisesTableBody">
-            @foreach (var exercise in Model.AddedExercises)
+            @foreach (var exercise in Model.AddedExercises!)
             {
                 <tr>
                     <td>@exercise.Name</td>
@@ -44,5 +44,6 @@
     </table>
 
     <a asp-controller="TrainingPlan" asp-action="AddExercise" class="btn btn-primary">Add Exercise</a>
+
     <button type="submit" class="btn btn-primary">Create Training Plan</button>
 </form>

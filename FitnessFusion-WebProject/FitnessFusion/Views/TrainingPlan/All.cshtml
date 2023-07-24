@@ -13,7 +13,7 @@
         <tr>
             <td>@item.Name</td>
             <td>@item.Trainer</td>
-            <td><img src="@item.Image" alt="Снимка"></td>
+            <td><img src="@($"/img/{item.Image}")" alt="Снимка"></td>
             <td><a asp-action="Details" asp-route-id="@item.Id">Повече детайли</a></td>
         </tr>
     }

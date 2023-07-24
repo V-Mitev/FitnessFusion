@@ -37,6 +37,11 @@ namespace FitnessFusion
             builder.Services.AddScoped<IExerciseService, ExerciseService>();
             builder.Services.AddScoped<ITrainingPlanService, TrainingPlanService>();
 
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+            });
+
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
@@ -57,6 +62,8 @@ namespace FitnessFusion
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.MapControllerRoute(
                 name: "default",

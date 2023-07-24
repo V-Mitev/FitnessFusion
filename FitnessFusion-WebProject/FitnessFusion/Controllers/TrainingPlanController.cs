@@ -1,10 +1,11 @@
 ﻿namespace FitnessFusion.Web.Controllers
 {
     using FitnessFusion.Services.Data.Interfaces;
+    using FitnessFusion.Web.Infastructure.Extensions;
     using FitnessFusion.Web.ViewModels.TrainingPlan;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using System.Security.Claims;
+
 
     [Authorize]
     public class TrainingPlanController : Controller
@@ -27,8 +28,14 @@
         [HttpGet]
         public IActionResult CreateTrainingPlan()
         {
-            //var model = HttpContext.Session.GetObject<TrainingPlanViewModel>(SessionKeyTrainingPlan);
-            TrainingPlanViewModel model = new TrainingPlanViewModel();
+            TrainingPlanViewModel? model = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan");
+
+            if (model == null)
+            {
+                model = new TrainingPlanViewModel();
+
+                HttpContext.Session.SetObject("TrainingPlan", model);
+            }
 
             return View(model);
         }
@@ -36,14 +43,22 @@
         [HttpPost]
         public async Task<IActionResult> CreateTrainingPlan(TrainingPlanViewModel model)
         {
-            var trainerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.GetId();
 
             if (!ModelState.IsValid)
             {
-
+                HttpContext.Session.SetObject("TrainingPlan", model);
+                return View(model);
             }
 
-            await trainingPlanService.AddTrainingPlanAsync(model, trainerId);
+            var sessionTrainingPlan = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan")!;
+
+            sessionTrainingPlan.Name = model.Name;
+            sessionTrainingPlan.Image = model.Image;
+
+            await trainingPlanService.AddTrainingPlanAsync(sessionTrainingPlan, userId);
+
+            HttpContext.Session.Remove("TrainingPlan");
 
             return RedirectToAction("All");
         }
@@ -51,20 +66,31 @@
         [HttpGet]
         public IActionResult AddExercise()
         {
+            var trainingPlan = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan");
+
+            if (trainingPlan == null)
+            {
+                return RedirectToAction("CreateTrainingPlan");
+            }
+
             TrainingPlanExercises model = new TrainingPlanExercises();
 
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult AddExercise(TrainingPlanExercises model, TrainingPlanViewModel trainingPlan)
+        public IActionResult AddExercise(TrainingPlanExercises model)
         {
             if (!ModelState.IsValid)
             {
                 return RedirectToAction("AddExercise");
             }
 
-            trainingPlanService.AddExerciseToTrainingPlan(model, trainingPlan);
+            TrainingPlanViewModel trainingPlan = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan")!;
+
+            trainingPlan.AddedExercises!.Add(model);
+
+            HttpContext.Session.SetObject("TrainingPlan", trainingPlan);
 
             return RedirectToAction("CreateTrainingPlan");
         }
