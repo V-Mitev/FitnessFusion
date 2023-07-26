@@ -17,18 +17,83 @@
             this.dbContext = dbContext;
         }
 
-        public void AddExerciseToTrainingPlan(TrainingPlanExercises model, TrainingPlanViewModel trainingPlan)
+        public async Task AddExerciseToExistingPlanAsync(TrainingPlanExercises model, string trainingPlanId)
         {
-            trainingPlan.AddedExercises!.Add(model);
+            var trainingPlan = await dbContext.TrainingPlans
+                .Include(tp => tp.Exercises)
+                .FirstOrDefaultAsync(tp => tp.Id.ToString() == trainingPlanId);
+
+            if (trainingPlan == null)
+            {
+                throw new NullReferenceException("Training plan doesn't exists");
+            }
+
+            Exercise exercise = new Exercise()
+            {
+                Name = model.Name,
+                Description = model.Description,
+                ImagePath = model.Image,
+                VideoLink = model.VideoLink,
+                MuscleGroup = model.MuscleGroup
+            };
+
+            await dbContext.Exercises.AddAsync(exercise);   
+
+            trainingPlan.Exercises.Add(exercise);
+
+            await dbContext.SaveChangesAsync();
+        }
+
+        public void AddExerciseToPlan(TrainingPlanExercises model, TrainingPlanViewModel trainingPlan)
+        {
+            trainingPlan.AddedExercises.Add(model);
         }
 
         public async Task AddTrainingPlanAsync(TrainingPlanViewModel model, string userId)
         {
             var trainer = await dbContext.Trainers.FirstOrDefaultAsync(t => t.Id.ToString() == userId);
 
-            if (trainer!.IsTrainer == true)
+            if (trainer == null)
             {
-                var exercisesToAdd = model.AddedExercises!
+                throw new NullReferenceException("Trainer doesnt exists");
+            }
+
+            var exercisesToAdd = model.AddedExercises!
+            .Select(e => new Exercise()
+            {
+                Name = e.Name,
+                Description = e.Description,
+                ImagePath = e.Image,
+                VideoLink = e.VideoLink,
+                MuscleGroup = e.MuscleGroup
+            })
+            .ToList();
+
+            TrainingPlan trainingPlan = new TrainingPlan()
+            {
+                Name = model.Name,
+                TrainerId = trainer.Id,
+                Exercises = exercisesToAdd,
+                Image = model.Image
+            };
+
+            await dbContext.TrainingPlans.AddAsync(trainingPlan);
+
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task EditTrainingPlanAsync(TrainingPlanViewModel model, string trainingPlanId)
+        {
+            var trainingPlan = await dbContext.TrainingPlans
+                .AsNoTracking()
+                .FirstOrDefaultAsync(tp => tp.Id.ToString() == trainingPlanId);
+
+            if (trainingPlan == null)
+            {
+                throw new NullReferenceException("Training plan doesn't exists");
+            }
+
+            var exercises = model.AddedExercises
                 .Select(e => new Exercise()
                 {
                     Name = e.Name,
@@ -36,21 +101,45 @@
                     ImagePath = e.Image,
                     VideoLink = e.VideoLink,
                     MuscleGroup = e.MuscleGroup
-                })
-                .ToList();
+                }).ToList();
 
-                TrainingPlan trainingPlan = new TrainingPlan()
-                {
-                    Name = model.Name,
-                    TrainerId = trainer.Id,
-                    Exercises = exercisesToAdd,
-                    Image = model.Image
-                };
+            trainingPlan.Name = model.Name;
+            trainingPlan.Image = model.Image;
 
-                await dbContext.TrainingPlans.AddAsync(trainingPlan);
+            await dbContext.SaveChangesAsync();
+        }
 
-                await dbContext.SaveChangesAsync();
+        public async Task<TrainingPlanViewModel> FindTrainingPlanByIdAsync(string id)
+        {
+            var trainingPlan = await dbContext.TrainingPlans
+                .Include(tp => tp.Exercises)
+                .FirstOrDefaultAsync(tp => tp.Id.ToString() == id);
+
+            if (trainingPlan == null)
+            {
+                throw new NullReferenceException("Training plan doen't exists");
             }
+
+            var exercises = trainingPlan.Exercises
+                .Select(e => new TrainingPlanExercises()
+                {
+                    Id = e.Id.ToString(),
+                    Name = e.Name,
+                    Description = e.Description,
+                    Image = e.ImagePath,
+                    VideoLink = e.VideoLink,
+                    MuscleGroup = e.MuscleGroup
+                }).ToList();
+
+            TrainingPlanViewModel model = new TrainingPlanViewModel()
+            {
+                Id = trainingPlan.Id.ToString(),
+                Name = trainingPlan.Name,
+                Image = trainingPlan.Image,
+                AddedExercises = exercises
+            };
+
+            return model;
         }
 
         public async Task<ICollection<AllTrainingPlansViewModel>> GetAllTrainingPlansAsync()

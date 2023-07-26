@@ -8,6 +8,12 @@
 
         public Task AddTrainingPlanAsync(TrainingPlanViewModel model, string trainerId);
 
-        public void AddExerciseToTrainingPlan(TrainingPlanExercises model, TrainingPlanViewModel trainingPlan);
+        public Task EditTrainingPlanAsync(TrainingPlanViewModel model, string trainingPlanId);
+
+        public Task<TrainingPlanViewModel> FindTrainingPlanByIdAsync(string id);
+
+        public void AddExerciseToPlan(TrainingPlanExercises model, TrainingPlanViewModel trainingPlan);
+
+        public Task AddExerciseToExistingPlanAsync(TrainingPlanExercises model, string trainingPlanId);
     }
 }

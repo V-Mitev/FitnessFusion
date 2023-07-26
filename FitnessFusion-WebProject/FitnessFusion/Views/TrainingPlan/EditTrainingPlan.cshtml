@@ -1,0 +1,54 @@
+﻿@model TrainingPlanViewModel
+@{
+    ViewData["Title"] = "Edit Training Plan";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="EditTrainingPlan" asp-controller="TrainingPlan" method="post">
+    <div>
+        <label asp-for="Name">Name:</label>
+        <input asp-for="Name" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Image">Image:</label>
+        <input type="file" class="form-control" asp-for="Image" accept="image/*" formnovalidate>
+        <span asp-validation-for="Image" class="text-danger"></span>
+    </div>
+
+    <h3>Added Exercises</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Video Link</th>
+                <th>Sets and Reps</th>
+                <th>Muscle Group</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="addedExercisesTableBody">
+            @foreach (var exercise in Model.AddedExercises)
+            {
+                <tr>
+                    <td>@exercise.Name</td>
+                    <td>@exercise.Description</td>
+                    <td>@exercise.VideoLink</td>
+                    <td>@exercise.SetsAndReps</td>
+                    <td>@exercise.MuscleGroup</td>
+                    <td>
+                        <a asp-action="EditExercise" asp-controller="TrainingPlan" asp-route-id="@exercise.Id">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <a asp-controller="TrainingPlan" asp-action="AddExercise" class="btn btn-primary">Add Exercise</a>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+
+</form>

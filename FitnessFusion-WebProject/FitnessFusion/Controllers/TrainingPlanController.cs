@@ -28,7 +28,7 @@
         [HttpGet]
         public IActionResult CreateTrainingPlan()
         {
-            TrainingPlanViewModel? model = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan");
+            var model = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan");
 
             if (model == null)
             {
@@ -45,16 +45,16 @@
         {
             var userId = User.GetId();
 
-            if (!ModelState.IsValid)
-            {
-                HttpContext.Session.SetObject("TrainingPlan", model);
-                return View(model);
-            }
-
             var sessionTrainingPlan = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan")!;
 
             sessionTrainingPlan.Name = model.Name;
             sessionTrainingPlan.Image = model.Image;
+
+            if (!ModelState.IsValid)
+            {
+                HttpContext.Session.SetObject("TrainingPlan", sessionTrainingPlan);
+                return View(model);
+            }
 
             await trainingPlanService.AddTrainingPlanAsync(sessionTrainingPlan, userId);
 
@@ -79,20 +79,58 @@
         }
 
         [HttpPost]
-        public IActionResult AddExercise(TrainingPlanExercises model)
+        public async Task<IActionResult> AddExercise(TrainingPlanExercises model)
         {
             if (!ModelState.IsValid)
             {
                 return RedirectToAction("AddExercise");
             }
 
-            TrainingPlanViewModel trainingPlan = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan")!;
+            var trainingPlan = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan")!;
 
-            trainingPlan.AddedExercises!.Add(model);
+            if (!string.IsNullOrEmpty(trainingPlan.Id))
+            {
+                await trainingPlanService.AddExerciseToExistingPlanAsync(model, trainingPlan.Id);
+
+                HttpContext.Session.SetObject("TrainingPlan", trainingPlan);
+
+                return RedirectToAction("EditTrainingPlan", new {trainingPlan.Id});
+            }
+
+            trainingPlanService.AddExerciseToPlan(model, trainingPlan);
 
             HttpContext.Session.SetObject("TrainingPlan", trainingPlan);
 
             return RedirectToAction("CreateTrainingPlan");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditTrainingPlan(string id)
+        {
+            var model = await trainingPlanService.FindTrainingPlanByIdAsync(id);
+
+            HttpContext.Session.SetObject("TrainingPlan", model);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditTrainingPlan(TrainingPlanViewModel model, string id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("EditTrainingPlan");
+            }
+
+            var exercises = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan")!;
+
+            model.AddedExercises = exercises.AddedExercises;
+
+            await trainingPlanService.EditTrainingPlanAsync(model, id);
+
+            HttpContext.Session.Remove("TrainingPlan");
+
+            return RedirectToAction("All");
         }
     }
 }

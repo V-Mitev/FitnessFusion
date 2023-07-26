@@ -1,0 +1,45 @@
+﻿@model TrainingPlanExercises
+
+@{
+    ViewData["Title"] = "Edit Exercise";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-controller="TrainingPlan" asp-action="EditExercise" method="post">
+
+    <div class="form-group">
+        <label asp-for="Name">Name:</label>
+        <input asp-for="Name" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description">Description</label>
+        <textarea id="description" name="Description" class="form-control" required>@Model.Description</textarea>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Image">Image:</label>
+        <input type="file" class="form-control" asp-for="Image" accept="image/*" required>
+        <span asp-validation-for="Image" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="VideoLink">Video URL</label>
+        <input asp-for="VideoLink" required>
+        <span asp-validation-for="VideoLink" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="muscleGroup">Muscle Group</label>
+        <select id="muscleGroup" name="MuscleGroup" class="form-control" required>
+            <option value="">Select a muscle group</option>
+            @foreach (var muscleGroup in Enum.GetValues(typeof(FitnessFusion.Data.Models.Enums.MuscleGroups)))
+            {
+                <option value="@muscleGroup">@muscleGroup</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>

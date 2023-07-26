@@ -10,6 +10,8 @@
             AddedExercises = new HashSet<TrainingPlanExercises>();
         }
 
+        public string? Id { get; set; } 
+
         [Required]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
         public string Name { get; set; } = null!;

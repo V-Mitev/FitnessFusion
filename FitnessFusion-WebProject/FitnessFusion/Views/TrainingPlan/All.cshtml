@@ -7,6 +7,7 @@
         <th>Треньор</th>
         <th>Снимка</th>
         <th>Детайли</th>
+        <th>Редактирай</th>
     </tr>
     @foreach (var item in Model)
     {
@@ -15,6 +16,7 @@
             <td>@item.Trainer</td>
             <td><img src="@($"/img/{item.Image}")" alt="Снимка"></td>
             <td><a asp-action="Details" asp-route-id="@item.Id">Повече детайли</a></td>
+            <td><a asp-action="EditTrainingPlan" asp-route-id="@item.Id">Редактирай</a></td>
         </tr>
     }
 </table>
