@@ -8,15 +8,21 @@
         <th>Снимка</th>
         <th>Детайли</th>
         <th>Редактирай</th>
+        <th>Изтрий</th>
     </tr>
-    @foreach (var item in Model)
+    @foreach (var trainingPlan in Model)
     {
         <tr>
-            <td>@item.Name</td>
-            <td>@item.Trainer</td>
-            <td><img src="@($"/img/{item.Image}")" alt="Снимка"></td>
-            <td><a asp-action="Details" asp-route-id="@item.Id">Повече детайли</a></td>
-            <td><a asp-action="EditTrainingPlan" asp-route-id="@item.Id">Редактирай</a></td>
+            <td>@trainingPlan.Name</td>
+            <td>@trainingPlan.Trainer</td>
+            <td><img src="@($"/img/{trainingPlan.Image}")" alt="Снимка"></td>
+            <td><a asp-action="Details" asp-route-id="@trainingPlan.Id">Повече детайли</a></td>
+            <td><a asp-action="EditTrainingPlan" asp-route-id="@trainingPlan.Id">Редактирай</a></td>
+            <td>
+                <form class="delete-form" asp-controller="TrainingPlan" asp-action="DeleteTrainingPlan" asp-route-id="@trainingPlan.Id">
+                    <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this training plan: @trainingPlan.Name')" />
+                </form>
+            </td>
         </tr>
     }
 </table>

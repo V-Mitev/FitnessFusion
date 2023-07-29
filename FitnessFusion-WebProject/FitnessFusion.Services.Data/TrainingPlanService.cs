@@ -82,10 +82,25 @@
             await dbContext.SaveChangesAsync();
         }
 
+        public async Task DeleteTrainingPlanAsync(string id)
+        {
+            var trainingPlan = await dbContext.TrainingPlans
+                .Include(tp => tp.Exercises)
+                .FirstOrDefaultAsync(tp => tp.Id.ToString() == id);
+
+            if (trainingPlan == null)
+            {
+                throw new NullReferenceException("Training plan doens't exists");
+            }
+
+            dbContext.TrainingPlans.Remove(trainingPlan);
+
+            await dbContext.SaveChangesAsync();
+        }
+
         public async Task EditTrainingPlanAsync(TrainingPlanViewModel model, string trainingPlanId)
         {
             var trainingPlan = await dbContext.TrainingPlans
-                .AsNoTracking()
                 .FirstOrDefaultAsync(tp => tp.Id.ToString() == trainingPlanId);
 
             if (trainingPlan == null)

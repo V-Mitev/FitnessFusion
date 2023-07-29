@@ -132,5 +132,13 @@
 
             return RedirectToAction("All");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteTrainingPlan(string id)
+        {
+            await trainingPlanService.DeleteTrainingPlanAsync(id);
+
+            return RedirectToAction("All");
+        }
     }
 }
