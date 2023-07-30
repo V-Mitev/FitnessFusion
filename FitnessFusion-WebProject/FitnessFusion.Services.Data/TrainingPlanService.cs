@@ -37,7 +37,7 @@
                 MuscleGroup = model.MuscleGroup
             };
 
-            await dbContext.Exercises.AddAsync(exercise);   
+            await dbContext.Exercises.AddAsync(exercise);
 
             trainingPlan.Exercises.Add(exercise);
 
@@ -96,6 +96,45 @@
             dbContext.TrainingPlans.Remove(trainingPlan);
 
             await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<DetailsTrainingPlanViewModel> DetailsAsync(string id)
+        {
+            var trainingPlan = await dbContext.TrainingPlans
+                .Include(tp => tp.Exercises)
+                .FirstOrDefaultAsync(tp => tp.Id.ToString() == id);
+
+            if (trainingPlan == null)
+            {
+                throw new NullReferenceException("Training plan doesn't exists");
+            }
+
+            var trainer = await dbContext.Trainers.FirstOrDefaultAsync(t => t.Id == trainingPlan.TrainerId);
+
+            if (trainer == null)
+            {
+                throw new NullReferenceException("Trainer doesn't exists");
+            }
+
+            var exercises = trainingPlan.Exercises
+               .Select(e => new TrainingPlanExercises()
+               {
+                   Id = e.Id.ToString(),
+                   Name = e.Name,
+                   Description = e.Description,
+                   Image = e.ImagePath,
+                   VideoLink = e.VideoLink,
+                   MuscleGroup = e.MuscleGroup
+               }).ToList();
+
+            var detailsTP = new DetailsTrainingPlanViewModel()
+            {
+                Name = trainingPlan.Name,
+                Trainer = $"{trainer.FirstName} {trainer.LastName}",
+                Exercises = exercises
+            };
+
+            return detailsTP;
         }
 
         public async Task EditTrainingPlanAsync(TrainingPlanViewModel model, string trainingPlanId)

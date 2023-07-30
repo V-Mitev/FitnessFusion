@@ -1,0 +1,40 @@
+﻿@model DetailsTrainingPlanViewModel
+
+@{
+    ViewData["Title"] = "Training Plan Details";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <h2>@Model.Name</h2>
+    <p>Trainer: @Model.Trainer</p>
+</div>
+
+<h3>Exercises</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Video Link</th>
+            <th>Sets and Reps</th>
+            <th>Muscle Group</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var exercise in Model.Exercises)
+        {
+            <tr>
+                <td>@exercise.Name</td>
+                <td>@exercise.Description</td>
+                <td>@exercise.VideoLink</td>
+                <td>@exercise.SetsAndReps</td>
+                <td>@exercise.MuscleGroup</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-controller="TrainingPlan" asp-action="All" class="btn btn-primary">Back</a>

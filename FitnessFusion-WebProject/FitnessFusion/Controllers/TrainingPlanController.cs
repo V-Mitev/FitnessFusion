@@ -6,7 +6,6 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
-
     [Authorize]
     public class TrainingPlanController : Controller
     {
@@ -139,6 +138,14 @@
             await trainingPlanService.DeleteTrainingPlanAsync(id);
 
             return RedirectToAction("All");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(string id)
+        {
+            var model = await trainingPlanService.DetailsAsync(id);
+
+            return View(model);
         }
     }
 }

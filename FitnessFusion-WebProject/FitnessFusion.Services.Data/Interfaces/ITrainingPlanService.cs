@@ -17,5 +17,7 @@
         public Task AddExerciseToExistingPlanAsync(TrainingPlanExercises model, string trainingPlanId);
 
         public Task DeleteTrainingPlanAsync(string id);
+
+        public Task<DetailsTrainingPlanViewModel> DetailsAsync(string id);
     }
 }
