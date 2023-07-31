@@ -5,6 +5,7 @@ namespace FitnessFusion
     using FitnessFusion.Services.Data;
     using FitnessFusion.Services.Data.Interfaces;
     using FitnessFusion.Web.Infastructure.ModelBinders;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using static FitnessFusion.Web.Infastructure.Extensions.WebApplicationBuilderExtensions;
@@ -26,12 +27,18 @@ namespace FitnessFusion
 
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             {
-                options.SignIn.RequireConfirmedAccount = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
+                options.SignIn.RequireConfirmedAccount =
+                    builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
+                options.Password.RequireLowercase =
+                    builder.Configuration.GetValue<bool>("Identity:Password:RequireLowercase");
+                options.Password.RequireUppercase =
+                    builder.Configuration.GetValue<bool>("Identity:Password:RequireUppercase");
+                options.Password.RequireNonAlphanumeric =
+                    builder.Configuration.GetValue<bool>("Identity:Password:RequireNonAlphanumeric");
+                options.Password.RequiredLength =
+                    builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
             })
-                .AddEntityFrameworkStores<FitnessFusionDbContext>();
+               .AddEntityFrameworkStores<FitnessFusionDbContext>();
 
             builder.Services.AddControllersWithViews();
 
