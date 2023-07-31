@@ -5,6 +5,7 @@ namespace FitnessFusion
     using FitnessFusion.Services.Data;
     using FitnessFusion.Services.Data.Interfaces;
     using Microsoft.EntityFrameworkCore;
+    using static FitnessFusion.Web.Infastructure.Extensions.WebApplicationBuilderExtensions;
 
     public class Program
     {
@@ -32,10 +33,7 @@ namespace FitnessFusion
 
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddScoped<IMealService, MealService>();
-            builder.Services.AddScoped<ICaloriesCalculatorService, CaloriesCalculatorService>();
-            builder.Services.AddScoped<IExerciseService, ExerciseService>();
-            builder.Services.AddScoped<ITrainingPlanService, TrainingPlanService>();
+            builder.Services.AddApplicationServices(typeof(IFitnessService));
 
             builder.Services.AddSession(options =>
             {
