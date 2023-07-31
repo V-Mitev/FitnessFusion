@@ -147,5 +147,28 @@
 
             return View(model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> EditExercise(string id)
+        {
+            var model = await trainingPlanService.FindTrainingPlanExerciseAsync(id);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditExercise(string id, TrainingPlanExercises exercisesTp)
+        {
+            if (!ModelState.IsValid)
+            {
+                throw new ArgumentException("Exercises is not valid");
+            }
+
+            await trainingPlanService.EditTrainingPlanExerciseAsync(id, exercisesTp);
+
+            var tpId = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan");
+
+            return RedirectToAction("EditTrainingPlan", new { tpId!.Id});
+        }
     }
 }

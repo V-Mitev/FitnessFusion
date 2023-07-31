@@ -163,6 +163,24 @@
             await dbContext.SaveChangesAsync();
         }
 
+        public async Task EditTrainingPlanExerciseAsync(string id, TrainingPlanExercises model)
+        {
+            var exercise = await dbContext.Exercises.FirstOrDefaultAsync(e => e.Id.ToString() == id);
+
+            if (exercise == null)
+            {
+                throw new ArgumentNullException("Exercise doesn't exists");
+            }
+
+            exercise.Name = model.Name;
+            exercise.Description = model.Description;
+            exercise.ImagePath = model.Image;
+            exercise.VideoLink = model.VideoLink;
+            exercise.MuscleGroup = model.MuscleGroup;
+
+            await dbContext.SaveChangesAsync();
+        }
+
         public async Task<TrainingPlanViewModel> FindTrainingPlanByIdAsync(string id)
         {
             var trainingPlan = await dbContext.TrainingPlans
@@ -194,6 +212,29 @@
             };
 
             return model;
+        }
+
+        public async Task<TrainingPlanExercises> FindTrainingPlanExerciseAsync(string id)
+        {
+            var exerciseDb = 
+                await dbContext.Exercises.FirstOrDefaultAsync(e => e.Id.ToString() == id);
+
+            if (exerciseDb == null)
+            {
+                throw new ArgumentNullException(nameof(exerciseDb));
+            }
+
+            TrainingPlanExercises exerciseTp = new TrainingPlanExercises()
+            {
+                Id = exerciseDb.Id.ToString(),
+                Name = exerciseDb.Name,
+                Description = exerciseDb.Description,
+                Image = exerciseDb.ImagePath,
+                VideoLink = exerciseDb.VideoLink,
+                MuscleGroup = exerciseDb.MuscleGroup
+            };
+
+            return exerciseTp;
         }
 
         public async Task<ICollection<AllTrainingPlansViewModel>> GetAllTrainingPlansAsync()

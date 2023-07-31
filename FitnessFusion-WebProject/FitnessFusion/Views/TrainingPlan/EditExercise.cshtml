@@ -9,13 +9,15 @@
 <form asp-controller="TrainingPlan" asp-action="EditExercise" method="post">
 
     <div class="form-group">
-        <label asp-for="Name">Name:</label>
-        <input asp-for="Name" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+        <label asp-for="@Model.Name" class="form-group">Name</label>
+        <input asp-for="@Model.Name" class="form-control" required="true" />
+        <span asp-validation-for="@Model.Name" class="text-danger"></span>
     </div>
+
     <div class="form-group">
         <label asp-for="Description">Description</label>
         <textarea id="description" name="Description" class="form-control" required>@Model.Description</textarea>
+        <span asp-validation-for="@Model.Description" class="text-danger"></span>
     </div>
 
     <div class="form-group">
@@ -25,9 +27,15 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="VideoLink">Video URL</label>
-        <input asp-for="VideoLink" required>
-        <span asp-validation-for="VideoLink" class="text-danger"></span>
+        <label asp-for="@Model.VideoLink">Video Link</label>
+        <textarea id="VideoLink" name="VideoLink" class="form-control" required></textarea>
+        <span asp-validation-for="@Model.VideoLink" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SetsAndReps">Description</label>
+        <textarea id="setsAndReps" name="SetsAndReps" class="form-control" required>@Model.SetsAndReps</textarea>
+        <span asp-validation-for="@Model.SetsAndReps" class="text-danger"></span>
     </div>
 
     <div class="form-group">
