@@ -28,6 +28,7 @@
                 <th>Sets and Reps</th>
                 <th>Muscle Group</th>
                 <th>Actions</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody id="addedExercisesTableBody">
@@ -41,9 +42,9 @@
                     <td>@exercise.MuscleGroup</td>
                     <td>
                         <a asp-action="EditExercise" asp-controller="TrainingPlan" asp-route-id="@exercise.Id">Редактирай</a>
-                        <form class="delete-form" asp-controller="TrainingPlan" asp-action="DeleteExercise" asp-route-id="@exercise.Id">
-                            <input type="submit" value="Изтрий" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this exercise: @exercise.Name')" />
-                        </form>
+                    </td>
+                    <td>
+                        <a asp-action="DeleteExercise" asp-controller="TrainingPlan" asp-route-id="@exercise.Id">Delete</a>
                     </td>
                 </tr>
             }

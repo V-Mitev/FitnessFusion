@@ -23,5 +23,7 @@
         public Task<TrainingPlanExercises> FindTrainingPlanExerciseAsync(string id);
 
         public Task EditTrainingPlanExerciseAsync(string id, TrainingPlanExercises model);
+
+        public Task DeleteExerciseInTrainingPlanAsync(string id);
     }
 }

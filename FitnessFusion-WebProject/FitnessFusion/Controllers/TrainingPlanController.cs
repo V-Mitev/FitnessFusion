@@ -93,7 +93,7 @@
 
                 HttpContext.Session.SetObject("TrainingPlan", trainingPlan);
 
-                return RedirectToAction("EditTrainingPlan", new {trainingPlan.Id});
+                return RedirectToAction("EditTrainingPlan", new { trainingPlan.Id });
             }
 
             trainingPlanService.AddExerciseToPlan(model, trainingPlan);
@@ -168,7 +168,17 @@
 
             var tpId = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan");
 
-            return RedirectToAction("EditTrainingPlan", new { tpId!.Id});
+            return RedirectToAction("EditTrainingPlan", new { tpId!.Id });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteExercise(string id)
+        {
+            await trainingPlanService.DeleteExerciseInTrainingPlanAsync(id);
+
+            var tpId = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan");
+
+            return RedirectToAction("EditTrainingPlan", new { id = tpId!.Id });
         }
     }
 }

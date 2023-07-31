@@ -82,6 +82,21 @@
             await dbContext.SaveChangesAsync();
         }
 
+        public async Task DeleteExerciseInTrainingPlanAsync(string id)
+        {
+            var exerciseToDelete = 
+                await dbContext.Exercises.FirstOrDefaultAsync(e => e.Id.ToString() == id);
+
+            if (exerciseToDelete == null)
+            {
+                throw new ArgumentNullException(nameof(exerciseToDelete));
+            }
+
+            dbContext.Exercises.Remove(exerciseToDelete);
+
+            await dbContext.SaveChangesAsync();
+        }
+
         public async Task DeleteTrainingPlanAsync(string id)
         {
             var trainingPlan = await dbContext.TrainingPlans
