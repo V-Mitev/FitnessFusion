@@ -4,6 +4,8 @@ namespace FitnessFusion
     using FitnessFusion.Data.Models;
     using FitnessFusion.Services.Data;
     using FitnessFusion.Services.Data.Interfaces;
+    using FitnessFusion.Web.Infastructure.ModelBinders;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using static FitnessFusion.Web.Infastructure.Extensions.WebApplicationBuilderExtensions;
 
@@ -39,6 +41,13 @@ namespace FitnessFusion
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
+
+            builder.Services
+                .AddControllersWithViews()
+                .AddMvcOptions(options =>
+                {
+                    options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
+                });
 
             var app = builder.Build();
 
