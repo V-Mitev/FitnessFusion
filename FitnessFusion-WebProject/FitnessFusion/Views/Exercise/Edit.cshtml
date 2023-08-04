@@ -1,4 +1,5 @@
 ﻿@model AddExerciseViewModel
+@using static FitnessFusion.Common.EntityValidationConstants.Exercise;
 
 @{
     ViewData["Title"] = "Edit Exercise";
@@ -8,47 +9,57 @@
 
 <form asp-controller="Exercise" asp-action="Edit" method="post">
     <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" id="name" name="Name" class="form-control" value="@Model.Name" required>
+        <label asp-for="@Model.Name" class="form-label-add-edit">Name</label>
+        <input asp-for="@Model.Name" class="form-control" value="@Model.Name" minlength="@NameMinLength" maxlength="@NameMaxLength" required />
+        <span asp-validation-for="@Model.Name" class="text-danger"></span>
     </div>
-    
+
     <div class="form-group">
-        <label for="description">Description</label>
-        <textarea id="description" name="Description" class="form-control" required>@Model.Description</textarea>
+        <label asp-for="@Model.Description">Description</label>
+        <textarea id="description" name="Description" class="form-control" minlength="@DescriptionMinLength" maxlength="@DescriptionMaxLength" required>@Model.Description</textarea>
+        <span asp-validation-for="@Model.Description" class="text-danger"></span>
     </div>
-    
+
     <div class="form-group">
         <label asp-for="ImagePath">Image:</label>
         <input type="file" class="form-control" asp-for="ImagePath" accept="image/*" required>
         <span asp-validation-for="ImagePath" class="text-danger"></span>
     </div>
-    
+
     <div class="form-group">
-        <label for="videoUrl">Video URL</label>
-        <input type="text" id="videoUrl" name="VideoUrl" class="form-control" value="@Model.VideoLink" required>
+        <label asp-for="@Model.VideoLink">Video Link</label>
+        <textarea id="videoLink" name="VideoLink" class="form-control" minlength="@VideoUrlMinLength" maxlength="@VideoUrlMaxLength" required>@Model.VideoLink</textarea>
+        <span asp-validation-for="@Model.VideoLink" class="text-danger"></span>
     </div>
-    
+
     <div class="form-group">
         <label for="muscleGroup">Muscle Group</label>
         <select id="muscleGroup" name="MuscleGroup" class="form-control" required>
-            <option value="">Select a muscle group</option>
-            @foreach (var muscleGroup in Enum.GetValues(typeof(FitnessFusion.Data.Models.Enums.MuscleGroups)))
+            <option value="@Model.MuscleGroup.ToString()">@Model.MuscleGroup</option>
+            @foreach (var muscleGroup in Enum.GetValues(typeof(MuscleGroups)))
             {
-                <option value="@muscleGroup">@muscleGroup</option>
+                if (!string.Equals(muscleGroup.ToString(), @Model.MuscleGroup.ToString(), StringComparison.OrdinalIgnoreCase))
+                {
+                    <option value="@muscleGroup">@muscleGroup</option>
+                }
             }
         </select>
     </div>
 
     <div class="form-group">
-        <label for="difficultyGroup">Difficult Of Exercise</label>
-        <select id="difficultyGroup" name="DifficultyGroup" class="form-control" required>
-            <option value="">Select a diffucult of exercise</option>
-            @foreach (var difficulty in Enum.GetValues(typeof(FitnessFusion.Data.Models.Enums.ExerciseLevelOfDificulty)))
+        <label for="dificultyGroup">Difficult Of Exercise</label>
+        <select id="dificultyGroup" name="DificultyGroup" class="form-control" required>
+            <option value="@Model.Dificulty.ToString()">@Model.Dificulty</option>
+            @foreach (var dificult in Enum.GetValues(typeof(ExerciseLevelOfDificulty)))
             {
-                <option value="@difficulty">@difficulty</option>
+                if (!string.Equals(dificult.ToString(), @Model.Dificulty.ToString(), StringComparison.OrdinalIgnoreCase))
+                {
+                    <option value="@dificult">@dificult</option>
+                }
             }
         </select>
     </div>
+
     <br />
     <button type="submit" class="btn btn-primary">Save Changes</button>
 </form>

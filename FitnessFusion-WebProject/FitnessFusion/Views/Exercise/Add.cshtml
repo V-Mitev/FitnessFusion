@@ -1,4 +1,5 @@
 ﻿@model AddExerciseViewModel
+@using static FitnessFusion.Common.EntityValidationConstants.Exercise;
 
 @{
     ViewData["Title"] = "Add Exercise";
@@ -9,19 +10,19 @@
 <form asp-controller="Exercise" asp-action="Add" method="post">
     <div class="form-group">
         <label asp-for="@Model.Name" class="form-label-add-edit">Name</label>
-        <input asp-for="@Model.Name" class="form-control" aria-required="true" />
+        <input asp-for="@Model.Name" class="form-control" minlength="@NameMinLength" maxlength="@NameMaxLength" required />
         <span asp-validation-for="@Model.Name" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="@Model.Description">Description</label>
-        <textarea id="description" name="Description" class="form-control" required></textarea>
+        <textarea id="description" name="Description" class="form-control" minlength="@DescriptionMinLength" maxlength="@DescriptionMaxLength" required ></textarea>
         <span asp-validation-for="@Model.Description" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="@Model.VideoLink">Video Link</label>
-        <input type="text" id="videoLink" name="videoLink" class="form-control" required>
+        <textarea id="videoLink" name="VideoLink" class="form-control" minlength="@VideoUrlMinLength" maxlength="@VideoUrlMaxLength" required ></textarea>
         <span asp-validation-for="@Model.VideoLink" class="text-danger"></span>
     </div>
 
@@ -29,7 +30,7 @@
         <label asp-for="@Model.MuscleGroup">Muscle Group</label>
         <select id="muscleGroup" name="MuscleGroup" class="form-control" required>
             <option value="">Select a muscle group</option>
-            @foreach (var muscleGroup in Enum.GetValues(typeof(FitnessFusion.Data.Models.Enums.MuscleGroups)))
+            @foreach (var muscleGroup in Enum.GetValues(typeof(MuscleGroups)))
             {
                 <option value="@muscleGroup">@muscleGroup</option>
             }
@@ -40,7 +41,7 @@
         <label asp-for="@Model.Dificulty">Difficult Of Exercise</label>
         <select id="difficultyGroup" name="DifficultyGroup" class="form-control" required>
             <option value="">Select a diffucult of exercise</option>
-            @foreach (var difficulty in Enum.GetValues(typeof(FitnessFusion.Data.Models.Enums.ExerciseLevelOfDificulty)))
+            @foreach (var difficulty in Enum.GetValues(typeof(ExerciseLevelOfDificulty)))
             {
                 <option value="@difficulty">@difficulty</option>
             }
@@ -57,7 +58,3 @@
 
     <button type="submit" class="btn btn-primary">Add Exercise</button>
 </form>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

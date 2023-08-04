@@ -35,7 +35,7 @@
 
         public async Task DeleteExerciseAsync(string id)
         {
-            var exercise = await dbContext.Exercises.FirstOrDefaultAsync(e => e.Id.ToString() == id);
+            var exercise = await dbContext.Exercises.FindAsync(Guid.Parse(id));
 
             if (exercise == null)
             {
@@ -69,14 +69,14 @@
         public async Task<AddExerciseViewModel> FindExerciseAsync(string exerciseId)
         {
             var exercise = 
-                await dbContext.Exercises.FirstOrDefaultAsync(e => e.Id.ToString() == exerciseId);
+                await dbContext.Exercises.FindAsync(Guid.Parse(exerciseId));
 
             if (exercise == null)
             {
                 throw new InvalidOperationException("This exercise doesn't exists");
             }
 
-            AddExerciseViewModel exerciseModel = new AddExerciseViewModel()
+            var exerciseModel = new AddExerciseViewModel()
             {
                 Name = exercise.Name,
                 Description = exercise.Description,

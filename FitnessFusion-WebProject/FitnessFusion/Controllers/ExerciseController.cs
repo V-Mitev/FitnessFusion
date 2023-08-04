@@ -15,6 +15,7 @@
             this.exerciseService = exerciseService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> All()
         {
             var exercises = await exerciseService.GetAllExercisesAsync();
