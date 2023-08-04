@@ -25,12 +25,12 @@
 
             var goalParse = (GoalType)Enum.Parse(typeof(GoalType), cc.Goal);
 
-            cc.CaloriesIntake = CalculateCalories(genderParse, cc.Age, cc.Height, cc.Weight, activityLevelParse, goalParse).ToString();
+            cc.CurrentCaloriesIntake = CalculateCalories(genderParse, cc.Age, cc.Height, cc.Weight, activityLevelParse, goalParse).ToString();
 
             var user =
                 await dbContext.ApplicationUsers.FirstAsync(a => a.Id == Guid.Parse(userId));
 
-            user.CurrentCaloriesGoal = string.Format("{0:f2}", cc.CaloriesIntake);
+            user.CurrentCaloriesGoal = string.Format("{0:f2}", cc.CurrentCaloriesIntake);
 
             await dbContext.SaveChangesAsync();
         }

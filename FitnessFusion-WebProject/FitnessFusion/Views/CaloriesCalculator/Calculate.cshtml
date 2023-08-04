@@ -3,7 +3,7 @@
 
 <h1>Calories Calculator</h1>
 
-@if (string.IsNullOrEmpty(Model.CaloriesIntake))
+@if (string.IsNullOrEmpty(Model.CurrentCaloriesIntake))
 {
     <form method="post" asp-action="Calculate" asp-controller="CaloriesCalculator" autocomplete="off">
         <div class="form-group">
@@ -60,7 +60,7 @@ else
 {
         <div class="result-container">
             <h3>Your daily calorie intake:</h3>
-        <p>@Model.CaloriesIntake</p>
+        <p>@Model.CurrentCaloriesIntake</p>
             <form method="get" asp-action="Calculate" asp-controller="CaloriesCalculator" autocomplete="off">
                 <button type="submit" class="btn btn-primary">Calculate Again</button>
             </form>

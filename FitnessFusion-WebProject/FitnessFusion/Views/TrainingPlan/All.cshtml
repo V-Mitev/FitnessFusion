@@ -1,7 +1,7 @@
 ﻿@model ICollection<AllTrainingPlansViewModel>
 
 @{
-    string currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    string currentUserId = User.GetId();
 }
 
 <h2>Списък с тренировъчни планове</h2>

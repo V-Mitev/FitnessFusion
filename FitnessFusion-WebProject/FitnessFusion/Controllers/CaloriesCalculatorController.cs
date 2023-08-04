@@ -1,10 +1,10 @@
 ﻿namespace FitnessFusion.Web.Controllers
 {
-    using FitnessFusion.Services.Data.Interfaces;
-    using FitnessFusion.Web.ViewModels.CaloriesCalculator;
+    using Services.Data.Interfaces;
+    using Infastructure.Extensions;
+    using ViewModels.CaloriesCalculator;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using System.Security.Claims;
 
     [Authorize]
     public class CaloriesCalculatorController : Controller
@@ -17,7 +17,7 @@
         }
 
         [HttpGet]
-        public IActionResult CalculateAsync()
+        public IActionResult Calculate()
         {
             CaloriesCalculatorViewModel model = new CaloriesCalculatorViewModel();
 
@@ -27,11 +27,16 @@
         [HttpPost]
         public async Task<IActionResult> Calculate(CaloriesCalculatorViewModel model)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var userId = User.GetId();
 
             await calculatorService.CalculateAsync(userId, model);
 
-            return View(model );
+            return View(model);
         }
     }
 }

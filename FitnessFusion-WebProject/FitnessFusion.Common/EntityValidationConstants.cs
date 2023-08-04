@@ -16,10 +16,10 @@
 
         public static class CaloriesCalculator
         {
-            public const double MinHeightValue = 0;
+            public const double MinHeightValue = 1;
             public const double MaxHeightValue = 300;
 
-            public const double MinWeightValue = 0.00;
+            public const double MinWeightValue = 1;
             public const double MaxWeightValue = 500;
 
             public const int MinAgeValue = 1;

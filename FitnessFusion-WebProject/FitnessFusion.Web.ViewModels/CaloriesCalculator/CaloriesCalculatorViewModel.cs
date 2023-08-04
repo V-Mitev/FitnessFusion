@@ -5,8 +5,6 @@
 
     public class CaloriesCalculatorViewModel
     {
-        public int Id { get; set; }
-
         [Range(MinAgeValue, MaxAgeValue)]
         public int Age { get; set; }
 
@@ -22,6 +20,6 @@
 
         public string Goal { get; set; } = null!;
 
-        public string CaloriesIntake { get; set; } = null!;
+        public string? CurrentCaloriesIntake { get; set; }
     }
 }
