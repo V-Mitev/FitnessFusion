@@ -259,6 +259,7 @@
                 {
                     Id = tp.Id.ToString(),
                     Name = tp.Name,
+                    TrainerId = tp.TrainerId.ToString(),
                     Trainer = $"{tp.Trainer.FirstName} {tp.Trainer.LastName}",
                     Image = tp.Image
                 })
