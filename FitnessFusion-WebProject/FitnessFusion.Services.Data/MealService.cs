@@ -7,14 +7,15 @@
     using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using FitnessFusion.Data.Models.Enums;
 
     public class MealService : IMealService
     {
-        private readonly FitnessFusionDbContext data;
+        private readonly FitnessFusionDbContext dbContext;
 
         public MealService(FitnessFusionDbContext data)
         {
-            this.data = data;
+            this.dbContext = data;
         }
 
         public async Task AddMealAsync(AddMealViewModel meal)
@@ -24,16 +25,16 @@
                 Name = meal.Name,
                 ImageUrl = meal.ImageUrl,
                 CaloriesPer100g = meal.Calories,
-                MealType = meal.MealType,
+                MealType = (MealType)meal.MealType!,
             };
 
-            await data.Meals.AddAsync(newMeal);
-            await data.SaveChangesAsync();
+            await dbContext.Meals.AddAsync(newMeal);
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task<ICollection<AllMealsViewModel>> AllAsync()
         {
-            var meals = await data.Meals
+            var meals = await dbContext.Meals
                 .Select(m => new AllMealsViewModel()
                 {
                     Id = m.Id.ToString(),
@@ -49,20 +50,20 @@
 
         public async Task DeleteMealAsync(string mealId)
         {
-            var meal = await data.Meals.FirstOrDefaultAsync(m => m.Id.ToString() == mealId);
+            var meal = await dbContext.Meals.FindAsync(Guid.Parse(mealId));
 
             if (meal == null)
             {
                 throw new InvalidOperationException("This meal doesn't exist");
             }
 
-            data.Meals.Remove(meal);
-            await data.SaveChangesAsync();
+            dbContext.Meals.Remove(meal);
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task EditMealAsync(string mealId, AddMealViewModel model)
         {
-            var mealToEdit = await data.Meals.FirstOrDefaultAsync(m => m.Id.ToString() == mealId);
+            var mealToEdit = await dbContext.Meals.FirstOrDefaultAsync(m => m.Id.ToString() == mealId);
 
             if (mealToEdit == null)
             {
@@ -72,22 +73,22 @@
             mealToEdit.Id = Guid.Parse(mealId);
             mealToEdit.Name = model.Name;
             mealToEdit.CaloriesPer100g = model.Calories;
-            mealToEdit.MealType = model.MealType;
+            mealToEdit.MealType = (MealType)model.MealType!;
             mealToEdit.ImageUrl = model.ImageUrl;
 
-            await data.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task<AddMealViewModel> FindMealAsync(string mealId)
         {
-            var meal = await data.Meals.FirstOrDefaultAsync(m => m.Id.ToString() == mealId);
+            var meal = await dbContext.Meals.FindAsync(Guid.Parse(mealId));
 
             if (meal == null)
             {
                 throw new InvalidOperationException("This meal doesn't exists");
             }
 
-            AddMealViewModel mealsViewModel = new AddMealViewModel()
+            AddMealViewModel mealViewModel = new AddMealViewModel()
             {
                 Name = meal.Name,
                 Calories = meal.CaloriesPer100g,
@@ -95,7 +96,7 @@
                 ImageUrl = meal.ImageUrl
             };
 
-            return mealsViewModel;
+            return mealViewModel;
         }
     }
 }

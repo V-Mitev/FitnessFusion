@@ -18,6 +18,7 @@
         [Range(CaloriesMinValue, CaloriesMaxValue)]
         public double Calories { get; set; }
 
-        public MealType MealType { get; set; }
+        [Required]
+        public MealType? MealType { get; set; }
     }
 }

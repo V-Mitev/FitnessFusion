@@ -6,7 +6,7 @@
 <form asp-controller="Meal" asp-action="Add" method="post">
     <div class="form-group">
         <label asp-for="@Model.Name" class="form-label-add-edit">Name</label>
-        <input asp-for="@Model.Name" class="form-control" aria-required="true" />
+        <input asp-for="@Model.Name" class="form-control" minlength="@NameMinLength" maxlength="@NameMaxLength" required />
         <span asp-validation-for="@Model.Name" class="text-danger"></span>
     </div>
 
@@ -18,7 +18,7 @@
 
     <div class="form-group">
         <label asp-for="@Model.Calories">Calories:</label>
-        <input type="number" value="double" id="Calories" name="Calories" class="form-control" min="@CaloriesMinValue" max="@CaloriesMaxValue" step="any" />
+        <input type="number" value="0" id="Calories" name="Calories" class="form-control" min="@CaloriesMinValue" max="@CaloriesMaxValue" step="any" />
         <span asp-validation-for="@Model.Calories" class="text-danger"></span>
     </div>
 
@@ -35,7 +35,3 @@
     <br />
     <button type="submit" class="btn btn-primary">Add</button>
 </form>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
