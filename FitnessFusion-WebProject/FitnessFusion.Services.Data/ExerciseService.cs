@@ -2,6 +2,7 @@
 {
     using FitnessFusion.Data;
     using FitnessFusion.Data.Models;
+    using FitnessFusion.Data.Models.Enums;
     using FitnessFusion.Services.Data.Interfaces;
     using FitnessFusion.Web.ViewModels.Exercise;
     using Microsoft.EntityFrameworkCore;
@@ -25,8 +26,8 @@
                 Description = model.Description,
                 ImagePath = model.ImagePath,
                 VideoLink = model.VideoLink,
-                MuscleGroup = model.MuscleGroup,
-                Difficulty = model.Dificulty
+                MuscleGroup = (MuscleGroups)model.MuscleGroup!,
+                Difficulty = (ExerciseLevelOfDificulty)model.Dificulty!
             };
 
             await dbContext.Exercises.AddAsync(exercise);
@@ -58,10 +59,10 @@
             exerciseToEdit.Id = Guid.Parse(id);
             exerciseToEdit.Name = model.Name;
             exerciseToEdit.Description = model.Description;
-            exerciseToEdit.Difficulty = model.Dificulty;
+            exerciseToEdit.Difficulty = (ExerciseLevelOfDificulty)model.Dificulty!;
             exerciseToEdit.VideoLink = model.VideoLink;
             exerciseToEdit.ImagePath = model.ImagePath;
-            exerciseToEdit.MuscleGroup = model.MuscleGroup;
+            exerciseToEdit.MuscleGroup = (MuscleGroups)model.MuscleGroup!;
 
             await dbContext.SaveChangesAsync();
         }

@@ -39,7 +39,7 @@
 
     <div class="form-group">
         <label asp-for="@Model.Dificulty">Difficult Of Exercise</label>
-        <select id="difficultyGroup" name="DifficultyGroup" class="form-control" required>
+        <select id="dificulty" name="Dificulty" class="form-control" required>
             <option value="">Select a diffucult of exercise</option>
             @foreach (var difficulty in Enum.GetValues(typeof(ExerciseLevelOfDificulty)))
             {

@@ -47,8 +47,8 @@
     </div>
 
     <div class="form-group">
-        <label for="dificultyGroup">Difficult Of Exercise</label>
-        <select id="dificultyGroup" name="DificultyGroup" class="form-control" required>
+        <label for="dificulty">Difficult Of Exercise</label>
+        <select id="dificulty" name="Dificulty" class="form-control" required>
             <option value="@Model.Dificulty.ToString()">@Model.Dificulty</option>
             @foreach (var dificult in Enum.GetValues(typeof(ExerciseLevelOfDificulty)))
             {

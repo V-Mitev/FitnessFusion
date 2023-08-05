@@ -23,9 +23,9 @@
         public string VideoLink { get; set; } = null!;
 
         [Required]
-        public MuscleGroups MuscleGroup { get; set; }
+        public MuscleGroups? MuscleGroup { get; set; }
 
         [Required]
-        public ExerciseLevelOfDificulty Dificulty { get; set; }
+        public ExerciseLevelOfDificulty? Dificulty { get; set; }
     }
 }
