@@ -46,7 +46,7 @@
             public const int ImageUrlMinLength = 5;
             public const int ImageUrlMaxLength = 2048;
 
-            public const int VideoUrlMinLength = 5;
+            public const int VideoUrlMinLength = 3;
             public const int VideoUrlMaxLength = 2048;
         }
 

@@ -1,14 +1,11 @@
 namespace FitnessFusion
 {
-    using FitnessFusion.Data;
-    using FitnessFusion.Data.Models;
-    using FitnessFusion.Services.Data;
-    using FitnessFusion.Services.Data.Interfaces;
-    using FitnessFusion.Web.Infastructure.ModelBinders;
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Mvc;
+    using Data;
+    using Data.Models;
+    using Services.Data.Interfaces;
+    using Web.Infastructure.ModelBinders;
     using Microsoft.EntityFrameworkCore;
-    using static FitnessFusion.Web.Infastructure.Extensions.WebApplicationBuilderExtensions;
+    using static Web.Infastructure.Extensions.WebApplicationBuilderExtensions;
 
     public class Program
     {

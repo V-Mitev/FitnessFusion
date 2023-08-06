@@ -1,4 +1,6 @@
-﻿@model FitnessFusion.Web.ViewModels.TrainingPlan.TrainingPlanViewModel
+﻿@model TrainingPlanViewModel
+@using static FitnessFusion.Common.EntityValidationConstants.TrainingPlan;
+
 @{
     ViewData["Title"] = "Add Training Plan";
 }
@@ -6,16 +8,16 @@
 <h1>@ViewData["Title"]</h1>
 
 <form asp-action="CreateTrainingPlan" asp-controller="TrainingPlan" method="post">
-    <div>
-        <label asp-for="Name">Name:</label>
-        <input asp-for="Name" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+    <div class="form-group">
+        <label asp-for="@Model.Name" class="form-label-add-edit">Name</label>
+        <input asp-for="@Model.Name" class="form-control" minlength="@NameMinLength" maxlength="@NameMaxLength" required />
+        <span asp-validation-for="@Model.Name" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="Image">Image:</label>
-        <input type="file" class="form-control" asp-for="Image" accept="image/*">
-        <span asp-validation-for="Image" class="text-danger"></span>
+        <label asp-for="@Model.Image">Image:</label>
+        <input type="file" class="form-control" asp-for="@Model.Image" accept="image/*" required>
+        <span asp-validation-for="@Model.Image" class="text-danger"></span>
     </div>
 
     <h3>Added Exercises</h3>
@@ -23,10 +25,9 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Description</th>
-                <th>Video Link</th>
                 <th>Sets and Reps</th>
                 <th>Muscle Group</th>
+                <th>Video Link</th>
             </tr>
         </thead>
         <tbody id="addedExercisesTableBody">
@@ -36,7 +37,6 @@
                     <td>@exercise.Name</td>
                     <td>@exercise.Description</td>
                     <td>@exercise.VideoLink</td>
-                    <td>@exercise.SetsAndReps</td>
                     <td>@exercise.MuscleGroup</td>
                 </tr>
             }

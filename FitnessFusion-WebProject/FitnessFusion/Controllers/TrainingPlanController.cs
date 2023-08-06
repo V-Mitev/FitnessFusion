@@ -19,6 +19,13 @@
         [HttpGet]
         public async Task<IActionResult> All()
         {
+            var trainingPlan = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan");
+
+            if ( trainingPlan != null)
+            {
+                HttpContext.Session.Remove("TrainingPlan");
+            }
+
             var trainingPlans = await trainingPlanService.GetAllTrainingPlansAsync();
 
             return View(trainingPlans);
@@ -42,18 +49,23 @@
         [HttpPost]
         public async Task<IActionResult> CreateTrainingPlan(TrainingPlanViewModel model)
         {
-            var userId = User.GetId();
-
             var sessionTrainingPlan = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan")!;
 
-            sessionTrainingPlan.Name = model.Name;
-            sessionTrainingPlan.Image = model.Image;
+            if (!sessionTrainingPlan.AddedExercises.Any())
+            {
+                ModelState.AddModelError(string.Empty, "Please add exercises then create training plan.");
+            }
 
             if (!ModelState.IsValid)
             {
                 HttpContext.Session.SetObject("TrainingPlan", sessionTrainingPlan);
                 return View(model);
             }
+
+            var userId = User.GetId();
+
+            sessionTrainingPlan.Name = model.Name;
+            sessionTrainingPlan.Image = model.Image;
 
             await trainingPlanService.AddTrainingPlanAsync(sessionTrainingPlan, userId);
 
@@ -87,6 +99,7 @@
 
             var trainingPlan = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan")!;
 
+            // This check is when training plan is already created to can add exercises.
             if (!string.IsNullOrEmpty(trainingPlan.Id))
             {
                 await trainingPlanService.AddExerciseToExistingPlanAsync(model, trainingPlan.Id);

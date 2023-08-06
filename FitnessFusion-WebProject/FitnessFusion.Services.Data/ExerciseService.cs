@@ -27,7 +27,8 @@
                 ImagePath = model.ImagePath,
                 VideoLink = model.VideoLink,
                 MuscleGroup = (MuscleGroups)model.MuscleGroup!,
-                Difficulty = (ExerciseLevelOfDificulty)model.Dificulty!
+                Difficulty = (ExerciseLevelOfDificulty)model.Dificulty!,
+                IsInPlan = false
             };
 
             await dbContext.Exercises.AddAsync(exercise);
@@ -36,7 +37,8 @@
 
         public async Task DeleteExerciseAsync(string id)
         {
-            var exercise = await dbContext.Exercises.FindAsync(Guid.Parse(id));
+            var exercise = await dbContext.Exercises
+                .FindAsync(Guid.Parse(id));
 
             if (exercise == null)
             {
@@ -44,12 +46,14 @@
             }
 
             dbContext.Exercises.Remove(exercise);
+
             await dbContext.SaveChangesAsync();
         }
 
         public async Task EditExerciseAsync(string id, AddExerciseViewModel model)
         {
-            var exerciseToEdit = await dbContext.Exercises.FirstOrDefaultAsync(e => e.Id.ToString() == id);
+            var exerciseToEdit = await dbContext.Exercises
+                .FindAsync(Guid.Parse(id));
 
             if (exerciseToEdit == null)
             {
@@ -69,8 +73,8 @@
 
         public async Task<AddExerciseViewModel> FindExerciseAsync(string exerciseId)
         {
-            var exercise = 
-                await dbContext.Exercises.FindAsync(Guid.Parse(exerciseId));
+            var exercise = await dbContext.Exercises
+                .FindAsync(Guid.Parse(exerciseId));
 
             if (exercise == null)
             {
@@ -93,6 +97,7 @@
         public async Task<ICollection<AllExercisesViewModel>> GetAllExercisesAsync()
         {
             var exercises = await dbContext.Exercises
+                .Where(e => !e.IsInPlan)
                 .Select(e => new AllExercisesViewModel()
                 {
                     Id = e.Id.ToString(),
@@ -101,19 +106,6 @@
                     Description = e.Description,
                     VideoUrl = e.VideoLink,
                     MuscleGroup = e.MuscleGroup.ToString()
-                })
-                .ToListAsync();
-
-            return exercises;
-        }
-
-        public async Task<ICollection<ExerciseViewModel>> GetAllExercisesAsyncForTrainingPlan()
-        {
-            var exercises = await dbContext.Exercises
-                .Select(e => new ExerciseViewModel()
-                {
-                    Id = e.Id.ToString(),
-                    Name = e.Name
                 })
                 .ToListAsync();
 

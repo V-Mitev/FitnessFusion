@@ -34,7 +34,8 @@
                 Description = model.Description,
                 ImagePath = model.Image,
                 VideoLink = model.VideoLink,
-                MuscleGroup = model.MuscleGroup
+                MuscleGroup = model.MuscleGroup,
+                IsInPlan = true
             };
 
             await dbContext.Exercises.AddAsync(exercise);
@@ -51,21 +52,23 @@
 
         public async Task AddTrainingPlanAsync(TrainingPlanViewModel model, string userId)
         {
-            var trainer = await dbContext.Trainers.FirstOrDefaultAsync(t => t.Id.ToString() == userId);
+            var trainer = await dbContext.Trainers
+                .FindAsync(Guid.Parse(userId));
 
             if (trainer == null)
             {
                 throw new NullReferenceException("Trainer doesnt exists");
             }
 
-            var exercisesToAdd = model.AddedExercises!
+            var exercises = model.AddedExercises!
             .Select(e => new Exercise()
             {
                 Name = e.Name,
                 Description = e.Description,
                 ImagePath = e.Image,
                 VideoLink = e.VideoLink,
-                MuscleGroup = e.MuscleGroup
+                MuscleGroup = e.MuscleGroup,
+                IsInPlan = true
             })
             .ToList();
 
@@ -73,7 +76,7 @@
             {
                 Name = model.Name,
                 TrainerId = trainer.Id,
-                Exercises = exercisesToAdd,
+                Exercises = exercises,
                 Image = model.Image
             };
 
@@ -85,7 +88,7 @@
         public async Task DeleteExerciseInTrainingPlanAsync(string id)
         {
             var exerciseToDelete = 
-                await dbContext.Exercises.FirstOrDefaultAsync(e => e.Id.ToString() == id);
+                await dbContext.Exercises.FindAsync(Guid.Parse(id));
 
             if (exerciseToDelete == null)
             {
@@ -108,6 +111,12 @@
                 throw new NullReferenceException("Training plan doens't exists");
             }
 
+            var exercisesInTrainingPlan = await dbContext.Exercises
+                .Where(e => e.TrainingPlans.Contains(trainingPlan))
+                .ToListAsync();
+
+            dbContext.Exercises.RemoveRange(exercisesInTrainingPlan);
+
             dbContext.TrainingPlans.Remove(trainingPlan);
 
             await dbContext.SaveChangesAsync();
@@ -124,7 +133,8 @@
                 throw new NullReferenceException("Training plan doesn't exists");
             }
 
-            var trainer = await dbContext.Trainers.FirstOrDefaultAsync(t => t.Id == trainingPlan.TrainerId);
+            var trainer = await dbContext.Trainers
+                .FindAsync(trainingPlan.TrainerId);
 
             if (trainer == null)
             {
@@ -155,7 +165,7 @@
         public async Task EditTrainingPlanAsync(TrainingPlanViewModel model, string trainingPlanId)
         {
             var trainingPlan = await dbContext.TrainingPlans
-                .FirstOrDefaultAsync(tp => tp.Id.ToString() == trainingPlanId);
+                .FindAsync(Guid.Parse(trainingPlanId));
 
             if (trainingPlan == null)
             {
@@ -180,7 +190,7 @@
 
         public async Task EditTrainingPlanExerciseAsync(string id, TrainingPlanExercises model)
         {
-            var exercise = await dbContext.Exercises.FirstOrDefaultAsync(e => e.Id.ToString() == id);
+            var exercise = await dbContext.Exercises.FindAsync(Guid.Parse(id));
 
             if (exercise == null)
             {
@@ -232,7 +242,7 @@
         public async Task<TrainingPlanExercises> FindTrainingPlanExerciseAsync(string id)
         {
             var exerciseDb = 
-                await dbContext.Exercises.FirstOrDefaultAsync(e => e.Id.ToString() == id);
+                await dbContext.Exercises.FindAsync(Guid.Parse(id));
 
             if (exerciseDb == null)
             {

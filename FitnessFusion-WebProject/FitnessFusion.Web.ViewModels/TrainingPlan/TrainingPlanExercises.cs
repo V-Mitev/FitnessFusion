@@ -25,8 +25,5 @@
 
         [Required]
         public MuscleGroups MuscleGroup { get; set; }
-
-        [Required]
-        public string SetsAndReps { get; set; } = null!;
     }
 }
