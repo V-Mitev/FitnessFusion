@@ -28,7 +28,11 @@
             <tr>
                 <td>@exercise.Name</td>
                 <td>@exercise.Description</td>
-                <td>@exercise.VideoLink</td>
+                <td>
+                    <a href="@exercise.VideoLink" target="_blank">
+                        <btn type="button" class="btn btn-primary">Watch video</btn>
+                    </a>
+                </td>
                 <td>@exercise.MuscleGroup</td>
             </tr>
         }

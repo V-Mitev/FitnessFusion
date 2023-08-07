@@ -52,7 +52,7 @@ namespace FitnessFusion
                 .AddMvcOptions(options =>
                 {
                     options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
-                    //options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+                    options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
                 });
 
             var app = builder.Build();

@@ -74,7 +74,7 @@
 
             model.AddedExercises.AddRange(sessionTrainingPlan.AddedExercises);
 
-            await trainingPlanService.AddTrainingPlanAsync(sessionTrainingPlan, userId);
+            await trainingPlanService.AddTrainingPlanAsync(model, userId);
 
             HttpContext.Session.Remove("TrainingPlan");
 
