@@ -5,6 +5,7 @@
     using FitnessFusion.Web.ViewModels.TrainingPlan;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using static FitnessFusion.Common.NotificationMessagesConstant;
 
     [Authorize]
     public class TrainingPlanController : Controller
@@ -21,7 +22,7 @@
         {
             var trainingPlan = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan");
 
-            if ( trainingPlan != null)
+            if (trainingPlan != null)
             {
                 HttpContext.Session.Remove("TrainingPlan");
             }
@@ -53,7 +54,13 @@
 
             if (!sessionTrainingPlan.AddedExercises.Any())
             {
-                ModelState.AddModelError(string.Empty, "Please add exercises then create training plan.");
+                TempData[ErrorMessage] = "Please add some exercises then create training plan.";
+
+                sessionTrainingPlan.Name = model.Name;
+
+                HttpContext.Session.SetObject("TrainingPlan", sessionTrainingPlan);
+
+                return RedirectToAction("CreateTrainingPlan");
             }
 
             if (!ModelState.IsValid)
