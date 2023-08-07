@@ -6,6 +6,7 @@ namespace FitnessFusion
     using Web.Infastructure.ModelBinders;
     using Microsoft.EntityFrameworkCore;
     using static Web.Infastructure.Extensions.WebApplicationBuilderExtensions;
+    using Microsoft.AspNetCore.Mvc;
 
     public class Program
     {
@@ -51,6 +52,7 @@ namespace FitnessFusion
                 .AddMvcOptions(options =>
                 {
                     options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
+                    options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
                 });
 
             var app = builder.Build();
