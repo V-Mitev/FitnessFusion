@@ -1,4 +1,5 @@
-﻿@model TrainingPlanViewModel
+﻿@using static FitnessFusion.Common.EntityValidationConstants.TrainingPlan;
+@model TrainingPlanViewModel
 @{
     ViewData["Title"] = "Edit Training Plan";
 }
@@ -8,13 +9,13 @@
 <form asp-action="EditTrainingPlan" asp-controller="TrainingPlan" method="post">
     <div>
         <label asp-for="Name">Name:</label>
-        <input asp-for="Name" />
+        <input asp-for="Name" minlength="@NameMinLength" maxlength="@NameMaxLength" required/>
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="Image">Image:</label>
-        <input type="file" class="form-control" asp-for="Image" accept="image/*" formnovalidate>
+        <input type="file" class="form-control" asp-for="Image" accept="image/*" required>
         <span asp-validation-for="Image" class="text-danger"></span>
     </div>
 
@@ -27,7 +28,6 @@
                 <th>Video Link</th>
                 <th>Muscle Group</th>
                 <th>Actions</th>
-                <th>Delete</th>
             </tr>
         </thead>
         <tbody id="addedExercisesTableBody">

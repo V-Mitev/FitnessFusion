@@ -1,9 +1,9 @@
 ﻿namespace FitnessFusion.Web.Controllers
 {
-    using FitnessFusion.Services.Data.Interfaces;
-    using FitnessFusion.Web.ViewModels.Exercise;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Services.Data.Interfaces;
+    using Web.ViewModels.Exercise;
 
     [Authorize]
     public class ExerciseController : Controller
@@ -36,8 +36,7 @@
         {
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Unexpected error");
-                return RedirectToAction("Add");
+                return View(model);
             }
 
             await exerciseService.AddExerciseAsync(model);
@@ -58,7 +57,7 @@
         {
             if (!ModelState.IsValid)
             {
-                throw new InvalidOperationException("Exercise is not valid");
+                return View(model);
             }
 
             await exerciseService.EditExerciseAsync(id, model);

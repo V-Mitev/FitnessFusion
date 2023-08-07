@@ -1,8 +1,8 @@
 ﻿namespace FitnessFusion.Controllers
 {
-    using FitnessFusion.Web.ViewModels.Home;
     using Microsoft.AspNetCore.Mvc;
     using System.Diagnostics;
+    using Web.ViewModels.Home;
 
     public class HomeController : Controller
     {

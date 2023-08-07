@@ -1,8 +1,8 @@
 ﻿namespace FitnessFusion.Web.Controllers
 {
-    using FitnessFusion.Services.Data.Interfaces;
-    using FitnessFusion.Web.ViewModels.Meal;
     using Microsoft.AspNetCore.Mvc;
+    using Services.Data.Interfaces;
+    using Web.ViewModels.Meal;
 
     public class MealController : Controller
     {
@@ -34,8 +34,7 @@
         {
             if(!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Unexpected error");
-                return RedirectToAction("Add");
+                return View();
             }
 
             await mealService.AddMealAsync(model);
@@ -64,7 +63,7 @@
         {
             if (!ModelState.IsValid)
             {
-                throw new InvalidOperationException("Meal is not valid");
+                return View(model);
             }
 
             await mealService.EditMealAsync(id, model);

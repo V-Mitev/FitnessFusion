@@ -5,6 +5,7 @@
     using FitnessFusion.Web.ViewModels.TrainingPlan;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using NuGet.Packaging;
     using static FitnessFusion.Common.NotificationMessagesConstant;
 
     [Authorize]
@@ -71,8 +72,7 @@
 
             var userId = User.GetId();
 
-            sessionTrainingPlan.Name = model.Name;
-            sessionTrainingPlan.Image = model.Image;
+            model.AddedExercises.AddRange(sessionTrainingPlan.AddedExercises);
 
             await trainingPlanService.AddTrainingPlanAsync(sessionTrainingPlan, userId);
 
@@ -101,7 +101,7 @@
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("AddExercise");
+                return View(model);
             }
 
             var trainingPlan = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan")!;
@@ -138,7 +138,7 @@
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("EditTrainingPlan");
+                return View(model);
             }
 
             var exercises = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan")!;
@@ -181,7 +181,7 @@
         {
             if (!ModelState.IsValid)
             {
-                throw new ArgumentException("Exercises is not valid");
+                return View(exercisesTp);
             }
 
             await trainingPlanService.EditTrainingPlanExerciseAsync(id, exercisesTp);
@@ -194,9 +194,16 @@
         [HttpGet]
         public async Task<IActionResult> DeleteExercise(string id)
         {
-            await trainingPlanService.DeleteExerciseInTrainingPlanAsync(id);
-
             var tpId = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan");
+
+            if (tpId.AddedExercises.Count == 1)
+            {
+                TempData[ErrorMessage] = "You need to have minimum one exercise";
+
+                return RedirectToAction("EditTrainingPlan", new { id = tpId!.Id });
+            }
+
+            await trainingPlanService.DeleteExerciseInTrainingPlanAsync(id);
 
             return RedirectToAction("EditTrainingPlan", new { id = tpId!.Id });
         }

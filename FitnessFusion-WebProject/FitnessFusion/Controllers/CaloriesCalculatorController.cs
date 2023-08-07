@@ -1,10 +1,10 @@
 ﻿namespace FitnessFusion.Web.Controllers
 {
-    using Services.Data.Interfaces;
     using Infastructure.Extensions;
-    using ViewModels.CaloriesCalculator;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Services.Data.Interfaces;
+    using ViewModels.CaloriesCalculator;
 
     [Authorize]
     public class CaloriesCalculatorController : Controller

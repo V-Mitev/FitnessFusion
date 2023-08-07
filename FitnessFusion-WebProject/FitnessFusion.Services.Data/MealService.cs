@@ -2,12 +2,12 @@
 {
     using FitnessFusion.Data;
     using FitnessFusion.Data.Models;
+    using FitnessFusion.Data.Models.Enums;
     using FitnessFusion.Services.Data.Interfaces;
     using FitnessFusion.Web.ViewModels.Meal;
     using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using FitnessFusion.Data.Models.Enums;
 
     public class MealService : IMealService
     {
