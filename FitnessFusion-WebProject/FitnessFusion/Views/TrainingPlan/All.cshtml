@@ -19,7 +19,7 @@
         <tr>
             <td>@trainingPlan.Name</td>
             <td>@trainingPlan.Trainer</td>
-            <td><img src="@($"/img/{trainingPlan.Image}")" alt="Снимка"></td>
+            <td><img src="~/img/@trainingPlan.Image" alt="Снимка"></td>
             <td><a asp-controller="TrainingPlan" asp-action="Details" asp-route-id="@trainingPlan.Id" class="btn btn-primary">Детайли</a></td>
             @if (trainingPlan.TrainerId.ToLower() == currentUserId.ToLower())
             {

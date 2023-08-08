@@ -18,7 +18,7 @@
         @foreach (var meal in Model.Where(m => m.MealType == "Breakfast"))
         {
             <div class="card col-md-4">
-                <img src="@($"/img/{@meal.Image}")" class="card-img-top" alt="Meal Image">
+                <img src="/img/@meal.Image" class="card-img-top" alt="Meal Image">
                 <div class="card-body">
                     <h5 class="card-title">@meal.Name</h5>
                     <p class="card-text">Calories per 100 grams: @meal.Calories</p>

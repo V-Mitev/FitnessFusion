@@ -33,7 +33,7 @@
             {
                 <div class="col-md-4 exercise-item">
                     <h4>@exercise.Name</h4>
-                    <img src="@($"/img/{@exercise.ImagePath}")" class="card-img-top" alt="Exercise Image">
+                    <img src="/img/@exercise.ImagePath" class="card-img-top" alt="Exercise Image">
                     <div class="btn-container mt-3">
                         <a asp-controller="Exercise" asp-action="Details" asp-route-id="@exercise.Id" class="btn btn-primary">Details</a>
                         <a asp-controller="Exercise" asp-action="Edit" asp-route-id="@exercise.Id" class="btn btn-primary">Edit</a>

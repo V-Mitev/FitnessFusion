@@ -8,7 +8,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    public class TrainingPlanService : ITrainingPlanService
+    public class TrainingPlanService : ITrainingPlanService 
     {
         private readonly FitnessFusionDbContext dbContext;
 
@@ -87,8 +87,8 @@
 
         public async Task DeleteExerciseInTrainingPlanAsync(string id)
         {
-            var exerciseToDelete = 
-                await dbContext.Exercises.FindAsync(Guid.Parse(id));
+            var exerciseToDelete = await dbContext.Exercises
+                .FindAsync(Guid.Parse(id));
 
             if (exerciseToDelete == null)
             {
@@ -241,7 +241,7 @@
 
         public async Task<TrainingPlanExercises> FindTrainingPlanExerciseAsync(string id)
         {
-            var exerciseDb = 
+            var exerciseDb =
                 await dbContext.Exercises.FindAsync(Guid.Parse(id));
 
             if (exerciseDb == null)

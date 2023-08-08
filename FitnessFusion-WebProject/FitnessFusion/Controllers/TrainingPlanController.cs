@@ -196,7 +196,7 @@
         {
             var tpId = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan");
 
-            if (tpId.AddedExercises.Count == 1)
+            if (tpId != null && tpId.AddedExercises.Count == 1)
             {
                 TempData[ErrorMessage] = "You need to have minimum one exercise";
 
