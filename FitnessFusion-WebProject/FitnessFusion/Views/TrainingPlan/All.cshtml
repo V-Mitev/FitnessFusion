@@ -1,37 +1,35 @@
-﻿@model ICollection<AllTrainingPlansViewModel>
+﻿<link rel="stylesheet" type="text/css" href="~/css/trainingPlan.css">
+
+@model ICollection<AllTrainingPlansViewModel>
 
 @{
-    string currentUserId = User.GetId();
+    string currentUserId = User.GetId().ToLower();
+    ViewData["Title"] = "All Training Plans";
 }
 
-<h2>Списък с тренировъчни планове</h2>
-<table>
-    <tr>
-        <th>Име</th>
-        <th>Треньор</th>
-        <th>Снимка</th>
-        <th>Детайли</th>
-        <th>Редактирай</th>
-        <th>Изтрий</th>
-    </tr>
+<h2>@ViewData["Title"]</h2>
+
+<div class="training-plans-container">
     @foreach (var trainingPlan in Model)
     {
-        <tr>
-            <td>@trainingPlan.Name</td>
-            <td>@trainingPlan.Trainer</td>
-            <td><img src="~/img/@trainingPlan.Image" alt="Снимка"></td>
-            <td><a asp-controller="TrainingPlan" asp-action="Details" asp-route-id="@trainingPlan.Id" class="btn btn-primary">Детайли</a></td>
-            @if (trainingPlan.TrainerId.ToLower() == currentUserId.ToLower())
-            {
-                <td><a asp-controller="TrainingPlan" asp-action="EditTrainingPlan" asp-route-id="@trainingPlan.Id" class="btn btn-warning">Редактирай</a></td>
-                <td>
-                    <form class="delete-form" asp-controller="TrainingPlan" asp-action="DeleteTrainingPlan" asp-route-id="@trainingPlan.Id">
-                        <input type="submit" value="Изтрий" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this training plan: @trainingPlan.Name')" />
-                    </form>
-                </td>
-            }
-        </tr>
+        <div class="training-plan">
+            <img src="~/img/@trainingPlan.Image" alt="Plan Image">
+            <div class="training-plan-details">
+                <h3>@trainingPlan.Name</h3>
+                <p>Trainer: @trainingPlan.Trainer</p>
+                <div class="btn-group">
+                    <a asp-controller="TrainingPlan" asp-action="Details" asp-route-id="@trainingPlan.Id" class="btn btn-primary">Details</a>
+                    @if (trainingPlan.TrainerId.ToLower() == currentUserId)
+                    {
+                        <a asp-controller="TrainingPlan" asp-action="EditTrainingPlan" asp-route-id="@trainingPlan.Id" class="btn btn-warning">Edit</a>
+                        <form class="delete-form" asp-controller="TrainingPlan" asp-action="DeleteTrainingPlan" asp-route-id="@trainingPlan.Id">
+                            <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this training plan: @trainingPlan.Name')" />
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
     }
-</table>
+</div>
 
 <a asp-controller="TrainingPlan" asp-action="CreateTrainingPlan" class="btn btn-primary">Create new training plan</a>

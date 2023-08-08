@@ -1,31 +1,38 @@
-﻿@using static FitnessFusion.Common.EntityValidationConstants.TrainingPlan;
-@model TrainingPlanViewModel
+﻿@model TrainingPlanViewModel
 @{
     ViewData["Title"] = "Edit Training Plan";
 }
 
 <h1>@ViewData["Title"]</h1>
 
-<div>
-    <label asp-for="Name">Name:</label>
-    <input asp-for="Name" minlength="@NameMinLength" maxlength="@NameMaxLength" required />
-    <span asp-validation-for="Name" class="text-danger"></span>
-</div>
+<form asp-controller="TrainingPlan" asp-action="EditTrainingPlan" method="post">
+    <div class="form-group">
+        <label asp-for="@Model.Name">Name:</label>
+        <input class="form-control" asp-for="@Model.Name" minlength="2" maxlength="100" required />
+        <span asp-validation-for="@Model.Name" class="text-danger"></span>
+    </div>
 
-<div class="form-group">
-    <label asp-for="Image">Image:</label>
-    <input type="file" class="form-control" asp-for="Image" accept="image/*" required>
-    <span asp-validation-for="Image" class="text-danger"></span>
-</div>
-
-<h3>Added Exercises</h3>
+    <div class="form-group">
+        <label asp-for="@Model.Image">Image:</label>
+        <input type="file" class="form-control" asp-for="@Model.Image" accept="image/*" required>
+        <span asp-validation-for="@Model.Image" class="text-danger"></span>
+    </div>
+    <br />
+    <div class="form-actions">
+        <a asp-controller="TrainingPlan" asp-action="AddExercise" class="btn btn-primary">Add Exercise</a>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+    </div>
+</form>
+<br />
 <table class="table">
     <thead>
         <tr>
-            <th>Име</th>
-            <th>Серии и повтерения</th>
-            <th>Линк към видеото</th>
-            <th>Мускулна група</th>
+            <th>Name</th>
+            <th>Sets and reps</th>
+            <th>Video Link</th>
+            <th>Muscle group</th>
+            <th>Edit Exercise</th>
+            <th>Delete Exercise</th>
         </tr>
     </thead>
     <tbody id="addedExercisesTableBody">
@@ -37,18 +44,14 @@
                 <td>@exercise.VideoLink</td>
                 <td>@exercise.MuscleGroup</td>
                 <td>
-                    <a asp-action="EditExercise" asp-controller="TrainingPlan" asp-route-id="@exercise.Id">Редактирай</a>
+                    <a asp-action="EditExercise" asp-controller="TrainingPlan" asp-route-id="@exercise.Id" class="btn btn-warning">Edit</a>
                 </td>
                 <td>
                     <form class="delete-form" asp-controller="TrainingPlan" asp-action="DeleteExercise" asp-route-id="@exercise.Id">
-                        <input type="submit" value="Изтрий" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete meal: @exercise.Name')" />
+                        <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete meal: @exercise.Name')" />
                     </form>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
-<a asp-controller="TrainingPlan" asp-action="AddExercise" class="btn btn-primary">Add Exercise</a>
-
-<a asp-controller="TrainingPlan" asp-action="EditTrainingPlan">Save Changes</a>

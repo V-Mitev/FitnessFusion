@@ -282,7 +282,7 @@
 
             var exercise = await dbContext.Exercises
                 .Where(e => e.TrainingPlans.Contains(trainingPlan!) && e.Name == exerciseName)
-                .FirstAsync();
+                .FirstOrDefaultAsync();
 
             return trainingPlan!.Exercises.Any(e => e.Name == exerciseName && e.IsInPlan);
         }

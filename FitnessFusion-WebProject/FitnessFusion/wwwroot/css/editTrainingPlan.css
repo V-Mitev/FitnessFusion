@@ -1,0 +1,12 @@
+﻿/* EditTrainingPlan.css */
+
+/* Position the buttons at the bottom of the body */
+.bottom-buttons {
+    text-align: end;
+    margin-top: 20px;
+}
+
+    /* Give some space between the buttons */
+    .bottom-buttons .btn {
+        margin-top: 10px;
+    }

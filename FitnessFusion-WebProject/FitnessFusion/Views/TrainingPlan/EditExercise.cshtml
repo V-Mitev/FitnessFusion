@@ -35,10 +35,13 @@
     <div class="form-group">
         <label for="muscleGroup">Muscle Group</label>
         <select id="muscleGroup" name="MuscleGroup" class="form-control" required>
-            <option value="">Select a muscle group</option>
-            @foreach (var muscleGroup in Enum.GetValues(typeof(FitnessFusion.Data.Models.Enums.MuscleGroups)))
+            <option value="@Model.MuscleGroup.ToString()">@Model.MuscleGroup</option>
+            @foreach (var muscleGroup in Enum.GetValues(typeof(MuscleGroups)))
             {
-                <option value="@muscleGroup">@muscleGroup</option>
+                if (!string.Equals(muscleGroup.ToString(), @Model.MuscleGroup.ToString(), StringComparison.OrdinalIgnoreCase))
+                {
+                    <option value="@muscleGroup">@muscleGroup</option>
+                }
             }
         </select>
     </div>
