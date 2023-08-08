@@ -16,6 +16,8 @@
 
         public Task AddExerciseToExistingPlanAsync(TrainingPlanExercises model, string trainingPlanId);
 
+        public Task<bool> IsExercisesAlreadyCreated(string trainingPlanId, string exerciseName);
+
         public Task DeleteTrainingPlanAsync(string id);
 
         public Task<DetailsTrainingPlanViewModel> DetailsAsync(string id);

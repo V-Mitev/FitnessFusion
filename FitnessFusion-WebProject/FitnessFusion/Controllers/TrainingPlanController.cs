@@ -109,6 +109,15 @@
             // This check is when training plan is already created to can add exercises.
             if (!string.IsNullOrEmpty(trainingPlan.Id))
             {
+                var isExerciseAlreadyCreated = await trainingPlanService.IsExercisesAlreadyCreated(trainingPlan.Id, model.Name);
+
+                if (isExerciseAlreadyCreated)
+                {
+                    TempData[ErrorMessage] = "You already create this exercise";
+
+                    return View(model);
+                }
+
                 await trainingPlanService.AddExerciseToExistingPlanAsync(model, trainingPlan.Id);
 
                 HttpContext.Session.SetObject("TrainingPlan", trainingPlan);
@@ -191,7 +200,7 @@
             return RedirectToAction("EditTrainingPlan", new { tpId!.Id });
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> DeleteExercise(string id)
         {
             var tpId = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan");

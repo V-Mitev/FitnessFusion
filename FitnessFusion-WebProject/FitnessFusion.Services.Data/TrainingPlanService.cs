@@ -8,7 +8,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    public class TrainingPlanService : ITrainingPlanService 
+    public class TrainingPlanService : ITrainingPlanService
     {
         private readonly FitnessFusionDbContext dbContext;
 
@@ -111,11 +111,7 @@
                 throw new NullReferenceException("Training plan doens't exists");
             }
 
-            var exercisesInTrainingPlan = await dbContext.Exercises
-                .Where(e => e.TrainingPlans.Contains(trainingPlan))
-                .ToListAsync();
-
-            dbContext.Exercises.RemoveRange(exercisesInTrainingPlan);
+            dbContext.Exercises.RemoveRange(trainingPlan.Exercises);
 
             dbContext.TrainingPlans.Remove(trainingPlan);
 
@@ -276,6 +272,19 @@
                 .ToListAsync();
 
             return trainingPlans;
+        }
+
+        public async Task<bool> IsExercisesAlreadyCreated(string trainingPlanId, string exerciseName)
+        {
+            var trainingPlan = await dbContext.TrainingPlans
+                .Include(tp => tp.Exercises)
+                .FirstOrDefaultAsync(tp => tp.Id.ToString() == trainingPlanId);
+
+            var exercise = await dbContext.Exercises
+                .Where(e => e.TrainingPlans.Contains(trainingPlan!) && e.Name == exerciseName)
+                .FirstAsync();
+
+            return trainingPlan!.Exercises.Any(e => e.Name == exerciseName && e.IsInPlan);
         }
     }
 }
