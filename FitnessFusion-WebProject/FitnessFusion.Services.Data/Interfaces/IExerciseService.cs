@@ -13,5 +13,7 @@
         public Task EditExerciseAsync(string id, AddExerciseViewModel model);
 
         public Task DeleteExerciseAsync(string id);
+
+        public Task<ExerciseDetailsViewModel> DetailsAsync(string id);
     }
 }

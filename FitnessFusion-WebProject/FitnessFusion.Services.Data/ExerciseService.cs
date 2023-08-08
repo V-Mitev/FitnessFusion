@@ -42,12 +42,36 @@
 
             if (exercise == null)
             {
-                throw new InvalidOperationException("Exercise doesn't exists");
+                throw new ArgumentNullException("Exercise doesn't exists");
             }
 
             dbContext.Exercises.Remove(exercise);
 
             await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<ExerciseDetailsViewModel> DetailsAsync(string id)
+        {
+            var exercise = await dbContext.Exercises
+                .FindAsync(Guid.Parse(id));
+
+            if (exercise == null)
+            {
+                throw new NullReferenceException("Exercise doesn't exists");
+            }
+
+            var exerciseViewModel = new ExerciseDetailsViewModel()
+            {
+                Id = exercise.Id.ToString(),
+                Name = exercise.Name,
+                Description = exercise.Description,
+                ImagePath = exercise.ImagePath,
+                MuscleGroup = exercise.MuscleGroup.ToString(),
+                VideoLink = exercise.VideoLink,
+                Difficulty = exercise.Difficulty.ToString()
+            };
+
+            return exerciseViewModel;
         }
 
         public async Task EditExerciseAsync(string id, AddExerciseViewModel model)
@@ -57,7 +81,7 @@
 
             if (exerciseToEdit == null)
             {
-                throw new InvalidOperationException("This exercise doesn't exists");
+                throw new ArgumentNullException("This exercise doesn't exists");
             }
 
             exerciseToEdit.Id = Guid.Parse(id);
@@ -78,7 +102,7 @@
 
             if (exercise == null)
             {
-                throw new InvalidOperationException("This exercise doesn't exists");
+                throw new ArgumentNullException("This exercise doesn't exists");
             }
 
             var exerciseModel = new AddExerciseViewModel()
@@ -102,9 +126,7 @@
                 {
                     Id = e.Id.ToString(),
                     Name = e.Name,
-                    Image = e.ImagePath,
-                    Description = e.Description,
-                    VideoUrl = e.VideoLink,
+                    ImagePath = e.ImagePath,
                     MuscleGroup = e.MuscleGroup.ToString()
                 })
                 .ToListAsync();

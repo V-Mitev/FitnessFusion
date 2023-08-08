@@ -2,103 +2,104 @@
 
 <style>
     .card-img-top {
-        max-width: 200px;
+        width: 200px;
+        height: 150px;
+        object-fit: cover;
     }
 </style>
 
 <div class="container">
-    <h1>Menu</h1>
+    <h1 class="text-center">Menu</h1>
+</div>
 
-    <h2>Breakfast</h2>
-
-    <div class="card-deck">
-        <div class="row">
-            @foreach (var meal in Model.Where(m => m.MealType == "Breakfast"))
-            {
-                <div class="card col-md-4">
-                    <img src="@($"/img/{@meal.Image}")" class="card-img-top" alt="Meal Image">
-                    <div class="card-body">
-                        <h5 class="card-title">@meal.Name</h5>
-                        <p class="card-text">Calories per 100 grams: @meal.Calories</p>
-                        <div class="d-flex justify-content-between">
-                            <a asp-controller="Meal" asp-action="Edit" asp-route-id="@meal.Id" class="btn btn-warning">Edit</a>
-                            <form class="delete-form" asp-controller="Meal" asp-action="Delete" asp-route-id="@meal.Id">
-                                <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete meal: @meal.Name')" />
-                            </form>
-                        </div>
+<div class="container meal-section">
+    <h2 class="meal-type">Breakfast</h2>
+    <div class="d-flex flex-wrap">
+        @foreach (var meal in Model.Where(m => m.MealType == "Breakfast"))
+        {
+            <div class="card col-md-4">
+                <img src="@($"/img/{@meal.Image}")" class="card-img-top" alt="Meal Image">
+                <div class="card-body">
+                    <h5 class="card-title">@meal.Name</h5>
+                    <p class="card-text">Calories per 100 grams: @meal.Calories</p>
+                    <div class="d-flex justify-content-between">
+                        <a asp-controller="Meal" asp-action="Edit" asp-route-id="@meal.Id" class="btn btn-warning">Edit</a>
+                        <form class="delete-form" asp-controller="Meal" asp-action="Delete" asp-route-id="@meal.Id">
+                            <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete meal: @meal.Name')" />
+                        </form>
                     </div>
                 </div>
-            }
-        </div>
-    </div>
-
-    <h2>Lunch</h2>
-    <div class="card-deck">
-        <div class="row">
-            @foreach (var meal in Model.Where(m => m.MealType == "Lunch"))
-            {
-                <div class="card col-md-4">
-                    <img src="@($"/img/{@meal.Image}")" class="card-img-top" alt="Meal Image">
-                    <div class="card-body">
-                        <h5 class="card-title">@meal.Name</h5>
-                        <p class="card-text">Calories per 100 grams: @meal.Calories</p>
-                        <div class="d-flex justify-content-between">
-                            <a asp-controller="Meal" asp-action="Edit" asp-route-id="@meal.Id" class="btn btn-warning">Edit</a>
-                            <form class="delete-form" asp-controller="Meal" asp-action="Delete" asp-route-id="@meal.Id">
-                                <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete meal: @meal.Name')" />
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
-
-    <h2>Dinner</h2>
-    <div class="card-deck">
-        <div class="row">
-            @foreach (var meal in Model.Where(m => m.MealType == "Dinner"))
-            {
-                <div class="card col-md-4">
-                    <img src="@($"/img/{@meal.Image}")" class="card-img-top" alt="Meal Image">
-                    <div class="card-body">
-                        <h5 class="card-title">@meal.Name</h5>
-                        <p class="card-text">Calories per 100 grams: @meal.Calories</p>
-                        <div class="d-flex justify-content-between">
-                            <a asp-controller="Meal" asp-action="Edit" asp-route-id="@meal.Id" class="btn btn-warning">Edit</a>
-                            <form class="delete-form" asp-controller="Meal" asp-action="Delete" asp-route-id="@meal.Id">
-                                <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete meal: @meal.Name')" />
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
-
-    <h2>Snack</h2>
-    <div class="card-deck">
-        <div class="row">
-            @foreach (var meal in Model.Where(m => m.MealType == "Snack"))
-            {
-                <div class="card col-md-4">
-                    <img src="@($"/img/{@meal.Image}")" class="card-img-top" alt="Meal Image">
-                    <div class="card-body">
-                        <h5 class="card-title">@meal.Name</h5>
-                        <p class="card-text">Calories per 100 grams: @meal.Calories</p>
-                        <div class="d-flex justify-content-between">
-                            <a asp-controller="Meal" asp-action="Edit" asp-route-id="@meal.Id" class="btn btn-warning">Edit</a>
-                            <form class="delete-form" asp-controller="Meal" asp-action="Delete" asp-route-id="@meal.Id">
-                                <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete meal: @meal.Name')" />
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
+            </div>
+        }
     </div>
 </div>
 
-<br />
+<div class="container meal-section">
+    <h2 class="meal-type">Lunch</h2>
+    <div class="d-flex flex-wrap">
+        @foreach (var meal in Model.Where(m => m.MealType == "Lunch"))
+        {
+            <div class="card col-md-4">
+                <img src="@($"/img/{@meal.Image}")" class="card-img-top" alt="Meal Image">
+                <div class="card-body">
+                    <h5 class="card-title">@meal.Name</h5>
+                    <p class="card-text">Calories per 100 grams: @meal.Calories</p>
+                    <div class="d-flex justify-content-between">
+                        <a asp-controller="Meal" asp-action="Edit" asp-route-id="@meal.Id" class="btn btn-warning">Edit</a>
+                        <form class="delete-form" asp-controller="Meal" asp-action="Delete" asp-route-id="@meal.Id">
+                            <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete meal: @meal.Name')" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
 
-<a asp-controller="Meal" asp-action="Add" class="btn btn-primary">Add new meal</a>
+<div class="container meal-section">
+    <h2 class="meal-type">Snack</h2>
+    <div class="d-flex flex-wrap">
+        @foreach (var meal in Model.Where(m => m.MealType == "Snack"))
+        {
+            <div class="card col-md-4">
+                <img src="@($"/img/{@meal.Image}")" class="card-img-top" alt="Meal Image">
+                <div class="card-body">
+                    <h5 class="card-title">@meal.Name</h5>
+                    <p class="card-text">Calories per 100 grams: @meal.Calories</p>
+                    <div class="d-flex justify-content-between">
+                        <a asp-controller="Meal" asp-action="Edit" asp-route-id="@meal.Id" class="btn btn-warning">Edit</a>
+                        <form class="delete-form" asp-controller="Meal" asp-action="Delete" asp-route-id="@meal.Id">
+                            <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete meal: @meal.Name')" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="container meal-section">
+    <h2 class="meal-type">Dinner</h2>
+    <div class="d-flex flex-wrap">
+        @foreach (var meal in Model.Where(m => m.MealType == "Dinner"))
+        {
+            <div class="card col-md-4">
+                <img src="@($"/img/{@meal.Image}")" class="card-img-top" alt="Meal Image">
+                <div class="card-body">
+                    <h5 class="card-title">@meal.Name</h5>
+                    <p class="card-text">Calories per 100 grams: @meal.Calories</p>
+                    <div class="d-flex justify-content-between">
+                        <a asp-controller="Meal" asp-action="Edit" asp-route-id="@meal.Id" class="btn btn-warning">Edit</a>
+                        <form class="delete-form" asp-controller="Meal" asp-action="Delete" asp-route-id="@meal.Id">
+                            <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete meal: @meal.Name')" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="container">
+    <a asp-controller="Meal" asp-action="Add" class="btn btn-primary">Add new meal</a>
+</div>

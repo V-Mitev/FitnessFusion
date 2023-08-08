@@ -6,11 +6,7 @@
 
         public string Name { get; set; } = null!;
 
-        public string Image { get; set; } = null!;
-
-        public string Description { get; set; } = null!;
-
-        public string VideoUrl { get; set; } = null!;
+        public string ImagePath { get; set; } = null!;
 
         public string MuscleGroup { get; set; } = null!;
     }

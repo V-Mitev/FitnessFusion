@@ -45,6 +45,14 @@
         }
 
         [HttpGet]
+        public async Task<IActionResult> Details(string id)
+        {
+            var model = await exerciseService.DetailsAsync(id);
+
+            return View(model);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
             var exercise = await exerciseService.FindExerciseAsync(id);

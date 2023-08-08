@@ -8,29 +8,45 @@
     .card-img-top {
         max-width: 200px;
     }
+
+    .exercise-item {
+        margin-bottom: 20px;
+    }
+
+    .btn-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px !important;
+        margin-right: 150px;
+    }
 </style>
 
 <h1>@ViewData["Title"]</h1>
 
 <div class="exercise-list">
-    @foreach (var exercise in Model)
+    @foreach (var muscleGroup in Enum.GetValues(typeof(MuscleGroups)))
     {
-        <div class="exercise-item">
-            <h2>@exercise.Name</h2>
-            <p>@exercise.Description</p>
-            <img src="@($"/img/{@exercise.Image}")" class="card-img-top" alt="Exercise Image">
-            <p class="muscle-group">Muscle Group: @exercise.MuscleGroup</p>
+        <h2>@muscleGroup</h2>
 
-            <div>
-                <a asp-controller="Exercise" asp-action="Edit" asp-route-id="@exercise.Id" class="btn btn-primary">Edit</a>
-                <form class="delete-form" asp-controller="Exercise" asp-action="Delete" asp-route-id="@exercise.Id">
-                    <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete exercise: @exercise.Name')" />
-                </form>
-                <a href="@exercise.VideoUrl" class="btn btn-success" target="_blank">Watch Video</a>
-            </div>
+        <div class="row">
+            @foreach (var exercise in Model.Where(e => e.MuscleGroup == muscleGroup.ToString()))
+            {
+                <div class="col-md-4 exercise-item">
+                    <h4>@exercise.Name</h4>
+                    <img src="@($"/img/{@exercise.ImagePath}")" class="card-img-top" alt="Exercise Image">
+                    <div class="btn-container mt-3">
+                        <a asp-controller="Exercise" asp-action="Details" asp-route-id="@exercise.Id" class="btn btn-primary">Details</a>
+                        <a asp-controller="Exercise" asp-action="Edit" asp-route-id="@exercise.Id" class="btn btn-primary">Edit</a>
+                        <form class="delete-form" asp-controller="Exercise" asp-action="Delete" asp-route-id="@exercise.Id">
+                            <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete exercise: @exercise.Name')" />
+                        </form>
+                    </div>
+                </div>
+            }
         </div>
     }
 </div>
-<br />
 
-<a asp-controller="Exercise" asp-action="Add" class="btn btn-primary">Add new exercise</a>
+<div class="mt-4">
+    <a asp-controller="Exercise" asp-action="Add" class="btn btn-primary">Add new exercise</a>
+</div>
