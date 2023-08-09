@@ -19,13 +19,13 @@
         [HttpGet]
         public IActionResult Calculate()
         {
-            CaloriesCalculatorViewModel model = new CaloriesCalculatorViewModel();
+            CaloriesCalculatorModel model = new CaloriesCalculatorModel();
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Calculate(CaloriesCalculatorViewModel model)
+        public async Task<IActionResult> Calculate(CaloriesCalculatorModel model)
         {
             if (!ModelState.IsValid)
             {

@@ -1,6 +1,6 @@
 ﻿namespace FitnessFusion.Web.ViewModels.Exercise
 {
-    public class ExerciseDetailsViewModel : AllExercisesViewModel
+    public class ExerciseDetailsModel : AllExercisesModel
     {
         public string Description { get; set; } = null!;
 

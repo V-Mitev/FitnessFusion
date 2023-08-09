@@ -17,7 +17,7 @@
             this.dbContext = dbContext;
         }
 
-        public async Task AddExerciseToExistingPlanAsync(TrainingPlanExercises model, string trainingPlanId)
+        public async Task AddExerciseToExistingPlanAsync(TrainingPlanExercisesModel model, string trainingPlanId)
         {
             var trainingPlan = await dbContext.TrainingPlans
                 .Include(tp => tp.Exercises)
@@ -45,12 +45,12 @@
             await dbContext.SaveChangesAsync();
         }
 
-        public void AddExerciseToPlan(TrainingPlanExercises model, TrainingPlanViewModel trainingPlan)
+        public void AddExerciseToPlan(TrainingPlanExercisesModel model, TrainingPlanModel trainingPlan)
         {
             trainingPlan.AddedExercises.Add(model);
         }
 
-        public async Task AddTrainingPlanAsync(TrainingPlanViewModel model, string userId)
+        public async Task AddTrainingPlanAsync(TrainingPlanModel model, string userId)
         {
             var trainer = await dbContext.Trainers
                 .FindAsync(Guid.Parse(userId));
@@ -118,7 +118,7 @@
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<DetailsTrainingPlanViewModel> DetailsAsync(string id)
+        public async Task<DetailsTrainingPlanModel> DetailsAsync(string id)
         {
             var trainingPlan = await dbContext.TrainingPlans
                 .Include(tp => tp.Exercises)
@@ -138,7 +138,7 @@
             }
 
             var exercises = trainingPlan.Exercises
-               .Select(e => new TrainingPlanExercises()
+               .Select(e => new TrainingPlanExercisesModel()
                {
                    Id = e.Id.ToString(),
                    Name = e.Name,
@@ -148,7 +148,7 @@
                    MuscleGroup = e.MuscleGroup
                }).ToList();
 
-            var detailsTP = new DetailsTrainingPlanViewModel()
+            var detailsTP = new DetailsTrainingPlanModel()
             {
                 Name = trainingPlan.Name,
                 Trainer = $"{trainer.FirstName} {trainer.LastName}",
@@ -158,7 +158,7 @@
             return detailsTP;
         }
 
-        public async Task EditTrainingPlanAsync(TrainingPlanViewModel model, string trainingPlanId)
+        public async Task EditTrainingPlanAsync(TrainingPlanModel model, string trainingPlanId)
         {
             var trainingPlan = await dbContext.TrainingPlans
                 .FindAsync(Guid.Parse(trainingPlanId));
@@ -184,7 +184,7 @@
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task EditTrainingPlanExerciseAsync(string id, TrainingPlanExercises model)
+        public async Task EditTrainingPlanExerciseAsync(string id, TrainingPlanExercisesModel model)
         {
             var exercise = await dbContext.Exercises.FindAsync(Guid.Parse(id));
 
@@ -202,7 +202,7 @@
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<TrainingPlanViewModel> FindTrainingPlanByIdAsync(string id)
+        public async Task<TrainingPlanModel> FindTrainingPlanByIdAsync(string id)
         {
             var trainingPlan = await dbContext.TrainingPlans
                 .Include(tp => tp.Exercises)
@@ -214,7 +214,7 @@
             }
 
             var exercises = trainingPlan.Exercises
-                .Select(e => new TrainingPlanExercises()
+                .Select(e => new TrainingPlanExercisesModel()
                 {
                     Id = e.Id.ToString(),
                     Name = e.Name,
@@ -224,7 +224,7 @@
                     MuscleGroup = e.MuscleGroup
                 }).ToList();
 
-            TrainingPlanViewModel model = new TrainingPlanViewModel()
+            TrainingPlanModel model = new TrainingPlanModel()
             {
                 Id = trainingPlan.Id.ToString(),
                 Name = trainingPlan.Name,
@@ -235,7 +235,7 @@
             return model;
         }
 
-        public async Task<TrainingPlanExercises> FindTrainingPlanExerciseAsync(string id)
+        public async Task<TrainingPlanExercisesModel> FindTrainingPlanExerciseAsync(string id)
         {
             var exerciseDb =
                 await dbContext.Exercises.FindAsync(Guid.Parse(id));
@@ -245,7 +245,7 @@
                 throw new ArgumentNullException(nameof(exerciseDb));
             }
 
-            TrainingPlanExercises exerciseTp = new TrainingPlanExercises()
+            TrainingPlanExercisesModel exerciseTp = new TrainingPlanExercisesModel()
             {
                 Id = exerciseDb.Id.ToString(),
                 Name = exerciseDb.Name,
@@ -258,10 +258,10 @@
             return exerciseTp;
         }
 
-        public async Task<ICollection<AllTrainingPlansViewModel>> GetAllTrainingPlansAsync()
+        public async Task<ICollection<AllTrainingPlansModel>> GetAllTrainingPlansAsync()
         {
             var trainingPlans = await dbContext.TrainingPlans
-                .Select(tp => new AllTrainingPlansViewModel()
+                .Select(tp => new AllTrainingPlansModel()
                 {
                     Id = tp.Id.ToString(),
                     Name = tp.Name,

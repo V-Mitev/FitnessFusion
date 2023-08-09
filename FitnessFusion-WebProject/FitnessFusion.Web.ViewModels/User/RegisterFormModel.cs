@@ -3,7 +3,7 @@
     using System.ComponentModel.DataAnnotations;
     using static Common.EntityValidationConstants.User;
 
-    public class RegisterFormViewModel
+    public class RegisterFormModel
     {
         [Required]
         [EmailAddress]

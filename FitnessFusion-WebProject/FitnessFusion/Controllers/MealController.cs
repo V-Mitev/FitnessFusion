@@ -24,13 +24,13 @@
         [HttpGet]
         public IActionResult Add()
         {
-            AddMealViewModel model = new AddMealViewModel();
+            AddMealModel model = new AddMealModel();
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(AddMealViewModel model)
+        public async Task<IActionResult> Add(AddMealModel model)
         {
             if(!ModelState.IsValid)
             {
@@ -59,7 +59,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(string id, AddMealViewModel model)
+        public async Task<IActionResult> Edit(string id, AddMealModel model)
         {
             if (!ModelState.IsValid)
             {

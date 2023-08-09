@@ -1,12 +1,12 @@
 namespace FitnessFusion
 {
-    using Data;
-    using Data.Models;
+    using FitnessFusion.Data;
+    using FitnessFusion.Data.Models;
+    using FitnessFusion.Services.Data.Interfaces;
+    using FitnessFusion.Web.Infastructure.ModelBinders;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
-    using Services.Data.Interfaces;
-    using Web.Infastructure.ModelBinders;
-    using static Web.Infastructure.Extensions.WebApplicationBuilderExtensions;
+    using static FitnessFusion.Web.Infastructure.Extensions.WebApplicationBuilderExtensions;
 
     public class Program
     {
@@ -41,6 +41,11 @@ namespace FitnessFusion
             builder.Services.AddControllersWithViews();
             
             builder.Services.AddApplicationServices(typeof(IFitnessService));
+
+            builder.Services.ConfigureApplicationCookie(cfg =>
+            {
+                cfg.LoginPath = "/User/Login";
+            });
 
             builder.Services.AddSession(options =>
             {

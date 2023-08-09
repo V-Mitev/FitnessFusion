@@ -5,7 +5,7 @@
 
     using static Common.EntityValidationConstants.Meal;
 
-    public class AddMealViewModel
+    public class AddMealModel
     {
         [Required]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength)]

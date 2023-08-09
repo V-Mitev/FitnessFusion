@@ -1,6 +1,6 @@
 ﻿namespace FitnessFusion.Web.ViewModels.TrainingPlan
 {
-    public class AllTrainingPlansViewModel
+    public class AllTrainingPlansModel
     {
         public string Id { get; set; } = null!;
 

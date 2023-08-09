@@ -4,27 +4,27 @@
 
     public interface ITrainingPlanService
     {
-        public Task<ICollection<AllTrainingPlansViewModel>> GetAllTrainingPlansAsync();
+        public Task<ICollection<AllTrainingPlansModel>> GetAllTrainingPlansAsync();
 
-        public Task AddTrainingPlanAsync(TrainingPlanViewModel model, string trainerId);
+        public Task AddTrainingPlanAsync(TrainingPlanModel model, string trainerId);
 
-        public Task EditTrainingPlanAsync(TrainingPlanViewModel model, string trainingPlanId);
+        public Task EditTrainingPlanAsync(TrainingPlanModel model, string trainingPlanId);
 
-        public Task<TrainingPlanViewModel> FindTrainingPlanByIdAsync(string id);
+        public Task<TrainingPlanModel> FindTrainingPlanByIdAsync(string id);
 
-        public void AddExerciseToPlan(TrainingPlanExercises model, TrainingPlanViewModel trainingPlan);
+        public void AddExerciseToPlan(TrainingPlanExercisesModel model, TrainingPlanModel trainingPlan);
 
-        public Task AddExerciseToExistingPlanAsync(TrainingPlanExercises model, string trainingPlanId);
+        public Task AddExerciseToExistingPlanAsync(TrainingPlanExercisesModel model, string trainingPlanId);
 
         public Task<bool> IsExercisesAlreadyCreated(string trainingPlanId, string exerciseName);
 
         public Task DeleteTrainingPlanAsync(string id);
 
-        public Task<DetailsTrainingPlanViewModel> DetailsAsync(string id);
+        public Task<DetailsTrainingPlanModel> DetailsAsync(string id);
 
-        public Task<TrainingPlanExercises> FindTrainingPlanExerciseAsync(string id);
+        public Task<TrainingPlanExercisesModel> FindTrainingPlanExerciseAsync(string id);
 
-        public Task EditTrainingPlanExerciseAsync(string id, TrainingPlanExercises model);
+        public Task EditTrainingPlanExerciseAsync(string id, TrainingPlanExercisesModel model);
 
         public Task DeleteExerciseInTrainingPlanAsync(string id);
     }

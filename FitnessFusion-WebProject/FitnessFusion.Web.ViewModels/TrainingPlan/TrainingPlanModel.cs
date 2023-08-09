@@ -3,11 +3,11 @@
     using System.ComponentModel.DataAnnotations;
     using static Common.EntityValidationConstants.TrainingPlan;
 
-    public class TrainingPlanViewModel
+    public class TrainingPlanModel
     {
-        public TrainingPlanViewModel()
+        public TrainingPlanModel()
         {
-            AddedExercises = new HashSet<TrainingPlanExercises>();
+            AddedExercises = new HashSet<TrainingPlanExercisesModel>();
         }
 
         public string? Id { get; set; } 
@@ -19,6 +19,6 @@
         [Required]
         public string Image { get; set; } = null!;
 
-        public ICollection<TrainingPlanExercises> AddedExercises { get; set; }
+        public ICollection<TrainingPlanExercisesModel> AddedExercises { get; set; }
     }
 }

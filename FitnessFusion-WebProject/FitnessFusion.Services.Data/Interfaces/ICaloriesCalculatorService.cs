@@ -4,6 +4,6 @@
 
     public interface ICaloriesCalculatorService
     {
-        public Task CalculateAsync(string userId, CaloriesCalculatorViewModel model);
+        public Task CalculateAsync(string userId, CaloriesCalculatorModel model);
     }
 }

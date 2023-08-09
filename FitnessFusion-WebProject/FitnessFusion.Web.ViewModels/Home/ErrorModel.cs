@@ -1,6 +1,6 @@
 namespace FitnessFusion.Web.ViewModels.Home
 {
-    public class ErrorViewModel
+    public class ErrorModel
     {
         public string? RequestId { get; set; }
 

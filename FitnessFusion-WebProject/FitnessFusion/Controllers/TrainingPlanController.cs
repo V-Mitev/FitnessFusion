@@ -21,7 +21,7 @@
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            var trainingPlan = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan");
+            var trainingPlan = HttpContext.Session.GetObject<TrainingPlanModel>("TrainingPlan");
 
             if (trainingPlan != null)
             {
@@ -36,11 +36,11 @@
         [HttpGet]
         public IActionResult CreateTrainingPlan()
         {
-            var model = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan");
+            var model = HttpContext.Session.GetObject<TrainingPlanModel>("TrainingPlan");
 
             if (model == null)
             {
-                model = new TrainingPlanViewModel();
+                model = new TrainingPlanModel();
 
                 HttpContext.Session.SetObject("TrainingPlan", model);
             }
@@ -49,9 +49,9 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTrainingPlan(TrainingPlanViewModel model)
+        public async Task<IActionResult> CreateTrainingPlan(TrainingPlanModel model)
         {
-            var sessionTrainingPlan = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan")!;
+            var sessionTrainingPlan = HttpContext.Session.GetObject<TrainingPlanModel>("TrainingPlan")!;
 
             if (!sessionTrainingPlan.AddedExercises.Any())
             {
@@ -84,27 +84,27 @@
         [HttpGet]
         public IActionResult AddExercise()
         {
-            var trainingPlan = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan");
+            var trainingPlan = HttpContext.Session.GetObject<TrainingPlanModel>("TrainingPlan");
 
             if (trainingPlan == null)
             {
                 return RedirectToAction("CreateTrainingPlan");
             }
 
-            TrainingPlanExercises model = new TrainingPlanExercises();
+            TrainingPlanExercisesModel model = new TrainingPlanExercisesModel();
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddExercise(TrainingPlanExercises model)
+        public async Task<IActionResult> AddExercise(TrainingPlanExercisesModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            var trainingPlan = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan")!;
+            var trainingPlan = HttpContext.Session.GetObject<TrainingPlanModel>("TrainingPlan")!;
 
             // This check is when training plan is already created to can add exercises.
             if (!string.IsNullOrEmpty(trainingPlan.Id))
@@ -143,14 +143,14 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditTrainingPlan(TrainingPlanViewModel model, string id)
+        public async Task<IActionResult> EditTrainingPlan(TrainingPlanModel model, string id)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            var exercises = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan")!;
+            var exercises = HttpContext.Session.GetObject<TrainingPlanModel>("TrainingPlan")!;
 
             model.AddedExercises = exercises.AddedExercises;
 
@@ -186,7 +186,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditExercise(string id, TrainingPlanExercises exercisesTp)
+        public async Task<IActionResult> EditExercise(string id, TrainingPlanExercisesModel exercisesTp)
         {
             if (!ModelState.IsValid)
             {
@@ -195,7 +195,7 @@
 
             await trainingPlanService.EditTrainingPlanExerciseAsync(id, exercisesTp);
 
-            var tpId = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan");
+            var tpId = HttpContext.Session.GetObject<TrainingPlanModel>("TrainingPlan");
 
             return RedirectToAction("EditTrainingPlan", new { tpId!.Id });
         }
@@ -203,7 +203,7 @@
         [HttpPost]
         public async Task<IActionResult> DeleteExercise(string id)
         {
-            var tpId = HttpContext.Session.GetObject<TrainingPlanViewModel>("TrainingPlan");
+            var tpId = HttpContext.Session.GetObject<TrainingPlanModel>("TrainingPlan");
 
             if (tpId != null && tpId.AddedExercises.Count == 1)
             {

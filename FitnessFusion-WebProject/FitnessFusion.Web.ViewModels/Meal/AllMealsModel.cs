@@ -1,6 +1,6 @@
 ﻿namespace FitnessFusion.Web.ViewModels.Meal
 {
-    public class AllMealsViewModel
+    public class AllMealsModel
     {
         public string Id { get; set; } = null!;
 

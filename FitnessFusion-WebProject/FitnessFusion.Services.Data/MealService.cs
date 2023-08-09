@@ -18,7 +18,7 @@
             this.dbContext = data;
         }
 
-        public async Task AddMealAsync(AddMealViewModel meal)
+        public async Task AddMealAsync(AddMealModel meal)
         {
             Meal newMeal = new Meal()
             {
@@ -32,10 +32,10 @@
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<ICollection<AllMealsViewModel>> AllAsync()
+        public async Task<ICollection<AllMealsModel>> AllAsync()
         {
             var meals = await dbContext.Meals
-                .Select(m => new AllMealsViewModel()
+                .Select(m => new AllMealsModel()
                 {
                     Id = m.Id.ToString(),
                     Name = m.Name,
@@ -61,7 +61,7 @@
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task EditMealAsync(string mealId, AddMealViewModel model)
+        public async Task EditMealAsync(string mealId, AddMealModel model)
         {
             var mealToEdit = await dbContext.Meals.FirstOrDefaultAsync(m => m.Id.ToString() == mealId);
 
@@ -79,7 +79,7 @@
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<AddMealViewModel> FindMealAsync(string mealId)
+        public async Task<AddMealModel> FindMealAsync(string mealId)
         {
             var meal = await dbContext.Meals.FindAsync(Guid.Parse(mealId));
 
@@ -88,7 +88,7 @@
                 throw new InvalidOperationException("This meal doesn't exists");
             }
 
-            AddMealViewModel mealViewModel = new AddMealViewModel()
+            AddMealModel mealViewModel = new AddMealModel()
             {
                 Name = meal.Name,
                 Calories = meal.CaloriesPer100g,

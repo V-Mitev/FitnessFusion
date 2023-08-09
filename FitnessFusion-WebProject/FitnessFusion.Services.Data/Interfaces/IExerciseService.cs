@@ -4,16 +4,16 @@
 
     public interface IExerciseService
     {
-        public Task<ICollection<AllExercisesViewModel>> GetAllExercisesAsync();
+        public Task<ICollection<AllExercisesModel>> GetAllExercisesAsync();
 
-        public Task AddExerciseAsync(AddExerciseViewModel model);
+        public Task AddExerciseAsync(AddExerciseModel model);
 
-        public Task<AddExerciseViewModel> FindExerciseAsync(string exerciseId);
+        public Task<AddExerciseModel> FindExerciseAsync(string exerciseId);
 
-        public Task EditExerciseAsync(string id, AddExerciseViewModel model);
+        public Task EditExerciseAsync(string id, AddExerciseModel model);
 
         public Task DeleteExerciseAsync(string id);
 
-        public Task<ExerciseDetailsViewModel> DetailsAsync(string id);
+        public Task<ExerciseDetailsModel> DetailsAsync(string id);
     }
 }

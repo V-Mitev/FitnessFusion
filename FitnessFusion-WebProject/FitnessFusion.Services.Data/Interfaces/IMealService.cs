@@ -4,14 +4,14 @@
 
     public interface IMealService
     {
-        public Task<ICollection<AllMealsViewModel>> AllAsync();
+        public Task<ICollection<AllMealsModel>> AllAsync();
 
-        public Task AddMealAsync(AddMealViewModel meal);
+        public Task AddMealAsync(AddMealModel meal);
 
         public Task DeleteMealAsync(string mealId);
 
-        public Task<AddMealViewModel> FindMealAsync(string mealId);
+        public Task<AddMealModel> FindMealAsync(string mealId);
 
-        public Task EditMealAsync(string mealId, AddMealViewModel model);
+        public Task EditMealAsync(string mealId, AddMealModel model);
     }
 }

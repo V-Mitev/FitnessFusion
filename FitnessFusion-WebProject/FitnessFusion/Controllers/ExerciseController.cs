@@ -26,13 +26,13 @@
         [HttpGet]
         public IActionResult Add()
         {
-            AddExerciseViewModel model = new AddExerciseViewModel();
+            AddExerciseModel model = new AddExerciseModel();
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(AddExerciseViewModel model)
+        public async Task<IActionResult> Add(AddExerciseModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -61,7 +61,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(string id, AddExerciseViewModel model)
+        public async Task<IActionResult> Edit(string id, AddExerciseModel model)
         {
             if (!ModelState.IsValid)
             {

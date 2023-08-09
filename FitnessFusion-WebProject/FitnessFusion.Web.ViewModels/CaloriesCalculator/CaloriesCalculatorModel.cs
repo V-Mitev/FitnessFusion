@@ -3,7 +3,7 @@
     using System.ComponentModel.DataAnnotations;
     using static Common.EntityValidationConstants.CaloriesCalculator;
 
-    public class CaloriesCalculatorViewModel
+    public class CaloriesCalculatorModel
     {
         [Range(MinAgeValue, MaxAgeValue)]
         public int Age { get; set; }

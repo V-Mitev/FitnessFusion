@@ -16,7 +16,7 @@
             this.dbContext = dbContext;
         }
 
-        public async Task CalculateAsync(string userId, CaloriesCalculatorViewModel cc)
+        public async Task CalculateAsync(string userId, CaloriesCalculatorModel cc)
         {
             var genderParse = (GenderType)Enum.Parse(typeof(GenderType), cc.Gender);
 

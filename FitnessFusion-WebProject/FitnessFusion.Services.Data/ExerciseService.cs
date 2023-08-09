@@ -18,7 +18,7 @@
             this.dbContext = dbContext;
         }
 
-        public async Task AddExerciseAsync(AddExerciseViewModel model)
+        public async Task AddExerciseAsync(AddExerciseModel model)
         {
             Exercise exercise = new Exercise()
             {
@@ -50,7 +50,7 @@
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<ExerciseDetailsViewModel> DetailsAsync(string id)
+        public async Task<ExerciseDetailsModel> DetailsAsync(string id)
         {
             var exercise = await dbContext.Exercises
                 .FindAsync(Guid.Parse(id));
@@ -60,7 +60,7 @@
                 throw new NullReferenceException("Exercise doesn't exists");
             }
 
-            var exerciseViewModel = new ExerciseDetailsViewModel()
+            var exerciseViewModel = new ExerciseDetailsModel()
             {
                 Id = exercise.Id.ToString(),
                 Name = exercise.Name,
@@ -74,7 +74,7 @@
             return exerciseViewModel;
         }
 
-        public async Task EditExerciseAsync(string id, AddExerciseViewModel model)
+        public async Task EditExerciseAsync(string id, AddExerciseModel model)
         {
             var exerciseToEdit = await dbContext.Exercises
                 .FindAsync(Guid.Parse(id));
@@ -95,7 +95,7 @@
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<AddExerciseViewModel> FindExerciseAsync(string exerciseId)
+        public async Task<AddExerciseModel> FindExerciseAsync(string exerciseId)
         {
             var exercise = await dbContext.Exercises
                 .FindAsync(Guid.Parse(exerciseId));
@@ -105,7 +105,7 @@
                 throw new ArgumentNullException("This exercise doesn't exists");
             }
 
-            var exerciseModel = new AddExerciseViewModel()
+            var exerciseModel = new AddExerciseModel()
             {
                 Name = exercise.Name,
                 Description = exercise.Description,
@@ -118,11 +118,11 @@
             return exerciseModel;
         }
 
-        public async Task<ICollection<AllExercisesViewModel>> GetAllExercisesAsync()
+        public async Task<ICollection<AllExercisesModel>> GetAllExercisesAsync()
         {
             var exercises = await dbContext.Exercises
                 .Where(e => !e.IsInPlan)
-                .Select(e => new AllExercisesViewModel()
+                .Select(e => new AllExercisesModel()
                 {
                     Id = e.Id.ToString(),
                     Name = e.Name,
