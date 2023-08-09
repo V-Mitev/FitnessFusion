@@ -1,10 +1,10 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-#nullable disable
+﻿#nullable disable
 
 namespace FitnessFusion.Data.Migrations
 {
+    using System;
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class UpdateTrainer2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -9,10 +9,10 @@
     {
         public void Configure(EntityTypeBuilder<Trainer> builder)
         {
-            builder.HasData(GenerateTraines());
+            builder.HasData(GenerateTrainers());
         }
 
-        private ICollection<Trainer> GenerateTraines()
+        private static ICollection<Trainer> GenerateTrainers()
         {
             var users = new List<Trainer>();
 

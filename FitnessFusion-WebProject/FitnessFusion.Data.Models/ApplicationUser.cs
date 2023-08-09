@@ -1,6 +1,8 @@
 ﻿namespace FitnessFusion.Data.Models
 {
     using Microsoft.AspNetCore.Identity;
+    using System.ComponentModel.DataAnnotations;
+    using static Common.EntityValidationConstants.User;
 
     public class ApplicationUser : IdentityUser<Guid>
     {
@@ -11,13 +13,13 @@
             IsSubscribeValid = false;
         }
 
-        public string? FirstName { get; set; }
+        [Required]
+        [MaxLength(FirstNameMaxLength)]
+        public string FirstName { get; set; } = null!;
 
-        public string? LastName { get; set; }
-
-        public string? ImgUrl { get; set; }
-
-        public DateTime? DateOfBirth { get; set; }
+        [Required]
+        [MaxLength(LastNameMaxLength)]
+        public string LastName { get; set; } = null!;
 
         public string? CurrentCaloriesGoal { get; set; }
 

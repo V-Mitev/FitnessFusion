@@ -1,6 +1,7 @@
 ﻿namespace FitnessFusion.Data.Configuration
 {
     using FitnessFusion.Data.Models;
+    using FitnessFusion.Data.Models.Enums;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -11,7 +12,7 @@
             builder.HasData(GenerateMeals());
         }
 
-        private ICollection<Meal> GenerateMeals()
+        private static ICollection<Meal> GenerateMeals()
         {
             ICollection<Meal> meals = new HashSet<Meal>();
 
@@ -22,7 +23,7 @@
                 Name = "TestBreakfast",
                 ImageUrl = "Musli.png",
                 CaloriesPer100g = 300,
-                MealType = Models.Enums.MealType.Breakfast
+                MealType = MealType.Breakfast
             };
             meals.Add(meal);
 
@@ -31,7 +32,7 @@
                 Name = "TestLunch",
                 ImageUrl = "Egg.png",
                 CaloriesPer100g = 300,
-                MealType = Models.Enums.MealType.Lunch
+                MealType = MealType.Lunch
             };
             meals.Add(meal);
 
@@ -40,7 +41,7 @@
                 Name = "TestDinner",
                 ImageUrl = "Egg.png",
                 CaloriesPer100g = 300,
-                MealType = Models.Enums.MealType.Dinner
+                MealType = MealType.Dinner
             };
             meals.Add(meal);
 
@@ -49,7 +50,7 @@
                 Name = "TestSnack",
                 ImageUrl = "Egg.png",
                 CaloriesPer100g = 300,
-                MealType = Models.Enums.MealType.Snack
+                MealType = MealType.Snack
             };
             meals.Add(meal);
 

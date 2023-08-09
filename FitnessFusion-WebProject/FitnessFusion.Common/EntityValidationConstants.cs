@@ -26,12 +26,12 @@
             public const int MaxAgeValue = 100;
         }
 
-        public static class ApplicationUser
+        public static class User
         {
-            public const int FirstNameMinLength = 3;
+            public const int FirstNameMinLength = 1;
             public const int FirstNameMaxLength = 50;
 
-            public const int LastNameMinLength = 5;
+            public const int LastNameMinLength = 1;
             public const int LastNameMaxLength = 50;
         }
 
