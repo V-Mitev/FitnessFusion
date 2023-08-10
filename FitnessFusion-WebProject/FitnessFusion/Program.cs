@@ -1,12 +1,14 @@
 namespace FitnessFusion
 {
+    using Data.Models;
     using FitnessFusion.Data;
-    using FitnessFusion.Data.Models;
-    using FitnessFusion.Services.Data.Interfaces;
-    using FitnessFusion.Web.Infastructure.ModelBinders;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
-    using static FitnessFusion.Web.Infastructure.Extensions.WebApplicationBuilderExtensions;
+    using Services.Data.Interfaces;
+    using Web.Infastructure.ModelBinders;
+    using static Common.GeneralApplicationConstants;
+    using static Web.Infastructure.Extensions.WebApplicationBuilderExtensions;
 
     public class Program
     {
@@ -36,6 +38,7 @@ namespace FitnessFusion
                 options.Password.RequiredLength =
                     builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
             })
+               .AddRoles<IdentityRole<Guid>>()
                .AddEntityFrameworkStores<FitnessFusionDbContext>();
 
             builder.Services.AddControllersWithViews();
@@ -84,6 +87,11 @@ namespace FitnessFusion
             app.UseAuthorization();
 
             app.UseSession();
+
+            if (app.Environment.IsDevelopment())
+            {
+                app.SeedAdministrator(DevelopmentAdminEmail);
+            }
 
             app.MapControllerRoute(
                 name: "default",
