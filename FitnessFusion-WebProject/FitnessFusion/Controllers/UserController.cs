@@ -84,6 +84,8 @@
             if (!result.Succeeded)
             {
                 TempData[ErrorMessage] = "There was an error loggin you in! Please try again later or contact an administrator.";
+
+                return View(model);
             }
 
             return Redirect(model.ReturnUrl ?? "/Home/Index");

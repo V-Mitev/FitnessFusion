@@ -39,7 +39,7 @@ namespace FitnessFusion
                .AddEntityFrameworkStores<FitnessFusionDbContext>();
 
             builder.Services.AddControllersWithViews();
-            
+
             builder.Services.AddApplicationServices(typeof(IFitnessService));
 
             builder.Services.ConfigureApplicationCookie(cfg =>
