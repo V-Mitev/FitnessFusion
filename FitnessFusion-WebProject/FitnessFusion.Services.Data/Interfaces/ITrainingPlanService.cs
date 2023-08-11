@@ -8,7 +8,7 @@
 
         public Task AddTrainingPlanAsync(TrainingPlanModel model, string trainerId);
 
-        public Task EditTrainingPlanAsync(TrainingPlanModel model, string trainingPlanId);
+        public Task EditTrainingPlanAsync(TrainingPlanModel model, string trainingPlanId, string userId);
 
         public Task<TrainingPlanModel> FindTrainingPlanByIdAsync(string id);
 

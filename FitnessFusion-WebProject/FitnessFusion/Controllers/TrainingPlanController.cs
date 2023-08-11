@@ -154,7 +154,9 @@
 
             model.AddedExercises = exercises.AddedExercises;
 
-            await trainingPlanService.EditTrainingPlanAsync(model, id);
+            var userId = User.GetId();
+
+            await trainingPlanService.EditTrainingPlanAsync(model, id, userId);
 
             HttpContext.Session.Remove("TrainingPlan");
 

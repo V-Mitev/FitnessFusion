@@ -158,7 +158,7 @@
             return detailsTP;
         }
 
-        public async Task EditTrainingPlanAsync(TrainingPlanModel model, string trainingPlanId)
+        public async Task EditTrainingPlanAsync(TrainingPlanModel model, string trainingPlanId, string userId)
         {
             var trainingPlan = await dbContext.TrainingPlans
                 .FindAsync(Guid.Parse(trainingPlanId));
@@ -166,6 +166,11 @@
             if (trainingPlan == null)
             {
                 throw new NullReferenceException("Training plan doesn't exists");
+            }
+
+            if (trainingPlan.TrainerId.ToString() != userId)
+            {
+                throw new InvalidOperationException("You can't edit training plan when you are not creator!");
             }
 
             var exercises = model.AddedExercises
