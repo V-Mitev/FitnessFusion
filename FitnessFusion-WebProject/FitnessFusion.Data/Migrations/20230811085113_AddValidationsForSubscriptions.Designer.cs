@@ -4,6 +4,7 @@ using FitnessFusion.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitnessFusion.Data.Migrations
 {
     [DbContext(typeof(FitnessFusionDbContext))]
-    partial class FitnessFusionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230811085113_AddValidationsForSubscriptions")]
+    partial class AddValidationsForSubscriptions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -184,7 +186,7 @@ namespace FitnessFusion.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("40f5c4c8-bc3d-4d35-832c-b83c5030acfd"),
+                            Id = new Guid("12da1e21-ca27-4a9d-bf54-fdaa4ccef51f"),
                             Description = "It involves lying on a bench and pressing weight upward using either a barbell or a pair of dumbbells. During a bench press, you lower the weight down to chest level and then press upwards while extending your arms.",
                             Difficulty = 1,
                             ImagePath = "BenchPress.jfif",
@@ -195,7 +197,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("61b9b845-e9fa-4af1-abd1-fb32fcbe3142"),
+                            Id = new Guid("c9c2e517-5585-4ae5-a2f6-fd852e3f0f03"),
                             Description = "An exercise in which a standing person lowers to a position in which the torso is erect and the knees are deeply bent and then rises to an upright position.",
                             Difficulty = 1,
                             ImagePath = "Squat.jfif",
@@ -206,7 +208,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("996fdfbb-6914-4b20-b7ac-a33538a44b99"),
+                            Id = new Guid("0f0de187-df2a-4530-a810-3516e3024ef2"),
                             Description = "A pull-up is an upper-body exercise that involves hanging from a pull-up bar by your hands with your palms facing away from you, and lifting your entire body up with your arm and back muscles until your chest touches the bar.",
                             Difficulty = 1,
                             ImagePath = "PullUp.jfif",
@@ -246,7 +248,7 @@ namespace FitnessFusion.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d6665c3c-7766-4b0c-9e1f-8612fdd054b8"),
+                            Id = new Guid("773ecf45-c1a9-4ad4-aa15-12a2c4438ea3"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "Musli.png",
                             MealType = 0,
@@ -254,7 +256,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("046f3f12-68d3-41bb-8a92-56cb3ef78760"),
+                            Id = new Guid("73cb20f6-d377-4181-accc-c6c881cd07e8"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "Egg.png",
                             MealType = 1,
@@ -262,7 +264,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("17eadaf8-7bb4-4e99-980c-ca2cb304d1ac"),
+                            Id = new Guid("e8b584fa-2210-4b54-9df4-a97aab88b430"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "Egg.png",
                             MealType = 3,
@@ -270,7 +272,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("e86c01fd-b809-4083-b7f9-be76fa0bf2b9"),
+                            Id = new Guid("aabccb7d-2728-486d-83ad-7319004406d7"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "Egg.png",
                             MealType = 2,
@@ -479,9 +481,9 @@ namespace FitnessFusion.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("315049a5-17a6-475a-93ad-ad03f478a7de"),
+                            Id = new Guid("f34e9aa2-d8b0-40d2-bb4b-6b1df9b3ecaf"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b834c6c7-2ce9-46d8-a212-ee36b935b555",
+                            ConcurrencyStamp = "d5527fd9-a68b-402b-91bc-863b7130d126",
                             Email = "trainer@abv.bg",
                             EmailConfirmed = true,
                             FirstName = "Test",
@@ -491,9 +493,9 @@ namespace FitnessFusion.Data.Migrations
                             LockoutEnabled = true,
                             NormalizedEmail = "TRAINER@ABV.BG",
                             NormalizedUserName = "TRAINER@ABV.BG",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKLwMalHURYjNueFxhsRMs8F9AacIfjIl5TdMjF2QPDhTfE69PmKTrV7ZPaysaP6VA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELwSmQQM7bEBy4KM5M+5aNPnRi/sCbLWNdsQCphTegNpAHNsm376At4shNBYtTBGKw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c61c5bbd-d662-4856-b742-3ef373d52f2d",
+                            SecurityStamp = "23b2176e-ba9e-4bc2-b01d-8c29e9739d50",
                             TwoFactorEnabled = false,
                             UserName = "trainer@abv.bg",
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vestibulum sollicitudin est, varius vehicula erat pulvinar vel. Morbi molestie accumsan dolor, in bibendum mauris faucibus eu. Donec finibus a quam consectetur fermentum. Pellentesque faucibus at neque et iaculis. Sed consequat urna pulvinar feugiat finibus."

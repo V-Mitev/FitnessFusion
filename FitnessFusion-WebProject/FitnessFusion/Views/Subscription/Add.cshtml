@@ -1,0 +1,41 @@
+﻿@model SubscriptionModel
+@using static FitnessFusion.Common.EntityValidationConstants.Subscription;
+
+@{
+    ViewData["Title"] = "Add subscription";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-controller="Subscription" asp-action="Add" method="post">
+    <div class="form-group mb-2">
+        <label asp-for="Name" class="form-label-add-edit">Name</label>
+        <input asp-for="Name" class="form-control" minlength="@NameMinLength" maxlength="@NameMaxLength" required />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-2">
+        <label asp-for="Price">Price:</label>
+        <input type="decimal" class="form-control" asp-for="Price" min="@PriceMinValue" step="1" max="@PriceMaxValue" required>
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-2">
+        <label asp-for="Image">Image:</label>
+        <input type="file" class="form-control" asp-for="Image" accept="image/*" required>
+        <span asp-validation-for="Image" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-2">
+        <label for="subscriptionType">Subscription Type:</label>
+        <select class="form-control" id="subscriptionType" name="subscriptionType" required>
+            <option value="">Select a subscription type</option>
+            @foreach (var subscription in Enum.GetValues(typeof(TypeOfSubscription)))
+            {
+                <option value="@subscription">@subscription</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Subscription</button>
+</form>

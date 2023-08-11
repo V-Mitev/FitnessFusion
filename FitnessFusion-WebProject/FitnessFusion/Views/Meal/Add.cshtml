@@ -26,10 +26,10 @@
         <label for="mealType">Meal Type:</label>
         <select class="form-control" id="mealType" name="mealType" required>
             <option value="">Select a meal type</option>
-            <option value="Breakfast">Breakfast</option>
-            <option value="Lunch">Lunch</option>
-            <option value="Dinner">Dinner</option>
-            <option value="Snack">Snack</option>
+            @foreach (var meal in Enum.GetValues(typeof(MealType)))
+            {
+                <option value="@meal.ToString()">@meal</option>
+            }
         </select>
     </div>
     <br />

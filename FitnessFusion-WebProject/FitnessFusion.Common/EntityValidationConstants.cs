@@ -61,5 +61,20 @@
             public const int DescriptionMinLength = 5;
             public const int DescriptionMaxLength = 50;
         }
+
+        public static class Subscription
+        {
+            public const int SubscriptionMinValue = 0;
+            public const int SubscriptionMaxValue = 2;
+
+            public const int NameMinLength = 3;
+            public const int NameMaxLength = 50;
+
+            public const int ImageUrlMinLength = 1;
+            public const int ImageUrlMaxLength = 2048;
+
+            public const string PriceMinValue = "1";
+            public const string PriceMaxValue = "250";
+        }
     }
 }
