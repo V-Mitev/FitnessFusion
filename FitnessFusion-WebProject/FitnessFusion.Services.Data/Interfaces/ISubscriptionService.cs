@@ -4,6 +4,8 @@
 
     public interface ISubscriptionService
     {
-        Task<ICollection<AllSubscriptionModel>> GetAllSubscriptions();
+        Task<ICollection<SubscriptionModel>> GetAllSubscriptions();
+
+        Task AddSubscription(SubscriptionModel model, string userId);
     }
 }

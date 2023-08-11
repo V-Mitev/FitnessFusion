@@ -64,8 +64,8 @@
 
         public static class Subscription
         {
-            public const int SubscriptionMinValue = 0;
-            public const int SubscriptionMaxValue = 2;
+            public const int SubscriptionTypeMinValue = 0;
+            public const int SubscriptionTypeMaxValue = 2;
 
             public const int NameMinLength = 3;
             public const int NameMaxLength = 50;
@@ -75,6 +75,9 @@
 
             public const string PriceMinValue = "1";
             public const string PriceMaxValue = "250";
+
+            public const int DescriptionMinLength = 5;
+            public const int DescriptionMaxLength = 100;
         }
     }
 }

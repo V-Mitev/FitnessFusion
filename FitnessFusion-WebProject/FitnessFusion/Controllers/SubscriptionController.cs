@@ -1,6 +1,7 @@
 ﻿namespace FitnessFusion.Web.Controllers
 {
     using FitnessFusion.Services.Data.Interfaces;
+    using FitnessFusion.Web.Infastructure.Extensions;
     using FitnessFusion.Web.ViewModels.Subscription;
     using Microsoft.AspNetCore.Mvc;
 
@@ -36,6 +37,8 @@
             {
                 return View(model);
             }
+
+            await subscriptionService.AddSubscription(model, User.GetId());
 
             return RedirectToAction("All");
         }

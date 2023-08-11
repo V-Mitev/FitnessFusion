@@ -32,7 +32,7 @@
             <option value="">Select a muscle group</option>
             @foreach (var muscleGroup in Enum.GetValues(typeof(MuscleGroups)))
             {
-                <option value="@muscleGroup">@muscleGroup</option>
+                <option value="@muscleGroup.ToString()">@muscleGroup</option>
             }
         </select>
     </div>

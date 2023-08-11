@@ -4,6 +4,7 @@
     using Microsoft.EntityFrameworkCore.Metadata.Internal;
     using System.ComponentModel.DataAnnotations;
     using static Common.EntityValidationConstants.Subscription;
+
     public class Subscription
     {
         public Subscription()
@@ -20,7 +21,7 @@
         public string Name { get; set; } = null!;
 
         [Required]
-        [Range(SubscriptionMinValue, SubscriptionMaxValue)]
+        [Range(SubscriptionTypeMinValue, SubscriptionTypeMaxValue)]
         public TypeOfSubscription TypeOfSubscription { get; set; }
 
         [Required]
@@ -30,6 +31,14 @@
         [Required]
         [Range(typeof(decimal), PriceMinValue, PriceMaxValue)]
         public decimal Price { get; set; }
+
+        public DateTime StartSubscription { get; set; }
+
+        public DateTime EndSubscription { get; set; }
+
+        [Required]
+        [MaxLength(DescriptionMaxLength)]
+        public string Description { get; set; } = null!;
 
         public ICollection<ApplicationUser> Users { get; set; }
     }

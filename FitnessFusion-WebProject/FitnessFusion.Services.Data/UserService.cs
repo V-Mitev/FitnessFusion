@@ -33,6 +33,11 @@
             var trainer = await dbContext.Trainers
                 .FirstOrDefaultAsync(t => t.IsTrainer && t.Id.ToString() == userId);
 
+            if (trainer == null)
+            {
+                return false;
+            }
+
             return trainer!.IsTrainer;
         }
     }
