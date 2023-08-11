@@ -40,6 +40,8 @@
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; } = null!;
 
+        public bool IsSubscriptionValid { get; set; }
+
         public ICollection<ApplicationUser> Users { get; set; }
     }
 }

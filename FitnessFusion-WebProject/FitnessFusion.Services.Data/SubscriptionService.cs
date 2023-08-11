@@ -48,6 +48,40 @@
             await dbContext.SaveChangesAsync();
         }
 
+        public async Task DeleteSubscription(string subscriptionId)
+        {
+            var subscription = await dbContext.Subscriptions
+                .FindAsync(Guid.Parse(subscriptionId));
+
+            if (subscription == null)
+            {
+                throw new NullReferenceException("Subscription doesn't exists");
+            }
+
+            dbContext.Subscriptions.Remove(subscription);
+
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task Edit(SubscriptionModel model, string subscriptionId)
+        {
+            var subscription = await dbContext.Subscriptions
+                .FindAsync(Guid.Parse(subscriptionId));
+
+            if (subscription == null)
+            {
+                throw new NullReferenceException("Subscription doesn't exists");
+            }
+
+            subscription.Id = Guid.Parse(model.Id!);
+            subscription.Name = model.Name;
+            subscription.Description = model.Description;
+            subscription.Price = model.Price;
+            subscription.Image = model.Image;
+
+            await dbContext.SaveChangesAsync();
+        }
+
         public async Task<ICollection<SubscriptionModel>> GetAllSubscriptions()
         {
             var subscriptions = await dbContext.Subscriptions
@@ -61,6 +95,49 @@
                 .ToListAsync();
 
             return subscriptions;
+        }
+
+        public async Task<SubscriptionModel> GetSubscription(string subscriptionId)
+        {
+            var subscription = await dbContext.Subscriptions
+                .FindAsync(Guid.Parse(subscriptionId));
+
+            if (subscription == null)
+            {
+                throw new NullReferenceException("Subscription doesn't exists");
+            }
+
+            var subscriptionModel = new SubscriptionModel()
+            {
+                Id = subscriptionId,
+                Name = subscription.Name,
+                Description = subscription.Description,
+                Image = subscription.Image,
+                TypeOfSubscription = subscription.TypeOfSubscription,
+                Price = subscription.Price,
+                StartSubscription = subscription.StartSubscription.ToString(),
+                EndSubscription = subscription.EndSubscription.ToString()
+            };
+
+            return subscriptionModel;
+        }
+
+        public async Task<bool> IsSubscriptionValid(string subscriptionId)
+        {
+            var subscription = await dbContext.Subscriptions
+                .FindAsync(Guid.Parse(subscriptionId));
+
+            if (subscription == null)
+            {
+                throw new NullReferenceException("Subscription doesn't exists");
+            }
+
+            if (subscription.StartSubscription.Day == subscription.EndSubscription.Day && subscription.StartSubscription.Month < subscription.EndSubscription.Month)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

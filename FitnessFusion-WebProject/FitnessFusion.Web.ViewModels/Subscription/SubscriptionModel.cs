@@ -29,5 +29,7 @@
         [Required]
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
         public string Description { get; set; } = null!;
+
+        public bool IsSubscriptionValid { get; set; }
     }
 }
