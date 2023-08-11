@@ -1,5 +1,6 @@
 ﻿namespace FitnessFusion.Data.Models
 {
+    using FitnessFusion.Data.Models.Enums;
     using Microsoft.EntityFrameworkCore.Metadata.Internal;
     using System.ComponentModel.DataAnnotations;
 
@@ -18,12 +19,10 @@
         public string Name { get; set; } = null!;
 
         [Required]
-        public string TypeOfSubscription { get; set; } = null!;
+        public TypeOfSubscription TypeOfSubscription { get; set; }
 
         [Required]
         public decimal Price { get; set; }
-
-        public int PeriodOfSubscription { get; set; }
 
         public ICollection<ApplicationUser> Users { get; set; }
     }
