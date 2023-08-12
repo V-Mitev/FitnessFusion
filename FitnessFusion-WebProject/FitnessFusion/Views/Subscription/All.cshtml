@@ -8,9 +8,9 @@
 
 @foreach (var subscription in Model)
 {
-    <div class="training-plan">
-        <img src="~/img/@subscription.Image" alt="Plan Image">
-        <div class="training-plan-details">
+    <div class="subscription col-md-4">
+        <img src="~/img/@subscription.Image" alt="Subscription Image">
+        <div class="subscription-plan-details">
             <h3>@subscription.Name</h3>
             <p>@subscription.Price</p>
             <p>@subscription.TypeOfSubscription</p>

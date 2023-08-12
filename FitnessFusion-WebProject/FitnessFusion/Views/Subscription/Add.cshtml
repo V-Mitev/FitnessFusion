@@ -15,7 +15,7 @@
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
+    <div class="form-group mb-2">
         <label asp-for="Description">Description</label>
         <textarea id="description" name="Description" class="form-control" minlength="@DescriptionMinLength" maxlength="@DescriptionMaxLength" required></textarea>
         <span asp-validation-for="Description" class="text-danger"></span>

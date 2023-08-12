@@ -22,14 +22,8 @@
         [Range(typeof(decimal), PriceMinValue, PriceMaxValue)]
         public decimal Price { get; set; }
 
-        public string? StartSubscription { get; set; }
-
-        public string? EndSubscription { get; set; }
-
         [Required]
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
         public string Description { get; set; } = null!;
-
-        public bool IsSubscriptionValid { get; set; }
     }
 }

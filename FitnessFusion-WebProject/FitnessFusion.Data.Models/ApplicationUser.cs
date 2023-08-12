@@ -25,6 +25,10 @@
 
         public bool IsTrainer { get; set; }
 
+        public DateTime? StartSubscription { get; set; }
+
+        public DateTime? EndSubscription { get; set; }
+
         public bool IsSubscribeValid { get; set; }
 
         public ICollection<Subscription> Subscriptions { get; set; }

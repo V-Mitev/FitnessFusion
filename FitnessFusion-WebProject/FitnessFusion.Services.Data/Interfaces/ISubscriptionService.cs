@@ -13,7 +13,5 @@
         public Task<SubscriptionModel> GetSubscription(string subscriptionId);
 
         public Task Edit(SubscriptionModel model, string subscriptionId);
-
-        public Task<bool> IsSubscriptionValid(string subscriptionId);
     }
 }

@@ -20,17 +20,13 @@
 
         public async Task AddSubscription(SubscriptionModel model, string userId)
         {
-            var daysInMonth = DateTime.DaysInMonth(DateTime.UtcNow.Year, DateTime.UtcNow.Month);
-
             var subscription = new Subscription()
             {
                 Name = model.Name,
                 Image = model.Image,
                 Price = model.Price,
                 Description = model.Description,
-                TypeOfSubscription = (TypeOfSubscription)model.TypeOfSubscription!,
-                StartSubscription = DateTime.UtcNow,
-                EndSubscription = DateTime.UtcNow.AddDays(daysInMonth)
+                TypeOfSubscription = (TypeOfSubscription)model.TypeOfSubscription!
             };
 
             var user = await dbContext.ApplicationUsers
@@ -87,7 +83,9 @@
             var subscriptions = await dbContext.Subscriptions
                 .Select(s => new SubscriptionModel
                 {
+                    Id = s.Id.ToString(),
                     Name = s.Name,
+                    Description = s.Description,
                     Image = s.Image,
                     TypeOfSubscription = s.TypeOfSubscription,
                     Price = s.Price
@@ -114,30 +112,10 @@
                 Description = subscription.Description,
                 Image = subscription.Image,
                 TypeOfSubscription = subscription.TypeOfSubscription,
-                Price = subscription.Price,
-                StartSubscription = subscription.StartSubscription.ToString(),
-                EndSubscription = subscription.EndSubscription.ToString()
+                Price = subscription.Price
             };
 
             return subscriptionModel;
-        }
-
-        public async Task<bool> IsSubscriptionValid(string subscriptionId)
-        {
-            var subscription = await dbContext.Subscriptions
-                .FindAsync(Guid.Parse(subscriptionId));
-
-            if (subscription == null)
-            {
-                throw new NullReferenceException("Subscription doesn't exists");
-            }
-
-            if (subscription.StartSubscription.Day == subscription.EndSubscription.Day && subscription.StartSubscription.Month < subscription.EndSubscription.Month)
-            {
-                return false;
-            }
-
-            return true;
         }
     }
 }
