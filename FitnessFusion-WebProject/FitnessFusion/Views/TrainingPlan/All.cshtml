@@ -6,7 +6,7 @@
 @{
     string currentUserId = User.GetId().ToLower();
     bool isUserAdmin = User.IsAdmin();
-    var isUserTrainer = await UserService.IsUserTrainer(currentUserId);
+    var isUserTrainer = await UserService.IsUserTrainerAsync(currentUserId);
     ViewData["Title"] = "All Training Plans";
 }
 

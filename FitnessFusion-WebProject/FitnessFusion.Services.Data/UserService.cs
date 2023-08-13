@@ -28,7 +28,7 @@
             return $"{user.FirstName} {user.LastName}";
         }
 
-        public async Task<bool> IsUserTrainer(string userId)
+        public async Task<bool> IsUserTrainerAsync(string userId)
         {
             var trainer = await dbContext.Trainers
                 .FirstOrDefaultAsync(t => t.IsTrainer && t.Id.ToString() == userId);

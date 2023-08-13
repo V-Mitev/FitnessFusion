@@ -15,5 +15,7 @@
         public Task DeleteExerciseAsync(string id);
 
         public Task<ExerciseDetailsModel> DetailsAsync(string id);
+
+        public Task<bool> IsExerciseExistByIdAsync(string id);
     }
 }

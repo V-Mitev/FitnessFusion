@@ -117,5 +117,13 @@
 
             return subscriptionModel;
         }
+
+        public async Task<bool> IsSubscriptionExistByIdAsync(string id)
+        {
+            var resutl = await dbContext.Subscriptions
+                .AnyAsync(s => s.Id.ToString() == id);
+
+            return resutl;
+        }
     }
 }

@@ -23,7 +23,7 @@
 
     <div class="form-group mb-2">
         <label asp-for="Price">Price:</label>
-        <input type="decimal" class="form-control" asp-for="Price" min="@PriceMinValue" step="1" max="@PriceMaxValue" required>
+        <input type="text" class="form-control" asp-for="Price" min="@PriceMinValue" step="1" max="@PriceMaxValue" required>
         <span asp-validation-for="Price" class="text-danger"></span>
     </div>
 

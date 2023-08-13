@@ -4,6 +4,8 @@
     {
         public Task<string> GetFullNameByEmailAsyncAsync(string email);
 
-        public Task<bool> IsUserTrainer(string userId);
+        public Task<bool> IsUserTrainerAsync(string userId);
+
+        public Task<bool> IsUserExistByIdAsync(string userId);
     }
 }

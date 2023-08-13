@@ -247,7 +247,7 @@
 
             if (exerciseDb == null)
             {
-                throw new ArgumentNullException(nameof(exerciseDb));
+                throw new ArgumentNullException("This exercise doens't exist");
             }
 
             TrainingPlanExercisesModel exerciseTp = new TrainingPlanExercisesModel()
@@ -279,7 +279,16 @@
             return trainingPlans;
         }
 
-        public async Task<bool> IsExercisesAlreadyCreated(string trainingPlanId, string exerciseName)
+        public async Task<bool> IsExerciseExistInTrainingPlanAsync(string id)
+        {
+            var result = await dbContext.Exercises
+                .Where(e => e.IsInPlan)
+                .AnyAsync(e => e.Id.ToString() == id);
+
+            return result;
+        }
+
+        public async Task<bool> IsExercisesAlreadyCreatedAsync(string trainingPlanId, string exerciseName)
         {
             var trainingPlan = await dbContext.TrainingPlans
                 .Include(tp => tp.Exercises)
@@ -290,6 +299,14 @@
                 .FirstOrDefaultAsync();
 
             return trainingPlan!.Exercises.Any(e => e.Name == exerciseName && e.IsInPlan);
+        }
+
+        public async Task<bool> IsTrainingPlanExistByIdAsync(string id)
+        {
+            var result = await dbContext.TrainingPlans
+                .AnyAsync(tp => tp.Id.ToString() == id);
+
+            return result;
         }
     }
 }

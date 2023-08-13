@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<AllExercisesModel>
 @inject IUserService UserService;
 @{
-    var isUserTrainer = await UserService.IsUserTrainer(User.GetId());
+    var isUserTrainer = await UserService.IsUserTrainerAsync(User.GetId());
     var isAdmin = User.IsAdmin();
     ViewData["Title"] = "Exercise Examples";
 }

@@ -13,5 +13,7 @@
         public Task<AddMealModel> FindMealAsync(string mealId);
 
         public Task EditMealAsync(string mealId, AddMealModel model);
+
+        public Task<bool> IsMealExistByIdAsync(string id);
     }
 }

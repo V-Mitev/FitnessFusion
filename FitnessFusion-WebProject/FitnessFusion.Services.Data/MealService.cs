@@ -98,5 +98,13 @@
 
             return mealViewModel;
         }
+
+        public async Task<bool> IsMealExistByIdAsync(string id)
+        {
+            var result = await dbContext.Meals
+                .AnyAsync(m => m.Id.ToString() ==  id);
+
+            return result;
+        }
     }
 }

@@ -133,5 +133,14 @@
 
             return exercises;
         }
+
+        public async Task<bool> IsExerciseExistByIdAsync(string id)
+        {
+            var result = await dbContext.Exercises
+                .Where(e => !e.IsInPlan)
+                .AnyAsync(e => e.Id.ToString() == id);
+
+            return result;
+        }
     }
 }

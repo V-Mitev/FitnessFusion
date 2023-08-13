@@ -12,10 +12,13 @@
     public class TrainingPlanController : Controller
     {
         private readonly ITrainingPlanService trainingPlanService;
+        private readonly IUserService userService;
 
-        public TrainingPlanController(ITrainingPlanService trainingPlanService)
+        public TrainingPlanController(
+            ITrainingPlanService trainingPlanService, IUserService userService)
         {
             this.trainingPlanService = trainingPlanService;
+            this.userService = userService;
         }
 
         [HttpGet]
@@ -34,8 +37,17 @@
         }
 
         [HttpGet]
-        public IActionResult CreateTrainingPlan()
+        public async Task<IActionResult> CreateTrainingPlanAsync()
         {
+            var userExist = await userService.IsUserExistByIdAsync(User.GetId());
+
+            if (!userExist)
+            {
+                TempData[ErrorMessage] = "User with provided id does not exist! Please try again!"; ;
+
+                return RedirectToAction("CreateTrainingPlan");
+            }
+
             var model = HttpContext.Session.GetObject<TrainingPlanModel>("TrainingPlan");
 
             if (model == null)
@@ -70,15 +82,31 @@
                 return View(model);
             }
 
-            var userId = User.GetId();
+            var userExist = await userService.IsUserExistByIdAsync(User.GetId());
 
-            model.AddedExercises.AddRange(sessionTrainingPlan.AddedExercises);
+            if (!userExist)
+            {
+                TempData[ErrorMessage] = "User with provided id does not exist! Please try again!"; ;
 
-            await trainingPlanService.AddTrainingPlanAsync(model, userId);
+                return RedirectToAction("CreateTrainingPlan");
+            }
 
-            HttpContext.Session.Remove("TrainingPlan");
+            try
+            {
+                var userId = User.GetId();
 
-            return RedirectToAction("All");
+                model.AddedExercises.AddRange(sessionTrainingPlan.AddedExercises);
+
+                await trainingPlanService.AddTrainingPlanAsync(model, userId);
+
+                HttpContext.Session.Remove("TrainingPlan");
+
+                return RedirectToAction("All");
+            }
+            catch (Exception)
+            {
+                return GeneralError();
+            }
         }
 
         [HttpGet]
@@ -88,6 +116,8 @@
 
             if (trainingPlan == null)
             {
+                TempData[ErrorMessage] = "Please create training plan then add exercises!";
+
                 return RedirectToAction("CreateTrainingPlan");
             }
 
@@ -104,12 +134,19 @@
                 return View(model);
             }
 
-            var trainingPlan = HttpContext.Session.GetObject<TrainingPlanModel>("TrainingPlan")!;
+            var trainingPlan = HttpContext.Session.GetObject<TrainingPlanModel>("TrainingPlan");
+
+            if (trainingPlan == null)
+            {
+                TempData[ErrorMessage] = "Please create training plan then add exercises!";
+
+                return RedirectToAction("CreateTrainingPlan");
+            }
 
             // This check is when training plan is already created to can add exercises.
             if (!string.IsNullOrEmpty(trainingPlan.Id))
             {
-                var isExerciseAlreadyCreated = await trainingPlanService.IsExercisesAlreadyCreated(trainingPlan.Id, model.Name);
+                var isExerciseAlreadyCreated = await trainingPlanService.IsExercisesAlreadyCreatedAsync(trainingPlan.Id, model.Name);
 
                 if (isExerciseAlreadyCreated)
                 {
@@ -125,98 +162,269 @@
                 return RedirectToAction("EditTrainingPlan", new { trainingPlan.Id });
             }
 
-            trainingPlanService.AddExerciseToPlan(model, trainingPlan);
+            try
+            {
+                trainingPlanService.AddExerciseToPlan(model, trainingPlan);
 
-            HttpContext.Session.SetObject("TrainingPlan", trainingPlan);
+                HttpContext.Session.SetObject("TrainingPlan", trainingPlan);
 
-            return RedirectToAction("CreateTrainingPlan");
+                return RedirectToAction("CreateTrainingPlan");
+            }
+            catch (Exception)
+            {
+                return GeneralError();
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> EditTrainingPlan(string id)
         {
-            var model = await trainingPlanService.FindTrainingPlanByIdAsync(id);
+            var trainingPlanExist = await trainingPlanService.IsTrainingPlanExistByIdAsync(id);
 
-            HttpContext.Session.SetObject("TrainingPlan", model);
+            if (!trainingPlanExist)
+            {
+                TempData[ErrorMessage] = "Training plan with provided id does not exist! Please try again!";
 
-            return View(model);
+                return RedirectToAction("All");
+            }
+
+            try
+            {
+                var model = await trainingPlanService.FindTrainingPlanByIdAsync(id);
+
+                HttpContext.Session.SetObject("TrainingPlan", model);
+
+                return View(model);
+            }
+            catch (Exception)
+            {
+                return GeneralError();
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditTrainingPlan(TrainingPlanModel model, string id)
+        public async Task<IActionResult> EditTrainingPlan(TrainingPlanModel model, string tpId)
         {
+            var userExist = await userService.IsUserExistByIdAsync(User.GetId());
+
+            if (!userExist)
+            {
+                TempData[ErrorMessage] = "User with provided id does not exist! Please try again!"; ;
+
+                return RedirectToAction("CreateTrainingPlan");
+            }
+
+            var isTrainingPlanExist = await trainingPlanService.IsTrainingPlanExistByIdAsync(tpId);
+
+            if (!isTrainingPlanExist)
+            {
+                TempData[ErrorMessage] = "Training plan with provided id does not exist! Please try again!";
+
+                return RedirectToAction("All");
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            var exercises = HttpContext.Session.GetObject<TrainingPlanModel>("TrainingPlan")!;
+            var tpExercisesSession = HttpContext.Session.GetObject<TrainingPlanModel>("TrainingPlan")!;
 
-            model.AddedExercises = exercises.AddedExercises;
+            model.AddedExercises = tpExercisesSession.AddedExercises;
 
             var userId = User.GetId();
 
-            await trainingPlanService.EditTrainingPlanAsync(model, id, userId);
+            try
+            {
+                await trainingPlanService.EditTrainingPlanAsync(model, tpId, userId);
 
-            HttpContext.Session.Remove("TrainingPlan");
+                HttpContext.Session.Remove("TrainingPlan");
 
-            return RedirectToAction("All");
+                return RedirectToAction("All");
+            }
+            catch (Exception)
+            {
+                return GeneralError();
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> DeleteTrainingPlan(string id)
         {
-            await trainingPlanService.DeleteTrainingPlanAsync(id);
+            var isTrainingPlanExist = await trainingPlanService.IsTrainingPlanExistByIdAsync(id);
 
-            return RedirectToAction("All");
+            if (!isTrainingPlanExist)
+            {
+                TempData[ErrorMessage] = "Training plan with provided id does not exist! Please try again!";
+
+                return RedirectToAction("All");
+            }
+
+            try
+            {
+                await trainingPlanService.DeleteTrainingPlanAsync(id);
+
+                return RedirectToAction("All");
+            }
+            catch (Exception)
+            {
+                return GeneralError();
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(string id)
         {
-            var model = await trainingPlanService.DetailsAsync(id);
+            var isTrainingPlanExist = await trainingPlanService.IsTrainingPlanExistByIdAsync(id);
 
-            return View(model);
+            if (!isTrainingPlanExist)
+            {
+                TempData[ErrorMessage] = "Training plan with provided id does not exist! Please try again!";
+
+                return RedirectToAction("All");
+            }
+
+            try
+            {
+                var model = await trainingPlanService.DetailsAsync(id);
+
+                return View(model);
+            }
+            catch (Exception)
+            {
+                return GeneralError();
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> EditExercise(string id)
         {
-            var model = await trainingPlanService.FindTrainingPlanExerciseAsync(id);
+            var exerciseExistInPlan = 
+                await trainingPlanService.IsExerciseExistInTrainingPlanAsync(id);
 
-            return View(model);
+            if (!exerciseExistInPlan)
+            {
+                TempData[ErrorMessage] = "Exercise with provided id does not exist! Please try again!";
+
+                return RedirectToAction("EditTrainingPlan");
+            }
+
+            try
+            {
+                var model = await trainingPlanService.FindTrainingPlanExerciseAsync(id);
+
+                return View(model);
+            }
+            catch (Exception)
+            {
+                return GeneralError();
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> EditExercise(string id, TrainingPlanExercisesModel exercisesTp)
         {
+            var trainingPlan = HttpContext.Session.GetObject<TrainingPlanModel>("TrainingPlan");
+
+            if (trainingPlan == null)
+            {
+                TempData[ErrorMessage] = "Training plan does not exist! Please try again!";
+
+                return RedirectToAction("All");
+            }
+
+            var trainingPlanExist = await trainingPlanService.IsTrainingPlanExistByIdAsync(trainingPlan.Id!.ToString());
+
+            if (!trainingPlanExist)
+            {
+                TempData[ErrorMessage] = "Training plan with provided id does not exist! Please try again!";
+
+                return RedirectToAction("All");
+            }
+
+            var exerciseExistInPlan = 
+                await trainingPlanService.IsExerciseExistInTrainingPlanAsync(id);
+
+            if (!exerciseExistInPlan)
+            {
+                TempData[ErrorMessage] = "Exercise with provided id does not exist! Please try again!";
+
+                return RedirectToAction("EditTrainingPlan");
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(exercisesTp);
             }
 
-            await trainingPlanService.EditTrainingPlanExerciseAsync(id, exercisesTp);
+            try
+            {
+                await trainingPlanService.EditTrainingPlanExerciseAsync(id, exercisesTp);
 
-            var tpId = HttpContext.Session.GetObject<TrainingPlanModel>("TrainingPlan");
-
-            return RedirectToAction("EditTrainingPlan", new { tpId!.Id });
+                return RedirectToAction("EditTrainingPlan", new { trainingPlan.Id });
+            }
+            catch (Exception)
+            {
+                return GeneralError();
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> DeleteExercise(string id)
         {
-            var tpId = HttpContext.Session.GetObject<TrainingPlanModel>("TrainingPlan");
+            var exerciseExistInPlan = 
+                await trainingPlanService.IsExerciseExistInTrainingPlanAsync(id);
 
-            if (tpId != null && tpId.AddedExercises.Count == 1)
+            if (!exerciseExistInPlan)
             {
-                TempData[ErrorMessage] = "You need to have minimum one exercise";
+                TempData[ErrorMessage] = "Exercise with provided id does not exist! Please try again!";
 
-                return RedirectToAction("EditTrainingPlan", new { id = tpId!.Id });
+                return RedirectToAction("EditTrainingPlan");
             }
 
-            await trainingPlanService.DeleteExerciseInTrainingPlanAsync(id);
+            var trainingPlan = HttpContext.Session.GetObject<TrainingPlanModel>("TrainingPlan");
 
-            return RedirectToAction("EditTrainingPlan", new { id = tpId!.Id });
+            if (trainingPlan == null)
+            {
+                TempData[ErrorMessage] = "Training plan does not exist! Please try again!";
+
+                return RedirectToAction("All");
+            }
+
+            var trainingPlanExist = await trainingPlanService.IsTrainingPlanExistByIdAsync(trainingPlan.Id!.ToString());
+
+            if (!trainingPlanExist)
+            {
+                TempData[ErrorMessage] = "Training plan with provided id does not exist! Please try again!";
+
+                return RedirectToAction("All");
+            }
+
+            if (trainingPlan.AddedExercises.Count == 1)
+            {
+                TempData[ErrorMessage] = "You need to have minimum one exercise in training plan!";
+
+                return RedirectToAction("EditTrainingPlan", new { id = trainingPlan.Id });
+            }
+
+            try
+            {
+                await trainingPlanService.DeleteExerciseInTrainingPlanAsync(id);
+
+                return RedirectToAction("EditTrainingPlan", new { id = trainingPlan.Id });
+            }
+            catch (Exception)
+            {
+                return GeneralError();
+            }
+        }
+
+        private IActionResult GeneralError()
+        {
+            TempData[ErrorMessage] =
+                "Unexpected error occurred! Please try again later or contact administrator";
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

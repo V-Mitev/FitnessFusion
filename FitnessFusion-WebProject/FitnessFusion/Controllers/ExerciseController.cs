@@ -4,6 +4,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Services.Data.Interfaces;
     using Web.ViewModels.Exercise;
+    using static Common.NotificationMessagesConstant;
 
     [Authorize]
     public class ExerciseController : Controller
@@ -39,46 +40,125 @@
                 return View(model);
             }
 
-            await exerciseService.AddExerciseAsync(model);
+            try
+            {
+                await exerciseService.AddExerciseAsync(model);
 
-            return RedirectToAction("All");
+                return RedirectToAction("All");
+            }
+            catch (Exception)
+            {
+                return GeneralError();
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(string id)
         {
-            var model = await exerciseService.DetailsAsync(id);
+            var exerciseExist = await exerciseService.IsExerciseExistByIdAsync(id);
 
-            return View(model);
+            if (!exerciseExist)
+            {
+                TempData[ErrorMessage] = "Exercise with provided id does not exist! Please try again!";
+
+                return RedirectToAction("All");
+            }
+
+            try
+            {
+                var model = await exerciseService.DetailsAsync(id);
+
+                return View(model);
+            }
+            catch (Exception)
+            {
+                return GeneralError();
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
-            var exercise = await exerciseService.FindExerciseAsync(id);
+            var exerciseExist = await exerciseService.IsExerciseExistByIdAsync(id);
 
-            return View(exercise);
+            if (!exerciseExist)
+            {
+                TempData[ErrorMessage] = "Exercise with provided id does not exist! Please try again!";
+
+                return RedirectToAction("All");
+            }
+
+            try
+            {
+                var exercise = await exerciseService.FindExerciseAsync(id);
+
+                return View(exercise);
+            }
+            catch (Exception)
+            {
+                return GeneralError();
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(string id, AddExerciseModel model)
         {
+            var exerciseExist = await exerciseService.IsExerciseExistByIdAsync(id);
+
+            if (!exerciseExist)
+            {
+                TempData[ErrorMessage] = "Exercise with provided id does not exist! Please try again!";
+
+                return RedirectToAction("All");
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            await exerciseService.EditExerciseAsync(id, model);
+            try
+            {
+                await exerciseService.EditExerciseAsync(id, model);
 
-            return RedirectToAction("All");
+                return RedirectToAction("All");
+            }
+            catch (Exception)
+            {
+                return GeneralError();
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
-            await exerciseService.DeleteExerciseAsync(id);
+            var exerciseExist = await exerciseService.IsExerciseExistByIdAsync(id);
 
-            return RedirectToAction("All");
+            if (!exerciseExist)
+            {
+                TempData[ErrorMessage] = "Exercise with provided id does not exist! Please try again!";
+
+                return RedirectToAction("All");
+            }
+
+            try
+            {
+                await exerciseService.DeleteExerciseAsync(id);
+
+                return RedirectToAction("All");
+            }
+            catch (Exception)
+            {
+                return GeneralError();
+            }
+        }
+
+        private IActionResult GeneralError()
+        {
+            TempData[ErrorMessage] =
+                "Unexpected error occurred! Please try again later or contact administrator";
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }
