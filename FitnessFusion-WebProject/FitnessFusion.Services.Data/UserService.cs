@@ -28,6 +28,14 @@
             return $"{user.FirstName} {user.LastName}";
         }
 
+        public async Task<bool> IsUserExistByIdAsync(string userId)
+        {
+            var result = await dbContext.ApplicationUsers
+                .AnyAsync(u => u.Id.ToString() == userId);
+
+            return result;
+        }
+
         public async Task<bool> IsUserTrainerAsync(string userId)
         {
             var trainer = await dbContext.Trainers

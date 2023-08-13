@@ -5,8 +5,8 @@
 
 @{
     string currentUserId = User.GetId().ToLower();
-    bool isUserAdmin = User.IsAdmin();
     var isUserTrainer = await UserService.IsUserTrainerAsync(currentUserId);
+
     ViewData["Title"] = "All Training Plans";
 }
 
@@ -22,7 +22,7 @@
                 <p>Trainer: @trainingPlan.Trainer</p>
                 <div class="btn-group">
                     <a asp-controller="TrainingPlan" asp-action="Details" asp-route-id="@trainingPlan.Id" class="btn btn-primary">Details</a>
-                    @if (trainingPlan.TrainerId.ToLower() == currentUserId || isUserAdmin)
+                    @if (trainingPlan.TrainerId.ToLower() == currentUserId)
                     {
                         <a asp-controller="TrainingPlan" asp-action="EditTrainingPlan" asp-route-id="@trainingPlan.Id" class="btn btn-warning">Edit</a>
                         <form class="delete-form" asp-controller="TrainingPlan" asp-action="DeleteTrainingPlan" asp-route-id="@trainingPlan.Id">
@@ -35,7 +35,7 @@
     }
 </div>
 
-@if (isUserAdmin || isUserTrainer)
+@if (isUserTrainer)
 {
     <a asp-controller="TrainingPlan" asp-action="CreateTrainingPlan" class="btn btn-primary">Create new training plan</a>
 }

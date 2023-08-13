@@ -43,7 +43,7 @@ namespace FitnessFusion
 
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddApplicationServices(typeof(IFitnessService));
+            builder.Services.AddApplicationServices(typeof(IUserService));
 
             builder.Services.ConfigureApplicationCookie(cfg =>
             {
@@ -90,7 +90,7 @@ namespace FitnessFusion
 
             if (app.Environment.IsDevelopment())
             {
-                app.SeedAdministrator(DevelopmentAdminEmail);
+                app.SeedAdministratorAsync(DevelopmentAdminEmail);
             }
 
             app.MapControllerRoute(

@@ -2,7 +2,7 @@
 @inject IUserService UserService;
 @{
     var isUserTrainer = await UserService.IsUserTrainerAsync(User.GetId());
-    var isAdmin = User.IsAdmin();
+
     ViewData["Title"] = "Exercise Examples";
 }
 
@@ -38,7 +38,7 @@
                     <img src="/img/@exercise.ImagePath" class="card-img-top" alt="Exercise Image">
                     <div class="btn-container mt-3">
                         <a asp-controller="Exercise" asp-action="Details" asp-route-id="@exercise.Id" class="btn btn-primary">Details</a>
-                        @if (isAdmin || isUserTrainer)
+                        @if (isUserTrainer)
                         {
                             <a asp-controller="Exercise" asp-action="Edit" asp-route-id="@exercise.Id" class="btn btn-primary">Edit</a>
                             <form class="delete-form" asp-controller="Exercise" asp-action="Delete" asp-route-id="@exercise.Id">
@@ -52,7 +52,7 @@
     }
 </div>
 
-@if (isAdmin || isUserTrainer)
+@if (isUserTrainer)
 {
     <div class="mt-4">
         <a asp-controller="Exercise" asp-action="Add" class="btn btn-primary">Add new exercise</a>

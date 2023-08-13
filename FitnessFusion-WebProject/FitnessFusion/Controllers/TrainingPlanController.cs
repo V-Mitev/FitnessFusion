@@ -140,7 +140,7 @@
             {
                 TempData[ErrorMessage] = "Please create training plan then add exercises!";
 
-                return RedirectToAction("CreateTrainingPlan");
+                return RedirectToAction("All");
             }
 
             // This check is when training plan is already created to can add exercises.

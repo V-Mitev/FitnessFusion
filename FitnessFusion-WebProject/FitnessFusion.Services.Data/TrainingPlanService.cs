@@ -53,7 +53,7 @@
         public async Task AddTrainingPlanAsync(TrainingPlanModel model, string userId)
         {
             var trainer = await dbContext.Trainers
-                .FindAsync(Guid.Parse(userId));
+                .FirstOrDefaultAsync(u => u.IsTrainer && u.Id.ToString() == userId);
 
             if (trainer == null)
             {
