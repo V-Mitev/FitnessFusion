@@ -1,11 +1,10 @@
 ﻿namespace FitnessFusion.Services.Data.Interfaces
 {
+    using FitnessFusion.Services.Data.Models.Exercise;
     using FitnessFusion.Web.ViewModels.Exercise;
 
     public interface IExerciseService
     {
-        public Task<ICollection<AllExercisesModel>> GetAllExercisesAsync();
-
         public Task AddExerciseAsync(AddExerciseModel model);
 
         public Task<AddExerciseModel> FindExerciseAsync(string exerciseId);
@@ -17,5 +16,7 @@
         public Task<ExerciseDetailsModel> DetailsAsync(string id);
 
         public Task<bool> IsExerciseExistByIdAsync(string id);
+
+        public Task<AllExercisesFilteredAndPagedServiceModel> AllAsync(AllExercisesQueryModel queryModel);
     }
 }

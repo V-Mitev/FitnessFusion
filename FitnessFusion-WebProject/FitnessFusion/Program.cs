@@ -90,7 +90,7 @@ namespace FitnessFusion
 
             if (app.Environment.IsDevelopment())
             {
-                app.SeedAdministratorAsync(DevelopmentAdminEmail);
+                app.SeedAdministrator(DevelopmentAdminEmail);
             }
 
             app.MapControllerRoute(

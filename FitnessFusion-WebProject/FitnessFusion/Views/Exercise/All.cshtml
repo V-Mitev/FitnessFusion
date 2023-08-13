@@ -1,54 +1,92 @@
-﻿@model IEnumerable<AllExercisesModel>
+﻿@model AllExercisesQueryModel
 @inject IUserService UserService;
 @{
     var isUserTrainer = await UserService.IsUserTrainerAsync(User.GetId());
 
-    ViewData["Title"] = "Exercise Examples";
+    ViewBag.Title = "All Exercises";
+}
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+<form method="get">
+    <div class="row text-center mb-3">
+        <div class="form-group col-md-4 d-flex justify-content-between">
+            <div class="form-group">
+                <label asp-for="MuscleGroup"></label>
+                <select asp-for="MuscleGroup" class="form-control">
+                    <option value="">All</option>
+                    @foreach (var category in Model.MusclesGroups)
+                    {
+                        <option value="@category">@category</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ExercisesPerPage"></label>
+                <select asp-for="ExercisesPerPage" class="form-control">
+                    <option value="3">3</option>
+                    <option value="6">6</option>
+                    <option value="9">9</option>
+
+                </select>
+            </div>
+        </div>
+        <div class="form-group col-md-3">
+            <label asp-for="SearchString"></label>
+            <input asp-for="SearchString" class="form-control" placeholder="..." autocomplete="off">
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group mt-4">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@{
+    var previousPage = Model.CurrentPage - 1;
+    if (previousPage < 1)
+    {
+        previousPage = 1;
+    }
+    var maxPage = Math.Ceiling((double)Model.TotalExercises /
+    Model.ExercisesPerPage);
+}
+<div class="row mb-5">
+    <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-start">
+        <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" :
+string.Empty)"
+           asp-controller="Exercise"
+           asp-action="All"
+           asp-route-currentPage="@previousPage"
+           asp-route-category="@Model.MusclesGroups"
+           asp-route-searchTerm="@Model.SearchString"><<</a>
+    </div>
+    @{
+        var shouldButtonBeDisabled = Model.CurrentPage == maxPage ||
+        !Model.Exercises.Any();
+    }
+    <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-end">
+        <a class="btn btn-primary
+ @(shouldButtonBeDisabled ? "disabled" : string.Empty)"
+           asp-controller="Exercise"
+           asp-action="All"
+           asp-route-currentPage="@(Model.CurrentPage + 1)"
+           asp-route-category="@Model.MusclesGroups"
+           asp-route-searchTerm="@Model.SearchString">>></a>
+    </div>
+</div>
+
+@if (!Model.Exercises.Any())
+{
+    <h2 class="text-center">No exercises found by the given criteria!</h2>
 }
 
-<style>
-    .card-img-top {
-        max-width: 200px;
-    }
-
-    .exercise-item {
-        margin-bottom: 20px;
-    }
-
-    .btn-container {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 10px !important;
-        margin-right: 150px;
-    }
-</style>
-
-<h1>@ViewData["Title"]</h1>
-
-<div class="exercise-list">
-    @foreach (var muscleGroup in Enum.GetValues(typeof(MuscleGroups)))
+<div class="row">
+    @foreach (var exercese in Model.Exercises)
     {
-        <h2>@muscleGroup</h2>
-
-        <div class="row">
-            @foreach (var exercise in Model.Where(e => e.MuscleGroup == muscleGroup.ToString()))
-            {
-                <div class="col-md-4 exercise-item">
-                    <h4>@exercise.Name</h4>
-                    <img src="/img/@exercise.ImagePath" class="card-img-top" alt="Exercise Image">
-                    <div class="btn-container mt-3">
-                        <a asp-controller="Exercise" asp-action="Details" asp-route-id="@exercise.Id" class="btn btn-primary">Details</a>
-                        @if (isUserTrainer)
-                        {
-                            <a asp-controller="Exercise" asp-action="Edit" asp-route-id="@exercise.Id" class="btn btn-primary">Edit</a>
-                            <form class="delete-form" asp-controller="Exercise" asp-action="Delete" asp-route-id="@exercise.Id">
-                                <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete exercise: @exercise.Name')" />
-                            </form>
-                        }
-                    </div>
-                </div>
-            }
-        </div>
+        <partial name="_ExercisePartial" model="@exercese" />
     }
 </div>
 

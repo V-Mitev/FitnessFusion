@@ -1,5 +1,6 @@
 ﻿namespace FitnessFusion.Web.Controllers
 {
+    using FitnessFusion.Data.Models.Enums;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Services.Data.Interfaces;
@@ -17,11 +18,17 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All([FromQuery] AllExercisesQueryModel queryModel)
         {
-            var exercises = await exerciseService.GetAllExercisesAsync();
+            queryModel.MusclesGroups = Enum.GetValues<MuscleGroups>();
 
-            return View(exercises);
+            var serviceModel = await exerciseService.AllAsync(queryModel);
+
+            queryModel.Exercises = serviceModel.Exercises;
+
+            queryModel.TotalExercises = serviceModel.TotalExerciseCount;
+
+            return View(queryModel);
         }
 
         [HttpGet]

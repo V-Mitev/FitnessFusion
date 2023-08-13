@@ -4,6 +4,7 @@
     using FitnessFusion.Data.Models;
     using FitnessFusion.Data.Models.Enums;
     using FitnessFusion.Services.Data.Interfaces;
+    using FitnessFusion.Services.Data.Models.Exercise;
     using FitnessFusion.Web.ViewModels.Exercise;
     using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
@@ -33,6 +34,47 @@
 
             await dbContext.Exercises.AddAsync(exercise);
             await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<AllExercisesFilteredAndPagedServiceModel> AllAsync(AllExercisesQueryModel queryModel)
+        {
+            IQueryable<Exercise> exercisesQuery = dbContext.Exercises
+                .Where(e => e.IsInPlan == false)
+                .AsQueryable();
+
+            if (queryModel.MuscleGroup.HasValue)
+            {
+                exercisesQuery = exercisesQuery
+                    .Where(m => m.MuscleGroup == queryModel.MuscleGroup);
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryModel.SearchString))
+            {
+                string wildCard = $"%{queryModel.SearchString.ToLower()}%";
+
+                exercisesQuery = exercisesQuery
+                    .Where(e => EF.Functions.Like(e.Name, wildCard));
+            }
+
+            ICollection<AllExercisesModel> allExercises = await exercisesQuery
+                .Skip((queryModel.CurrentPage - 1) * queryModel.ExercisesPerPage)
+                .Take(queryModel.ExercisesPerPage)
+                .Select(e => new AllExercisesModel()
+                {
+                    Id = e.Id.ToString(),
+                    Name = e.Name,
+                    ImagePath = e.ImagePath,
+                    MuscleGroup = e.MuscleGroup.ToString()
+                })
+                .ToListAsync();
+
+            int totalExercises = exercisesQuery.Count();
+
+            return new AllExercisesFilteredAndPagedServiceModel()
+            {
+                Exercises = allExercises,
+                TotalExerciseCount = totalExercises
+            };
         }
 
         public async Task DeleteExerciseAsync(string id)
@@ -118,27 +160,11 @@
             return exerciseModel;
         }
 
-        public async Task<ICollection<AllExercisesModel>> GetAllExercisesAsync()
-        {
-            var exercises = await dbContext.Exercises
-                .Where(e => !e.IsInPlan)
-                .Select(e => new AllExercisesModel()
-                {
-                    Id = e.Id.ToString(),
-                    Name = e.Name,
-                    ImagePath = e.ImagePath,
-                    MuscleGroup = e.MuscleGroup.ToString()
-                })
-                .ToListAsync();
-
-            return exercises;
-        }
-
         public async Task<bool> IsExerciseExistByIdAsync(string id)
         {
             var result = await dbContext.Exercises
-                .Where(e => !e.IsInPlan)
-                .AnyAsync(e => e.Id.ToString() == id);
+                .Where(e => e.IsInPlan == false)
+                .AnyAsync(e => e.Id.ToString() == id.ToLower());
 
             return result;
         }
