@@ -12,9 +12,10 @@
     <thead>
         <tr>
             <th>Name</th>
-            <th>Sets and Reps</th>
-            <th>Video Link</th>
+            <th>Difficulty</th>
             <th>Muscle Group</th>
+            <th>Video Link</th>
+            <th>Description</th>
         </tr>
     </thead>
     <tbody>
@@ -22,13 +23,14 @@
         {
             <tr>
                 <td>@exercise.Name</td>
-                <td>@exercise.Description</td>
+                <td>@exercise.Dificulty</td>
+                <td>@exercise.MuscleGroup</td>
                 <td>
                     <a href="@exercise.VideoLink" target="_blank">
                         <btn type="button" class="btn btn-primary">Watch video</btn>
                     </a>
                 </td>
-                <td>@exercise.MuscleGroup</td>
+                <td>@exercise.Description</td>
             </tr>
         }
     </tbody>

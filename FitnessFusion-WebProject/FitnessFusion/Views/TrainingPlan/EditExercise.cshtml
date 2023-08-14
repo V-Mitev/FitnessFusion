@@ -1,4 +1,4 @@
-﻿@model TrainingPlanExercisesModel
+﻿@model AddExerciseModel
 
 @{
     ViewData["Title"] = "Edit Exercise";
@@ -9,32 +9,32 @@
 
 <form asp-controller="TrainingPlan" asp-action="EditExercise" method="post">
 
-    <div class="form-group">
+    <div class="form-group mb-2">
         <label asp-for="@Model.Name" class="form-group">Name</label>
         <input asp-for="@Model.Name" class="form-control" required="true" />
         <span asp-validation-for="@Model.Name" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
+    <div class="form-group mb-2">
         <label asp-for="@Model.Description">Description</label>
         <textarea id="description" name="Description" class="form-control" required>@Model.Description</textarea>
         <span asp-validation-for="@Model.Description" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
+    <div class="form-group mb-2">
         <label asp-for="Image">Image:</label>
         <input type="file" class="form-control" asp-for="Image" accept="image/*" required>
         <span asp-validation-for="Image" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
+    <div class="form-group mb-2">
         <label asp-for="@Model.VideoLink">Video Link</label>
         <textarea id="videoLink" name="VideoLink" class="form-control" required>@Model.Description</textarea>
         <span asp-validation-for="@Model.VideoLink" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label for="muscleGroup">Muscle Group</label>
+    <div class="form-group mb-2">
+        <label asp-for="MuscleGroup">Muscle Group</label>
         <select id="muscleGroup" name="MuscleGroup" class="form-control" required>
             <option value="@Model.MuscleGroup.ToString()">@Model.MuscleGroup</option>
             @foreach (var muscleGroup in Enum.GetValues(typeof(MuscleGroups)))
@@ -42,6 +42,20 @@
                 if (!string.Equals(muscleGroup.ToString(), @Model.MuscleGroup.ToString(), StringComparison.OrdinalIgnoreCase))
                 {
                     <option value="@muscleGroup">@muscleGroup</option>
+                }
+            }
+        </select>
+    </div>
+
+    <div class="form-group mb-2">
+        <label asp-for="@Model.Dificulty">Difficult Of Exercise</label>
+        <select id="dificulty" name="Dificulty" class="form-control" required>
+            <option value="@Model.Dificulty.ToString()">@Model.Dificulty</option>
+            @foreach (var difficulty in Enum.GetValues(typeof(ExerciseLevelOfDificulty)))
+            {
+                if (!string.Equals(difficulty.ToString(), @Model.Dificulty.ToString(), StringComparison.OrdinalIgnoreCase))
+                {
+                    <option value="@difficulty">@difficulty</option>
                 }
             }
         </select>

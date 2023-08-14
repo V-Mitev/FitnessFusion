@@ -13,10 +13,14 @@
 
         public Task DeleteExerciseAsync(string id);
 
-        public Task<ExerciseDetailsModel> DetailsAsync(string id);
+        public Task<AllExercisesModel> DetailsAsync(string id);
 
         public Task<bool> IsExerciseExistByIdAsync(string id);
 
         public Task<AllExercisesFilteredAndPagedServiceModel> AllAsync(AllExercisesQueryModel queryModel);
+
+        public Task<ICollection<AllExercisesModel>> AlreadyCreatedAsync();
+
+        public Task<AddExerciseModel?> AddExistingExerciseAsync(string id);
     }
 }

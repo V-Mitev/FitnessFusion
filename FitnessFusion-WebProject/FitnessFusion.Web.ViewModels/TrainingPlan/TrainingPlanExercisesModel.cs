@@ -25,5 +25,8 @@
 
         [Required]
         public MuscleGroups MuscleGroup { get; set; }
+
+        [Required]
+        public ExerciseLevelOfDificulty Difficulty { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace FitnessFusion.Web.ViewModels.TrainingPlan
 {
+    using FitnessFusion.Web.ViewModels.Exercise;
     using System.ComponentModel.DataAnnotations;
     using static Common.EntityValidationConstants.TrainingPlan;
 
@@ -7,7 +8,9 @@
     {
         public TrainingPlanModel()
         {
-            AddedExercises = new HashSet<TrainingPlanExercisesModel>();
+            AddedExercises = new HashSet<AddExerciseModel>();
+
+            AlreadyCreatedExercises = new Dictionary<Guid, string>();
         }
 
         public string? Id { get; set; } 
@@ -19,6 +22,8 @@
         [Required]
         public string Image { get; set; } = null!;
 
-        public ICollection<TrainingPlanExercisesModel> AddedExercises { get; set; }
+        public ICollection<AddExerciseModel> AddedExercises { get; set; }
+
+        public Dictionary<Guid, string> AlreadyCreatedExercises { get; set; }
     }
 }

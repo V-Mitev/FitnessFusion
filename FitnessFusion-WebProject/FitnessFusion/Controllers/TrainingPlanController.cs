@@ -2,9 +2,11 @@
 {
     using FitnessFusion.Services.Data.Interfaces;
     using FitnessFusion.Web.Infastructure.Extensions;
+    using FitnessFusion.Web.ViewModels.Exercise;
     using FitnessFusion.Web.ViewModels.TrainingPlan;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore.Metadata.Internal;
     using NuGet.Packaging;
     using static FitnessFusion.Common.NotificationMessagesConstant;
 
@@ -13,12 +15,14 @@
     {
         private readonly ITrainingPlanService trainingPlanService;
         private readonly IUserService userService;
+        private readonly IExerciseService exerciseService;
 
-        public TrainingPlanController(
-            ITrainingPlanService trainingPlanService, IUserService userService)
+        public TrainingPlanController(ITrainingPlanService trainingPlanService,
+            IUserService userService, IExerciseService exerciseService)
         {
             this.trainingPlanService = trainingPlanService;
             this.userService = userService;
+            this.exerciseService = exerciseService;
         }
 
         [HttpGet]
@@ -50,9 +54,27 @@
 
             var model = HttpContext.Session.GetObject<TrainingPlanModel>("TrainingPlan");
 
+            var alreadyCreatedExercises = await exerciseService.AlreadyCreatedAsync();
+
             if (model == null)
             {
                 model = new TrainingPlanModel();
+
+                foreach (var exercise in await exerciseService.AlreadyCreatedAsync())
+                {
+                    model.AlreadyCreatedExercises.Add(Guid.Parse(exercise.Id), exercise.Name);
+                }
+
+                HttpContext.Session.SetObject("TrainingPlan", model);
+            }
+
+            // If new exercise is added in database to update collection to can't add it twice
+            if (alreadyCreatedExercises.Count > model.AlreadyCreatedExercises.Count)
+            {
+                foreach (var exercise in await exerciseService.AlreadyCreatedAsync())
+                {
+                    model.AlreadyCreatedExercises.Add(Guid.Parse(exercise.Id), exercise.Name);
+                }
 
                 HttpContext.Session.SetObject("TrainingPlan", model);
             }
@@ -109,6 +131,35 @@
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddExistingExercise(string exerciseKey)
+        {
+            var trainingPlan = HttpContext.Session.GetObject<TrainingPlanModel>("TrainingPlan");
+
+            var exercise = await exerciseService.AddExistingExerciseAsync(exerciseKey);
+
+            if (exercise == null)
+            {
+                TempData[ErrorMessage] = "Exercise with provided id does not exist! Please try again!";
+
+                return RedirectToAction("CreateTrainingPlan");
+            }
+
+            if (trainingPlan!.AddedExercises
+                .Any(e => e.Id == exercise.Id && e.Name == exercise.Name))
+            {
+                TempData[ErrorMessage] = $"You already added {exercise.Name} in training plan!";
+
+                return RedirectToAction("CreateTrainingPlan");
+            }
+
+            trainingPlan!.AddedExercises.Add(exercise);
+
+            HttpContext.Session.SetObject("TrainingPlan", trainingPlan);
+
+            return RedirectToAction("CreateTrainingPlan");
+        }
+
         [HttpGet]
         public IActionResult AddExercise()
         {
@@ -121,13 +172,13 @@
                 return RedirectToAction("CreateTrainingPlan");
             }
 
-            TrainingPlanExercisesModel model = new TrainingPlanExercisesModel();
+            var model = new AddExerciseModel();
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddExercise(TrainingPlanExercisesModel model)
+        public async Task<IActionResult> AddExercise(AddExerciseModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -143,23 +194,41 @@
                 return RedirectToAction("All");
             }
 
-            // This check is when training plan is already created to can add exercises.
-            if (!string.IsNullOrEmpty(trainingPlan.Id))
-            {
-                var isExerciseAlreadyCreated = await trainingPlanService.IsExercisesAlreadyCreatedAsync(trainingPlan.Id, model.Name);
+            var alreadyCreatedExercises = await exerciseService.AlreadyCreatedAsync();
 
-                if (isExerciseAlreadyCreated)
+            // This check is when training plan is already created to can add exercises.
+            if (!string.IsNullOrWhiteSpace(trainingPlan.Id))
+            {
+                if (alreadyCreatedExercises
+                    .Any(e => e.Name == model.Name && e.MuscleGroup == model.MuscleGroup.ToString()))
                 {
-                    TempData[ErrorMessage] = "You already create this exercise";
+                    TempData[ErrorMessage] = $"You already created {model.Name} for this muscle group!";
 
                     return View(model);
                 }
-
+                
                 await trainingPlanService.AddExerciseToExistingPlanAsync(model, trainingPlan.Id);
 
                 HttpContext.Session.SetObject("TrainingPlan", trainingPlan);
 
                 return RedirectToAction("EditTrainingPlan", new { trainingPlan.Id });
+            }
+
+
+            if (alreadyCreatedExercises
+                .Any(e => e.Name == model.Name && e.MuscleGroup == model.MuscleGroup.ToString()))
+            {
+                TempData[ErrorMessage] = $"You already created {model.Name} for this muscle group!";
+
+                return RedirectToAction("CreateTrainingPlan");
+            }
+
+            if (trainingPlan.AddedExercises
+                .Any(e => e.Name == model.Name && e.MuscleGroup == model.MuscleGroup))
+            {
+                TempData[ErrorMessage] = $"You already added this {model.Name} for this muscle group!";
+
+                return RedirectToAction("CreateTrainingPlan");
             }
 
             try
@@ -192,6 +261,11 @@
             {
                 var model = await trainingPlanService.FindTrainingPlanByIdAsync(id);
 
+                foreach (var exercise in await exerciseService.AlreadyCreatedAsync())
+                {
+                    model.AlreadyCreatedExercises.Add(Guid.Parse(exercise.Id), exercise.Name);
+                }
+
                 HttpContext.Session.SetObject("TrainingPlan", model);
 
                 return View(model);
@@ -203,18 +277,18 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditTrainingPlan(TrainingPlanModel model, string tpId)
+        public async Task<IActionResult> EditTrainingPlan(TrainingPlanModel model, string id)
         {
-            var userExist = await userService.IsUserExistByIdAsync(User.GetId());
+            //var userExist = await userService.IsUserExistByIdAsync(User.GetId());
 
-            if (!userExist)
-            {
-                TempData[ErrorMessage] = "User with provided id does not exist! Please try again!"; ;
+            //if (!userExist)
+            //{
+            //    TempData[ErrorMessage] = "User with provided id does not exist! Please try again!"; ;
 
-                return RedirectToAction("CreateTrainingPlan");
-            }
+            //    return RedirectToAction("CreateTrainingPlan");
+            //}
 
-            var isTrainingPlanExist = await trainingPlanService.IsTrainingPlanExistByIdAsync(tpId);
+            var isTrainingPlanExist = await trainingPlanService.IsTrainingPlanExistByIdAsync(id);
 
             if (!isTrainingPlanExist)
             {
@@ -236,7 +310,7 @@
 
             try
             {
-                await trainingPlanService.EditTrainingPlanAsync(model, tpId, userId);
+                await trainingPlanService.EditTrainingPlanAsync(model, id, userId);
 
                 HttpContext.Session.Remove("TrainingPlan");
 
@@ -299,8 +373,8 @@
         [HttpGet]
         public async Task<IActionResult> EditExercise(string id)
         {
-            var exerciseExistInPlan = 
-                await trainingPlanService.IsExerciseExistInTrainingPlanAsync(id);
+            var exerciseExistInPlan =
+                await exerciseService.IsExerciseExistByIdAsync(id);
 
             if (!exerciseExistInPlan)
             {
@@ -311,7 +385,7 @@
 
             try
             {
-                var model = await trainingPlanService.FindTrainingPlanExerciseAsync(id);
+                var model = await exerciseService.FindExerciseAsync(id);
 
                 return View(model);
             }
@@ -322,7 +396,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditExercise(string id, TrainingPlanExercisesModel exercisesTp)
+        public async Task<IActionResult> EditExercise(string id, AddExerciseModel exercisesTp)
         {
             var trainingPlan = HttpContext.Session.GetObject<TrainingPlanModel>("TrainingPlan");
 
@@ -342,10 +416,10 @@
                 return RedirectToAction("All");
             }
 
-            var exerciseExistInPlan = 
-                await trainingPlanService.IsExerciseExistInTrainingPlanAsync(id);
+            var isExerciseExist =
+                await exerciseService.IsExerciseExistByIdAsync(id);
 
-            if (!exerciseExistInPlan)
+            if (!isExerciseExist)
             {
                 TempData[ErrorMessage] = "Exercise with provided id does not exist! Please try again!";
 
@@ -359,7 +433,7 @@
 
             try
             {
-                await trainingPlanService.EditTrainingPlanExerciseAsync(id, exercisesTp);
+                await exerciseService.EditExerciseAsync(id, exercisesTp);
 
                 return RedirectToAction("EditTrainingPlan", new { trainingPlan.Id });
             }
@@ -372,10 +446,10 @@
         [HttpPost]
         public async Task<IActionResult> DeleteExercise(string id)
         {
-            var exerciseExistInPlan = 
-                await trainingPlanService.IsExerciseExistInTrainingPlanAsync(id);
+            var isExerciseExist =
+                await exerciseService.IsExerciseExistByIdAsync(id);
 
-            if (!exerciseExistInPlan)
+            if (!isExerciseExist)
             {
                 TempData[ErrorMessage] = "Exercise with provided id does not exist! Please try again!";
 
@@ -409,7 +483,9 @@
 
             try
             {
-                await trainingPlanService.DeleteExerciseInTrainingPlanAsync(id);
+                var exerciseToDelete = await exerciseService.FindExerciseAsync(id);
+
+                await trainingPlanService.RemoveExerciseFromPlan(trainingPlan.Id, id);
 
                 return RedirectToAction("EditTrainingPlan", new { id = trainingPlan.Id });
             }
@@ -417,6 +493,35 @@
             {
                 return GeneralError();
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditAndAddExistingExercise(string exerciseKey)
+        {
+            var trainingPlan = HttpContext.Session.GetObject<TrainingPlanModel>("TrainingPlan");
+
+            var exercise = await exerciseService.AddExistingExerciseAsync(exerciseKey);
+
+            if (exercise == null)
+            {
+                TempData[ErrorMessage] = "Exercise with provided id does not exist! Please try again!";
+
+                return RedirectToAction("CreateTrainingPlan");
+            }
+
+            if (trainingPlan!.AddedExercises
+                .Any(e => e.Id == exercise.Id && e.Name == exercise.Name))
+            {
+                TempData[ErrorMessage] = $"You already added {exercise.Name} in training plan!";
+
+                return RedirectToAction("CreateTrainingPlan");
+            }
+
+            await trainingPlanService.AddExerciseWhenEditPlan(trainingPlan.Id!, exerciseKey);
+
+            HttpContext.Session.SetObject("TrainingPlan", trainingPlan);
+
+            return RedirectToAction("EditTrainingPlan", new {trainingPlan.Id});
         }
 
         private IActionResult GeneralError()

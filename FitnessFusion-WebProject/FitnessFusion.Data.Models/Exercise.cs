@@ -34,8 +34,6 @@
 
         public MuscleGroups MuscleGroup { get; set; }
 
-        public bool IsInPlan { get; set; }
-
         public ICollection<TrainingPlan> TrainingPlans { get; set; }
     }
 }

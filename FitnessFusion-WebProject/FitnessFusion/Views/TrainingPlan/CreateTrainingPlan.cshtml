@@ -7,44 +7,63 @@
 
 <h1 class="text-center">@ViewData["Title"]</h1>
 <hr />
-
 <form asp-action="CreateTrainingPlan" asp-controller="TrainingPlan" method="post">
-    <div class="form-group">
+    <div class="form-group mb-2">
         <label asp-for="@Model.Name" class="form-label-add-edit">Name</label>
         <input asp-for="@Model.Name" class="form-control" minlength="@NameMinLength" maxlength="@NameMaxLength" required />
-        <span asp-validation-for="@Model.Name" class="text-danger"></span>
+        <span asp-validation-for=@Model.Name class="text-danger"></span>
     </div>
 
-    <div class="form-group">
+    <div class="form-group mb-2">
         <label asp-for="@Model.Image">Image:</label>
         <input type="file" class="form-control" asp-for="@Model.Image" accept="image/*" required>
         <span asp-validation-for="@Model.Image" class="text-danger"></span>
     </div>
 
-    <h3>Added Exercises</h3>
-    <table class="table">
-        <thead>
+    <button type="submit" class="btn btn-primary mb-2">Create Training Plan</button>
+</form>
+
+<h3>Added Exercises</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Muscle Group</th>
+            <th>Difficulty</th>
+            <th>Remove exercise from training plan</th>
+        </tr>
+    </thead>
+    <tbody id="addedExercisesTableBody">
+        @foreach (var exercise in Model.AddedExercises!)
+        {
             <tr>
-                <th>Name</th>
-                <th>Sets and Reps</th>
-                <th>Muscle Group</th>
-                <th>Video Link</th>
+                <td>@exercise.Name</td>
+                <td>@exercise.MuscleGroup</td>
+                <td>@exercise.Dificulty</td>
+                <td>
+                    <form asp-controller="TrainingPlan" asp-action="RemoveExerciseFromPlan" method="post">
+                        <button type="submit" class="btn btn-danger mb-2">Remove exercise</button>
+                    </form>
+                </td>
             </tr>
-        </thead>
-        <tbody id="addedExercisesTableBody">
-            @foreach (var exercise in Model.AddedExercises!)
+        }
+    </tbody>
+</table>
+
+<a asp-controller="TrainingPlan" asp-action="AddExercise" class="btn btn-primary mb-2">Add new Exercise</a>
+
+
+<form asp-action="AddExistingExercise" asp-controller="TrainingPlan" method="post">
+    <div class="">
+        <select class="form-control mb-2 d-inline-block" id="alreadyCreatedExercises" name="exerciseKey" required>
+            <option value="">Select an existing exercise</option>
+            @foreach (var exercise in Model.AlreadyCreatedExercises)
             {
-                <tr>
-                    <td>@exercise.Name</td>
-                    <td>@exercise.Description</td>
-                    <td>@exercise.VideoLink</td>
-                    <td>@exercise.MuscleGroup</td>
-                </tr>
+                <option value="@exercise.Key">@exercise.Value</option>
             }
-        </tbody>
-    </table>
+        </select>
+    </div>
+    <input type="hidden" name="AlreadyCreatedExercises" value="" />
 
-    <a asp-controller="TrainingPlan" asp-action="AddExercise" class="btn btn-primary">Add Exercise</a>
-
-    <button type="submit" class="btn btn-primary">Create Training Plan</button>
+    <button type="submit" class="btn btn-primary">Add existing exercise</button>
 </form>

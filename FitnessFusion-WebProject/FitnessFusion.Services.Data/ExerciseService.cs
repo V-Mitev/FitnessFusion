@@ -25,21 +25,43 @@
             {
                 Name = model.Name,
                 Description = model.Description,
-                ImagePath = model.ImagePath,
+                ImagePath = model.Image,
                 VideoLink = model.VideoLink,
                 MuscleGroup = (MuscleGroups)model.MuscleGroup!,
-                Difficulty = (ExerciseLevelOfDificulty)model.Dificulty!,
-                IsInPlan = false
+                Difficulty = (ExerciseLevelOfDificulty)model.Dificulty!
             };
 
             await dbContext.Exercises.AddAsync(exercise);
             await dbContext.SaveChangesAsync();
         }
 
+        public async Task<AddExerciseModel?> AddExistingExerciseAsync(string id)
+        {
+            var exercise = await dbContext.Exercises
+                .Where(e => e.Id.ToString() == id)
+                .Select(e => new AddExerciseModel()
+                {
+                    Id = e.Id.ToString(),
+                    Name = e.Name,
+                    Description = e.Description,
+                    Image = e.ImagePath,
+                    VideoLink = e.VideoLink,
+                    MuscleGroup = e.MuscleGroup,
+                    Dificulty = e.Difficulty
+                })
+                .FirstOrDefaultAsync();
+
+            if (exercise == null)
+            {
+                return null;
+            }
+
+            return exercise;
+        }
+
         public async Task<AllExercisesFilteredAndPagedServiceModel> AllAsync(AllExercisesQueryModel queryModel)
         {
             IQueryable<Exercise> exercisesQuery = dbContext.Exercises
-                .Where(e => e.IsInPlan == false)
                 .AsQueryable();
 
             if (queryModel.MuscleGroup.HasValue)
@@ -77,6 +99,24 @@
             };
         }
 
+        public async Task<ICollection<AllExercisesModel>> AlreadyCreatedAsync()
+        {
+            var result = await dbContext.Exercises
+                .Select(e => new AllExercisesModel()
+                {
+                    Id = e.Id.ToString(),
+                    Name = e.Name,
+                    Description = e.Description,
+                    ImagePath = e.ImagePath,
+                    VideoLink = e.VideoLink,
+                    MuscleGroup = e.MuscleGroup.ToString(),
+                    Difficulty = e.Difficulty.ToString(),
+                })
+                .ToListAsync();
+
+            return result;
+        }
+
         public async Task DeleteExerciseAsync(string id)
         {
             var exercise = await dbContext.Exercises
@@ -92,7 +132,7 @@
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<ExerciseDetailsModel> DetailsAsync(string id)
+        public async Task<AllExercisesModel> DetailsAsync(string id)
         {
             var exercise = await dbContext.Exercises
                 .FindAsync(Guid.Parse(id));
@@ -102,7 +142,7 @@
                 throw new NullReferenceException("Exercise doesn't exists");
             }
 
-            var exerciseViewModel = new ExerciseDetailsModel()
+            var exerciseViewModel = new AllExercisesModel()
             {
                 Id = exercise.Id.ToString(),
                 Name = exercise.Name,
@@ -110,7 +150,7 @@
                 ImagePath = exercise.ImagePath,
                 MuscleGroup = exercise.MuscleGroup.ToString(),
                 VideoLink = exercise.VideoLink,
-                Difficulty = exercise.Difficulty.ToString()
+                Difficulty = exercise.Difficulty.ToString()               
             };
 
             return exerciseViewModel;
@@ -131,7 +171,7 @@
             exerciseToEdit.Description = model.Description;
             exerciseToEdit.Difficulty = (ExerciseLevelOfDificulty)model.Dificulty!;
             exerciseToEdit.VideoLink = model.VideoLink;
-            exerciseToEdit.ImagePath = model.ImagePath;
+            exerciseToEdit.ImagePath = model.Image;
             exerciseToEdit.MuscleGroup = (MuscleGroups)model.MuscleGroup!;
 
             await dbContext.SaveChangesAsync();
@@ -151,7 +191,7 @@
             {
                 Name = exercise.Name,
                 Description = exercise.Description,
-                ImagePath = exercise.ImagePath,
+                Image = exercise.ImagePath,
                 VideoLink = exercise.VideoLink,
                 Dificulty = exercise.Difficulty,
                 MuscleGroup = exercise.MuscleGroup
@@ -163,7 +203,6 @@
         public async Task<bool> IsExerciseExistByIdAsync(string id)
         {
             var result = await dbContext.Exercises
-                .Where(e => e.IsInPlan == false)
                 .AnyAsync(e => e.Id.ToString() == id.ToLower());
 
             return result;

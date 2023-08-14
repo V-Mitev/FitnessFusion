@@ -9,5 +9,11 @@
         public string ImagePath { get; set; } = null!;
 
         public string MuscleGroup { get; set; } = null!;
+
+        public string Description { get; set; } = null!;
+
+        public string VideoLink { get; set; } = null!;
+
+        public string Difficulty { get; set; } = null!;
     }
 }

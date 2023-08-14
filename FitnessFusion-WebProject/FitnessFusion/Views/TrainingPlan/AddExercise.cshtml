@@ -1,4 +1,5 @@
-﻿@model TrainingPlanExercisesModel
+﻿@model AddExerciseModel
+
 @using static FitnessFusion.Common.EntityValidationConstants.Exercise;
 
 @{
@@ -33,6 +34,17 @@
             @foreach (var muscleGroup in Enum.GetValues(typeof(MuscleGroups)))
             {
                 <option value="@muscleGroup">@muscleGroup</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Dificulty">Difficult Of Exercise</label>
+        <select id="dificulty" name="Dificulty" class="form-control" required>
+            <option value="">Select a diffucult of exercise</option>
+            @foreach (var difficulty in Enum.GetValues(typeof(ExerciseLevelOfDificulty)))
+            {
+                <option value="@difficulty">@difficulty</option>
             }
         </select>
     </div>

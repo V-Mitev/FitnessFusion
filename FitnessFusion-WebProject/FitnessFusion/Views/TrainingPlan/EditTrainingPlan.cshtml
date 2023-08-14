@@ -5,7 +5,7 @@
 
 <h1 class="text-center">@ViewData["Title"]</h1>
 <hr />
-<form asp-controller="TrainingPlan" asp-action="EditTrainingPlan" method="post">
+<form asp-controller="TrainingPlan" asp-action="EditTrainingPlan" method="post" asp-route-id="@Model.Id">
     <div class="form-group">
         <label asp-for="@Model.Name">Name:</label>
         <input class="form-control" asp-for="@Model.Name" minlength="2" maxlength="100" required />
@@ -28,7 +28,8 @@
     <thead>
         <tr>
             <th>Name</th>
-            <th>Sets and reps</th>
+            <th>Difficulty</th>
+            <th>Description</th>
             <th>Video Link</th>
             <th>Muscle group</th>
             <th>Edit Exercise</th>
@@ -40,6 +41,7 @@
         {
             <tr>
                 <td>@exercise.Name</td>
+                <td>@exercise.Dificulty</td>
                 <td>@exercise.Description</td>
                 <td>@exercise.VideoLink</td>
                 <td>@exercise.MuscleGroup</td>
@@ -55,3 +57,18 @@
         }
     </tbody>
 </table>
+
+<form asp-action="EditAndAddExistingExercise" asp-controller="TrainingPlan" method="post">
+    <div class="">
+        <select class="form-control mb-2 d-inline-block" id="alreadyCreatedExercises" name="exerciseKey" required>
+            <option value="">Select an existing exercise</option>
+            @foreach (var exercise in Model.AlreadyCreatedExercises)
+            {
+                <option value="@exercise.Key">@exercise.Value</option>
+            }
+        </select>
+    </div>
+    <input type="hidden" name="AlreadyCreatedExercises" value="" />
+
+    <button type="submit" class="btn btn-primary">Add existing exercise</button>
+</form>

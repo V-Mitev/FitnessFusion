@@ -6,6 +6,8 @@
 
     public class AddExerciseModel
     {
+        public string? Id { get; set; }
+
         [Required]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
         public string Name { get; set; } = null!;
@@ -16,7 +18,7 @@
 
         [Required]
         [StringLength(ImageUrlMaxLength, MinimumLength = ImageUrlMinLength)]
-        public string ImagePath { get; set; } = null!;
+        public string Image { get; set; } = null!;
 
         [Required]
         [StringLength(VideoUrlMaxLength, MinimumLength = VideoUrlMinLength)]

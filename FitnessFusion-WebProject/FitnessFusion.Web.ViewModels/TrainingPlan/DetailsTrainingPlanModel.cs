@@ -1,12 +1,14 @@
 ﻿namespace FitnessFusion.Web.ViewModels.TrainingPlan
 {
+    using FitnessFusion.Web.ViewModels.Exercise;
+
     public class DetailsTrainingPlanModel : AllTrainingPlansModel
     {
         public DetailsTrainingPlanModel()
         {
-            Exercises = new HashSet<TrainingPlanExercisesModel>();
+            Exercises = new HashSet<AddExerciseModel>();
         }
 
-        public ICollection<TrainingPlanExercisesModel> Exercises { get; set; }
+        public ICollection<AddExerciseModel> Exercises { get; set; }
     }
 }

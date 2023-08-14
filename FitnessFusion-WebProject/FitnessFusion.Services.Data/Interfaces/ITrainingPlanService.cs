@@ -1,5 +1,6 @@
 ﻿namespace FitnessFusion.Services.Data.Interfaces
 {
+    using FitnessFusion.Web.ViewModels.Exercise;
     using FitnessFusion.Web.ViewModels.TrainingPlan;
 
     public interface ITrainingPlanService
@@ -12,24 +13,20 @@
 
         public Task<TrainingPlanModel> FindTrainingPlanByIdAsync(string id);
 
-        public void AddExerciseToPlan(TrainingPlanExercisesModel model, TrainingPlanModel trainingPlan);
+        public void AddExerciseToPlan(AddExerciseModel model, TrainingPlanModel trainingPlan);
 
-        public Task AddExerciseToExistingPlanAsync(TrainingPlanExercisesModel model, string trainingPlanId);
-
-        public Task<bool> IsExercisesAlreadyCreatedAsync(string trainingPlanId, string exerciseName);
+        public Task AddExerciseToExistingPlanAsync(AddExerciseModel model, string trainingPlanId);
 
         public Task DeleteTrainingPlanAsync(string id);
 
         public Task<DetailsTrainingPlanModel> DetailsAsync(string id);
 
-        public Task<TrainingPlanExercisesModel> FindTrainingPlanExerciseAsync(string id);
-
-        public Task EditTrainingPlanExerciseAsync(string id, TrainingPlanExercisesModel model);
-
         public Task DeleteExerciseInTrainingPlanAsync(string id);
 
         public Task<bool> IsTrainingPlanExistByIdAsync(string id);
 
-        public Task<bool> IsExerciseExistInTrainingPlanAsync(string id);
+        public Task AddExerciseWhenEditPlan(string trainingPlanId, string exerciseId);
+
+        public Task RemoveExerciseFromPlan(string trainingPlanId, string exerciseId);
     }
 }
