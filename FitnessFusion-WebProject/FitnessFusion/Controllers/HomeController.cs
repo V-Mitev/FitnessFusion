@@ -1,6 +1,8 @@
 ﻿namespace FitnessFusion.Controllers
 {
+    using FitnessFusion.Web.Infastructure.Extensions;
     using Microsoft.AspNetCore.Mvc;
+    using static Common.GeneralApplicationConstants;
 
     public class HomeController : Controller
     {
@@ -10,6 +12,11 @@
 
         public IActionResult Index()
         {
+            if (User.IsAdmin())
+            {
+                return RedirectToAction("Index", "Home", new { Area = AdminAreaName });
+            }
+
             return View();
         }
 

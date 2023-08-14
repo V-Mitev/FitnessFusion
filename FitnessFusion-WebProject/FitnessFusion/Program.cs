@@ -48,6 +48,7 @@ namespace FitnessFusion
             builder.Services.ConfigureApplicationCookie(cfg =>
             {
                 cfg.LoginPath = "/User/Login";
+                cfg.AccessDeniedPath = "/Home/Error/401";
             });
 
             builder.Services.AddSession(options =>
@@ -93,10 +94,16 @@ namespace FitnessFusion
                 app.SeedAdministrator(DevelopmentAdminEmail);
             }
 
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
-            app.MapRazorPages();
+            app.UseEndpoints(config =>
+            {
+                config.MapControllerRoute(
+                  name: "areas",
+                  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+                config.MapDefaultControllerRoute();
+
+                config.MapRazorPages();
+            });
 
             app.Run();
         }
