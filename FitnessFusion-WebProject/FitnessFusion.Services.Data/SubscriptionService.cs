@@ -74,6 +74,7 @@
             subscription.Description = model.Description;
             subscription.Price = model.Price;
             subscription.Image = model.Image;
+            subscription.TypeOfSubscription = (TypeOfSubscription)model.TypeOfSubscription!;
 
             await dbContext.SaveChangesAsync();
         }
@@ -109,10 +110,10 @@
             {
                 Id = subscriptionId,
                 Name = subscription.Name,
+                Price = subscription.Price,
                 Description = subscription.Description,
                 Image = subscription.Image,
-                TypeOfSubscription = subscription.TypeOfSubscription,
-                Price = subscription.Price
+                TypeOfSubscription = subscription.TypeOfSubscription
             };
 
             return subscriptionModel;

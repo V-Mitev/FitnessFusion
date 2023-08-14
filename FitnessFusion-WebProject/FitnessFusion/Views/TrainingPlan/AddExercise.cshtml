@@ -5,8 +5,8 @@
     ViewData["Title"] = "Add exercise to training plan";
 }
 
-<h1>@ViewData["Title"]</h1>
-
+<h1 class="text-center">@ViewData["Title"]</h1>
+<hr />
 <form asp-controller="TrainingPlan" asp-action="AddExercise" method="post">
     <div class="form-group">
         <label asp-for="@Model.Name" class="form-label-add-edit">Name</label>

@@ -1,8 +1,11 @@
 ﻿@model CaloriesCalculatorModel
 @using static FitnessFusion.Common.EntityValidationConstants.CaloriesCalculator
+@{
+    ViewData["Title"] = "Calories Calculator";
+}
 
-<h1>Calories Calculator</h1>
-
+<h1 class="text-center">@ViewData["Title"]</h1>
+<hr />
 @if (string.IsNullOrEmpty(Model.CurrentCaloriesIntake))
 {
     <form method="post" asp-action="Calculate" asp-controller="CaloriesCalculator" autocomplete="off">

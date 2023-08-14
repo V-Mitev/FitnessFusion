@@ -2,11 +2,11 @@
 @using static FitnessFusion.Common.EntityValidationConstants.Subscription;
 
 @{
-    ViewData["Title"] = "Edit Exercise";
+    ViewData["Title"] = "Edit Subscription";
 }
 
-<h1>@ViewData["Title"]</h1>
-
+<h1 class="text-center">@ViewData["Title"]</h1>
+<hr />
 <form asp-controller="Subscription" asp-action="Edit" method="post">
     <div class="form-group">
         <label asp-for="@Model.Name" class="form-label-add-edit">Name</label>
@@ -14,13 +14,19 @@
         <span asp-validation-for="@Model.Name" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
+    <div class="form-group mb-2">
         <label asp-for="@Model.Description">Description</label>
         <textarea id="description" name="Description" class="form-control" minlength="@DescriptionMinLength" maxlength="@DescriptionMaxLength" required>@Model.Description</textarea>
         <span asp-validation-for="@Model.Description" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
+    <div class="form-group mb-2">
+        <label asp-for="Price">Price:</label>
+        <input type="text" class="form-control" asp-for="Price" min="@PriceMinValue" step="1" max="@PriceMaxValue" required>
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-2">
         <label asp-for="Image">Image:</label>
         <input type="file" class="form-control" asp-for="Image" accept="image/*" required>
         <span asp-validation-for="Image" class="text-danger"></span>

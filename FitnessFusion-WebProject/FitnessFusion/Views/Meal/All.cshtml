@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<AllMealsModel>
+@{
+    ViewData["Title"] = "Menu";
+}
 
 <style>
     .card-img-top {
@@ -8,9 +11,8 @@
     }
 </style>
 
-<div class="container">
-    <h1 class="text-center">Menu</h1>
-</div>
+<h1 class="text-center">@ViewData["Title"]</h1>
+<hr />
 
 <div class="container meal-section">
     <h2 class="meal-type">Breakfast</h2>

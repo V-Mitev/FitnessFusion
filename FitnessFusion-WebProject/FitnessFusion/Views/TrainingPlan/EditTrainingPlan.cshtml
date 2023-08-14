@@ -3,8 +3,8 @@
     ViewData["Title"] = "Edit Training Plan";
 }
 
-<h1>@ViewData["Title"]</h1>
-
+<h1 class="text-center">@ViewData["Title"]</h1>
+<hr />
 <form asp-controller="TrainingPlan" asp-action="EditTrainingPlan" method="post">
     <div class="form-group">
         <label asp-for="@Model.Name">Name:</label>

@@ -1,8 +1,11 @@
 ﻿@model AddMealModel
 @using static FitnessFusion.Common.EntityValidationConstants.Meal
+@{
+    ViewData["Title"] = "Add Meal";
+}
 
-<h1>Add Meal</h1>
-
+<h1 class="text-center">@ViewData["Title"]</h1>
+<hr />
 <form asp-controller="Meal" asp-action="Add" method="post">
     <div class="form-group">
         <label asp-for="@Model.Name" class="form-label-add-edit">Name</label>

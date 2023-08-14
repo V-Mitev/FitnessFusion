@@ -58,7 +58,7 @@
 
             if (!subsciptionExist)
             {
-                TempData[ErrorMessage] = "Meal with provided id does not exist! Please try again!";
+                TempData[ErrorMessage] = "Subscription with provided id does not exist! Please try again!";
 
                 return RedirectToAction("All");
             }

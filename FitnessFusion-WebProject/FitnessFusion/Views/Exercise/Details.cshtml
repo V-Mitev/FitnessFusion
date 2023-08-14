@@ -1,9 +1,12 @@
 ﻿@model ExerciseDetailsModel
+@{
+    ViewData["Title"] = "Exercise Details";
+}
 
 <div class="container">
     <div class="card mt-4">
         <div class="card-header text-center border fw-bolder">
-            Exercise Details
+            @ViewData["Title"]
         </div>
         <div class="card-body">
             <div class="row">
