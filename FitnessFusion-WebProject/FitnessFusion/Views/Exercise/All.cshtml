@@ -1,8 +1,11 @@
 ﻿@model AllExercisesQueryModel
 @inject ITrainerService TrainerService;
+@inject IExerciseService ExerciseService;
 @{
     var isUserTrainer = await TrainerService.IsUserTrainerAsync(User.GetId());
     var isAdmin = User.IsAdmin();
+
+    var allExercises = await ExerciseService.AlreadyCreatedAsync();
 
     ViewData["Title"] = "All Exercises";
 }
@@ -29,7 +32,7 @@
                     <option value="3">3</option>
                     <option value="6">6</option>
                     <option value="9">9</option>
-
+                    <option value="@allExercises.Count()">All</option>
                 </select>
             </div>
         </div>
