@@ -1,7 +1,7 @@
 ﻿@model AllExercisesModel
-@inject IUserService UserService;
+@inject ITrainerService TrainerService;
 @{
-    var isUserTrainer = await UserService.IsUserTrainerAsync(User.GetId());
+    var isUserTrainer = await TrainerService.IsUserTrainerAsync(User.GetId());
 }
 
 <style>

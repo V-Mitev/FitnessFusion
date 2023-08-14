@@ -1,11 +1,11 @@
 ﻿<link rel="stylesheet" type="text/css" href="~/css/trainingPlan.css">
 
 @model ICollection<AllTrainingPlansModel>
-@inject IUserService UserService;
+@inject ITrainerService TrainerService
 
 @{
     string currentUserId = User.GetId().ToLower();
-    var isUserTrainer = await UserService.IsUserTrainerAsync(currentUserId);
+    var isUserTrainer = await TrainerService.IsUserTrainerAsync(currentUserId);
 
     ViewData["Title"] = "All Training Plans";
 }
