@@ -1,0 +1,37 @@
+﻿@model TrainerViewModel
+@using static FitnessFusion.Common.EntityValidationConstants.Trainer
+@{
+    ViewData["Title"] = "Create Trainer";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+<hr />
+<form asp-area="Admin" asp-controller="Trainer" asp-action="Add" method="post">
+
+    <div class="form-group mb-2">
+        <label asp-for="FirstName" class="form-label-add-edit">First name:</label>
+        <input asp-for="FirstName" class="form-control" minlength="@FirstNameMinLength" maxlength="@FirstNameMaxLength" required />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-2">
+        <label asp-for="LastName" class="form-label-add-edit">Last name:</label>
+        <input asp-for="LastName" class="form-control" minlength="@LastNameMinLength" 
+        maxlength="@LastNameMaxLength" required />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-2">
+        <label asp-for="Email" class="form-label-add-edit">Email:</label>
+        <input asp-for="Email" class="form-control" required />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-2">
+        <label asp-for="Description" class="form-label-add-edit">Description:</label>
+        <input asp-for="Description" class="form-control" minlength="@DescriptionMinLength" maxlength="@DescriptionMaxLength" required />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Create Trainer</button>
+</form>

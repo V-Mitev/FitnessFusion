@@ -286,10 +286,8 @@
 
         public async Task<bool> IsTrainingPlanExistByIdAsync(string id)
         {
-            var result = await dbContext.TrainingPlans
+            return await dbContext.TrainingPlans
                 .AnyAsync(tp => tp.Id.ToString() == id);
-
-            return result;
         }
 
         public async Task RemoveExerciseFromPlan(string trainingPlanId, string exerciseId)

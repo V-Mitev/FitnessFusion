@@ -79,5 +79,17 @@
             public const int DescriptionMinLength = 5;
             public const int DescriptionMaxLength = 100;
         }
+
+        public static class Trainer
+        {
+            public const int FirstNameMinLength = 3;
+            public const int FirstNameMaxLength = 50;
+            
+            public const int LastNameMinLength = 3;
+            public const int LastNameMaxLength = 50;
+
+            public const int DescriptionMinLength = 10;
+            public const int DescriptionMaxLength = 1000;
+        }
     }
 }

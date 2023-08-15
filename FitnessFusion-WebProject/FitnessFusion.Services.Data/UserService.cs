@@ -44,19 +44,6 @@
             return $"{user.FirstName} {user.LastName}";
         }
 
-        public async Task<string> GetFullNameByIdAsync(string userId)
-        {
-            var user = await dbContext.Users
-                .FirstOrDefaultAsync(u => u.Id.ToString() == userId);
-
-            if (user == null)
-            {
-                return string.Empty;
-            }
-
-            return $"{user.FirstName} {user.LastName}";
-        }
-
         public async Task<bool> IsUserExistByIdAsync(string userId)
         {
             var result = await dbContext.ApplicationUsers

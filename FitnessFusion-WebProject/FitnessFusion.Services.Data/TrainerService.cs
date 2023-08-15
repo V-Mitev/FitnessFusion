@@ -1,7 +1,10 @@
 ﻿namespace FitnessFusion.Services.Data
 {
     using FitnessFusion.Data;
+    using FitnessFusion.Data.Models;
     using FitnessFusion.Services.Data.Interfaces;
+    using FitnessFusion.Web.ViewModels.Trainer;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
 
     public class TrainerService : ITrainerService
@@ -11,6 +14,37 @@
         public TrainerService(FitnessFusionDbContext dbContext)
         {
             this.dbContext = dbContext;
+        }
+
+        public async Task AddTrainerAsync(TrainerViewModel model)
+        {
+            var newTrainer = new Trainer()
+            {
+                Id = Guid.NewGuid(),
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                UserName = model.Email,
+                Email = model.Email,
+                Description = model.Description,
+                IsTrainer = true,
+                NormalizedEmail = model.Email,
+                NormalizedUserName = model.Email,
+                SecurityStamp = Guid.NewGuid().ToString()
+            };
+
+            var hasher = new PasswordHasher<Trainer>();
+
+            newTrainer.PasswordHash = hasher.HashPassword(newTrainer, "123456");
+
+            await dbContext.Trainers.AddAsync(newTrainer);
+
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsEmailAlreadyAdded(string email)
+        {
+            return await dbContext.Trainers
+                .AnyAsync(t => t.Email == email);
         }
 
         public async Task<bool> IsUserTrainerAsync(string userId)

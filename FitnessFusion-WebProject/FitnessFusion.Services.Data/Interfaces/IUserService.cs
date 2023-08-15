@@ -8,8 +8,6 @@
 
         public Task<bool> IsUserExistByIdAsync(string userId);
 
-        public Task<string> GetFullNameByIdAsync(string userId);
-
         public Task<ICollection<UserViewModel>> AllAsync();
     }
 }
