@@ -33,6 +33,8 @@
 
             builder.ApplyConfiguration<Trainer>(new TrainerConfiguration());
 
+            builder.ApplyConfiguration<ApplicationUser>(new ApplicationUserConfiguration());
+
             builder.Entity<Subscription>()
                 .Property(t => t.Price)
                 .HasPrecision(5, 2);

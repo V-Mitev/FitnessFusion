@@ -9,6 +9,6 @@
 
         public const string AdminAreaName = "Admin";
         public const string AdminRoleName = "Administrator";
-        public const string DevelopmentAdminEmail = "admin@fitnessfusion.bg";
+        public const string AdminEmail = "admin@fitnessfusion.bg";
     }
 }

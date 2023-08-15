@@ -93,7 +93,7 @@ namespace FitnessFusion
 
             if (app.Environment.IsDevelopment())
             {
-                app.SeedAdministrator(DevelopmentAdminEmail);
+                app.SeedAdministrator(AdminEmail);
             }
 
             app.UseEndpoints(config =>
