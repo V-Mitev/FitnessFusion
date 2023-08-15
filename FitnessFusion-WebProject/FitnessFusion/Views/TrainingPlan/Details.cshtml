@@ -4,8 +4,10 @@
     ViewData["Title"] = $"{Model.Name} Details";
 }
 
-<h1 class="text-center">@ViewData["Title"]</h1>
+<h1 class="text-center mb-2">@ViewData["Title"]</h1>
 <hr />
+<h3 class="text-center mb-2">This is description about this plan</h3>
+<p class="text-center mb-2">@Model.Description</p>
 <h3>Exercises</h3>
 
 <table class="table">
@@ -26,9 +28,7 @@
                 <td>@exercise.Dificulty</td>
                 <td>@exercise.MuscleGroup</td>
                 <td>
-                    <a href="@exercise.VideoLink" target="_blank">
-                        <btn type="button" class="btn btn-primary">Watch video</btn>
-                    </a>
+                    <a href="@exercise.VideoLink" target="_blank" class="btn btn-primary">Watch video</a>
                 </td>
                 <td>@exercise.Description</td>
             </tr>

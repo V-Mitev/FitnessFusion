@@ -1,4 +1,5 @@
 ﻿@model TrainingPlanModel
+@using static FitnessFusion.Common.EntityValidationConstants.TrainingPlan;
 @{
     ViewData["Title"] = "Edit Training Plan";
 }
@@ -6,18 +7,24 @@
 <h1 class="text-center">@ViewData["Title"]</h1>
 <hr />
 <form asp-controller="TrainingPlan" asp-action="EditTrainingPlan" method="post" asp-route-id="@Model.Id">
-    <div class="form-group">
+    <div class="form-group mb-2">
         <label asp-for="@Model.Name">Name:</label>
-        <input class="form-control" asp-for="@Model.Name" minlength="2" maxlength="100" required />
+        <input class="form-control" asp-for="@Model.Name" minlength="@NameMinLength" maxlength="@NameMaxLength" required />
         <span asp-validation-for="@Model.Name" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
+    <div class="form-group mb-2">
+        <label asp-for="@Model.Description">Description</label>
+        <textarea id="description" name="Description" class="form-control" minlength="@DescriptionMinLength" maxlength="@DescriptionMaxLength" required>@Model.Description</textarea>
+        <span asp-validation-for="@Model.Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-2">
         <label asp-for="@Model.Image">Image:</label>
         <input type="file" class="form-control" asp-for="@Model.Image" accept="image/*" required>
         <span asp-validation-for="@Model.Image" class="text-danger"></span>
     </div>
-    <br />
+
     <div class="form-actions">
         <a asp-controller="TrainingPlan" asp-action="AddExercise" class="btn btn-primary">Add Exercise</a>
         <button type="submit" class="btn btn-primary">Save changes</button>

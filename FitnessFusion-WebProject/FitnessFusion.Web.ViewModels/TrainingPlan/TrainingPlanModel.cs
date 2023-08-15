@@ -22,6 +22,10 @@
         [Required]
         public string Image { get; set; } = null!;
 
+        [Required]
+        [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
+        public string Description { get; set; } = null!;
+
         public ICollection<AddExerciseModel> AddedExercises { get; set; }
 
         public Dictionary<Guid, string> AlreadyCreatedExercises { get; set; }

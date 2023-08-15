@@ -119,7 +119,8 @@
                 Name = model.Name,
                 TrainerId = trainer.Id,
                 Exercises = exercises,
-                Image = model.Image
+                Image = model.Image,
+                Description = model.Description
             };
 
             await dbContext.TrainingPlans.AddAsync(trainingPlan);
@@ -193,7 +194,8 @@
             {
                 Name = trainingPlan.Name,
                 Trainer = $"{trainer.FirstName} {trainer.LastName}",
-                Exercises = exercises
+                Exercises = exercises,
+                Description = trainingPlan.Description
             };
 
             return detailsTP;
@@ -258,7 +260,8 @@
                 Id = trainingPlan.Id.ToString(),
                 Name = trainingPlan.Name,
                 Image = trainingPlan.Image,
-                AddedExercises = exercises
+                AddedExercises = exercises,
+                Description = trainingPlan.Description
             };
 
             return model;
@@ -273,7 +276,8 @@
                     Name = tp.Name,
                     TrainerId = tp.TrainerId.ToString(),
                     Trainer = $"{tp.Trainer.FirstName} {tp.Trainer.LastName}",
-                    Image = tp.Image
+                    Image = tp.Image,
+                    Description = tp.Description
                 })
                 .ToListAsync();
 

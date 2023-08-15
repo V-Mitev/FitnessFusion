@@ -16,13 +16,17 @@
         public Guid Id { get; set; }
 
         [Required]
-        [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
+        [MaxLength(NameMaxLength)]
         public string Name { get; set; } = null!;
 
         [ForeignKey(nameof(Trainer))]
         public Guid TrainerId { get; set; }
 
         public Trainer Trainer { get; set; } = null!;
+
+        [Required]
+        [MaxLength(DescriptionMaxLength)]
+        public string Description { get; set; } = null!;
 
         [Required]
         public string Image { get; set; } = null!;
