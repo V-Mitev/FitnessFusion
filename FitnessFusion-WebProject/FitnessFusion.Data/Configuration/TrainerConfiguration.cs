@@ -20,7 +20,7 @@
 
             user = new Trainer()
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("d972ec1a-3fa7-48b6-aafa-11509efbd920"),
                 UserName = "trainer@abv.bg",
                 FirstName = "Test",
                 LastName = "Trainer",
@@ -29,7 +29,7 @@
                 Email = "trainer@abv.bg",
                 EmailConfirmed = true,
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vestibulum sollicitudin est, varius vehicula erat pulvinar vel. Morbi molestie accumsan dolor, in bibendum mauris faucibus eu. Donec finibus a quam consectetur fermentum. Pellentesque faucibus at neque et iaculis. Sed consequat urna pulvinar feugiat finibus.",
-                SecurityStamp = Guid.NewGuid().ToString(),
+                SecurityStamp = "f321b542-d4d0-4eb0-afa7-38e09e666a92",
                 LockoutEnabled = true,
                 NormalizedUserName = "TRAINER@ABV.BG",
                 NormalizedEmail= "TRAINER@ABV.BG"

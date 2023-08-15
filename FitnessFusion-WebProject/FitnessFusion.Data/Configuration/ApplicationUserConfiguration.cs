@@ -17,14 +17,14 @@
         {
             var administrator = new ApplicationUser()
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("8b31291b-0f00-49aa-964d-e3242a0fd13e"),
                 FirstName = "Admin",
                 LastName = "Admin",
                 Email = AdminEmail,
                 NormalizedEmail = AdminEmail,
                 UserName = AdminEmail,
                 NormalizedUserName = AdminEmail,
-                SecurityStamp = Guid.NewGuid().ToString()
+                SecurityStamp = "4086a2a8-4ccc-430e-916b-ceda5be3ab94"
             };
 
             var hasher = new PasswordHasher<ApplicationUser>();
