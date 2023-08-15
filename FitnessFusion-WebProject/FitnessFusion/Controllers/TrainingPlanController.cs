@@ -6,7 +6,6 @@
     using FitnessFusion.Web.ViewModels.TrainingPlan;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore.Metadata.Internal;
     using NuGet.Packaging;
     using static FitnessFusion.Common.NotificationMessagesConstant;
 
@@ -279,14 +278,14 @@
         [HttpPost]
         public async Task<IActionResult> EditTrainingPlan(TrainingPlanModel model, string id)
         {
-            //var userExist = await userService.IsUserExistByIdAsync(User.GetId());
+            var userExist = await userService.IsUserExistByIdAsync(User.GetId());
 
-            //if (!userExist)
-            //{
-            //    TempData[ErrorMessage] = "User with provided id does not exist! Please try again!"; ;
+            if (!userExist)
+            {
+                TempData[ErrorMessage] = "User with provided id does not exist! Please try again!"; ;
 
-            //    return RedirectToAction("CreateTrainingPlan");
-            //}
+                return RedirectToAction("CreateTrainingPlan");
+            }
 
             var isTrainingPlanExist = await trainingPlanService.IsTrainingPlanExistByIdAsync(id);
 
@@ -522,6 +521,40 @@
             HttpContext.Session.SetObject("TrainingPlan", trainingPlan);
 
             return RedirectToAction("EditTrainingPlan", new {trainingPlan.Id});
+        }
+
+        [HttpPost]
+        public IActionResult RemoveExerciseFromPlan(string exerciseName)
+        {
+            var trainingPlan = HttpContext.Session.GetObject<TrainingPlanModel>("TrainingPlan");
+
+            if (trainingPlan == null)
+            {
+                TempData[ErrorMessage] = "Training plan does't exist!";
+
+                return RedirectToAction("All");
+            }
+
+            var exercise = trainingPlan.AddedExercises
+                .FirstOrDefault(e => e.Name == exerciseName);
+
+            if (exercise == null)
+            {
+                TempData[ErrorMessage] = "Exercise is not added in plan!";
+
+                return RedirectToAction("CreateTrainingPlan");
+            }
+
+            trainingPlan.AddedExercises.Remove(exercise);
+
+            if (trainingPlan.AddedExercises.Count == 0)
+            {
+                TempData[WarningMessage] = "If you want to create training plan you need to have 1 exercise minimum!";
+            }
+
+            HttpContext.Session.SetObject("TrainingPlan", trainingPlan);
+
+            return RedirectToAction("CreateTrainingPlan");
         }
 
         private IActionResult GeneralError()

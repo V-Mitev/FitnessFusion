@@ -42,7 +42,8 @@
                 <td>@exercise.Dificulty</td>
                 <td>
                     <form asp-controller="TrainingPlan" asp-action="RemoveExerciseFromPlan" method="post">
-                        <button type="submit" class="btn btn-danger mb-2">Remove exercise</button>
+                        <input type="hidden" name="exerciseName" value="@exercise.Name" />
+                        <button type="submit" class="btn btn-danger mb-2" value="@exercise.Name">Remove exercise</button>
                     </form>
                 </td>
             </tr>
@@ -52,18 +53,15 @@
 
 <a asp-controller="TrainingPlan" asp-action="AddExercise" class="btn btn-primary mb-2">Add new Exercise</a>
 
-
 <form asp-action="AddExistingExercise" asp-controller="TrainingPlan" method="post">
-    <div class="">
-        <select class="form-control mb-2 d-inline-block" id="alreadyCreatedExercises" name="exerciseKey" required>
-            <option value="">Select an existing exercise</option>
-            @foreach (var exercise in Model.AlreadyCreatedExercises)
-            {
-                <option value="@exercise.Key">@exercise.Value</option>
-            }
-        </select>
-    </div>
-    <input type="hidden" name="AlreadyCreatedExercises" value="" />
+
+    <select class="form-control mb-2 d-inline-block" id="alreadyCreatedExercises" name="exerciseKey" required>
+        <option value="">Select an existing exercise</option>
+        @foreach (var exercise in Model.AlreadyCreatedExercises)
+        {
+            <option value="@exercise.Key">@exercise.Value</option>
+        }
+    </select>
 
     <button type="submit" class="btn btn-primary">Add existing exercise</button>
 </form>
