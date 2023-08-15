@@ -26,6 +26,13 @@
         [HttpGet]
         public IActionResult Add()
         {
+            if (!User.IsAdmin())
+            {
+                TempData[ErrorMessage] = "Only administators can add subscriptions!";
+
+                return RedirectToAction("Index", "Home");
+            }
+
             var model = new SubscriptionModel();
 
             return View(model);
@@ -54,6 +61,13 @@
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
+            if (!User.IsAdmin())
+            {
+                TempData[ErrorMessage] = "Only administators can edit subscriptions!";
+
+                return RedirectToAction("Index", "Home");
+            }
+
             var subsciptionExist = await subscriptionService.IsSubscriptionExistByIdAsync(id);
 
             if (!subsciptionExist)
@@ -82,7 +96,7 @@
 
             if (!subsciptionExist)
             {
-                TempData[ErrorMessage] = "Meal with provided id does not exist! Please try again!";
+                TempData[ErrorMessage] = "Subscription with provided id does not exist! Please try again!";
 
                 return RedirectToAction("All");
             }
@@ -131,11 +145,18 @@
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
+            if (!User.IsAdmin())
+            {
+                TempData[ErrorMessage] = "Only administators can delete subscriptions!";
+
+                return RedirectToAction("Index", "Home");
+            }
+
             var subsciptionExist = await subscriptionService.IsSubscriptionExistByIdAsync(id);
 
             if (!subsciptionExist)
             {
-                TempData[ErrorMessage] = "Meal with provided id does not exist! Please try again!";
+                TempData[ErrorMessage] = "Subscription with provided id does not exist! Please try again!";
 
                 return RedirectToAction("All");
             }

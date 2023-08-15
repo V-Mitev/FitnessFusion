@@ -1,5 +1,6 @@
 ﻿namespace FitnessFusion.Web.Controllers
 {
+    using FitnessFusion.Web.Infastructure.Extensions;
     using Microsoft.AspNetCore.Mvc;
     using Services.Data.Interfaces;
     using Web.ViewModels.Meal;
@@ -25,6 +26,13 @@
         [HttpGet]
         public IActionResult Add()
         {
+            if (!User.IsAdmin())
+            {
+                TempData[ErrorMessage] = "Only administators can add meals!";
+
+                return RedirectToAction("Index", "Home");
+            }
+
             AddMealModel model = new AddMealModel();
 
             return View(model);
@@ -53,6 +61,13 @@
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
+            if (!User.IsAdmin())
+            {
+                TempData[ErrorMessage] = "Only administators can delete meals!";
+
+                return RedirectToAction("Index", "Home");
+            }
+
             var mealExist = await mealService.IsMealExistByIdAsync(id);
 
             if (!mealExist)
@@ -77,6 +92,13 @@
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
+            if (!User.IsAdmin())
+            {
+                TempData[ErrorMessage] = "Only administators can edit meals!";
+
+                return RedirectToAction("Index", "Home");
+            }
+
             var mealExist = await mealService.IsMealExistByIdAsync(id);
 
             if (!mealExist)

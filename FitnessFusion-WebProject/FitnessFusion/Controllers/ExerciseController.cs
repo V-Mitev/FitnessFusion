@@ -1,6 +1,7 @@
 ﻿namespace FitnessFusion.Web.Controllers
 {
     using FitnessFusion.Data.Models.Enums;
+    using FitnessFusion.Web.Infastructure.Extensions;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Services.Data.Interfaces;
@@ -11,10 +12,12 @@
     public class ExerciseController : Controller
     {
         private readonly IExerciseService exerciseService;
+        private readonly ITrainerService trainerService;
 
-        public ExerciseController(IExerciseService exerciseService)
+        public ExerciseController(IExerciseService exerciseService, ITrainerService trainerService)
         {
             this.exerciseService = exerciseService;
+            this.trainerService = trainerService;
         }
 
         [HttpGet]
@@ -32,8 +35,15 @@
         }
 
         [HttpGet]
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
+            if (!User.IsAdmin() && !await trainerService.IsUserTrainerAsync(User.GetId()))
+            {
+                TempData[ErrorMessage] = "Only trainers and administators can add exercises!";
+
+                return RedirectToAction("Index", "Home");
+            }
+
             AddExerciseModel model = new AddExerciseModel();
 
             return View(model);
@@ -46,7 +56,7 @@
             {
                 return View(model);
             }
-
+            
             try
             {
                 await exerciseService.AddExerciseAsync(model);
@@ -86,6 +96,13 @@
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
+            if (!User.IsAdmin() && !await trainerService.IsUserTrainerAsync(User.GetId()))
+            {
+                TempData[ErrorMessage] = "Only trainers and administators can edit exercises!";
+
+                return RedirectToAction("Index", "Home");
+            }
+
             var exerciseExist = await exerciseService.IsExerciseExistByIdAsync(id);
 
             if (!exerciseExist)
@@ -139,6 +156,13 @@
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
+            if (!User.IsAdmin() && !await trainerService.IsUserTrainerAsync(User.GetId()))
+            {
+                TempData[ErrorMessage] = "Only trainers and administators can delete exercises!";
+
+                return RedirectToAction("Index", "Home");
+            }
+
             var exerciseExist = await exerciseService.IsExerciseExistByIdAsync(id);
 
             if (!exerciseExist)
