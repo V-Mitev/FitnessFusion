@@ -1,0 +1,31 @@
+﻿@model ICollection<UserViewModel>
+@{
+    ViewBag.Title = "All Subscribers";
+}
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th><label>Email</label></th>
+            <th><label>Full Name</label></th>
+            <th><label>Subscription Plan</label></th>
+            <th><label>Start Subscription</label></th>
+            <th><label>End Subscription</label></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td><label>@user.Email</label></td>
+                <td><label>@user.FullName</label></td>
+                <td><label>@user.SubscriptionPlan</label></td>
+                <td><label>@user.StartSubscription</label></td>
+                <td><label>@user.EndSubscription</label></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-area="Admin" asp-action="Index" asp-controller="Home" class="btn btn-outline-primary">Back to Home page</a>

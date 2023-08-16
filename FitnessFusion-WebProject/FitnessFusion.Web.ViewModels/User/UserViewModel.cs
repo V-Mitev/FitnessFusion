@@ -9,5 +9,13 @@
         public string Email { get; set; } = null!;
 
         public bool IsTrainer { get; set; }
+
+        public bool IsSubscribed { get; set; }
+
+        public string? StartSubscription { get; set; }
+
+        public string? EndSubscription { get; set; }
+
+        public string? SubscriptionPlan { get; set; }
     }
 }

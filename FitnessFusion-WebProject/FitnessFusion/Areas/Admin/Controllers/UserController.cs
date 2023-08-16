@@ -43,6 +43,14 @@
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> AllSubscribers()
+        {
+            var allSubscribers = await userService.AllSubscribers();
+
+            return View(allSubscribers);
+        }
+
         private IActionResult GeneralError()
         {
             TempData[ErrorMessage] =
