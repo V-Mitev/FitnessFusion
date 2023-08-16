@@ -32,8 +32,11 @@
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            if (!await subscriptionService.IsSubscribeValidAsync(User.GetId()) ||
-                !await trainingerService.IsUserTrainerAsync(User.GetId()))
+            var a = await subscriptionService.IsSubscribeValidAsync(User.GetId());
+
+            if (!await subscriptionService.IsSubscribeValidAsync(User.GetId()) &&
+                !await trainingerService.IsUserTrainerAsync(User.GetId()) &&
+                !User.IsAdmin())
             {
                 TempData[ErrorMessage] = "You need to be trainer or subscriber to can see training plans!";
 
