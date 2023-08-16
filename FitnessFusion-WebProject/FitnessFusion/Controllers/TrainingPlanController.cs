@@ -13,18 +13,15 @@
     public class TrainingPlanController : Controller
     {
         private readonly ITrainingPlanService trainingPlanService;
-        private readonly IUserService userService;
         private readonly IExerciseService exerciseService;
         private readonly ITrainerService trainingerService;
 
         public TrainingPlanController(
             ITrainingPlanService trainingPlanService,
-            IUserService userService,
             IExerciseService exerciseService,
             ITrainerService trainingerService)
         {
             this.trainingPlanService = trainingPlanService;
-            this.userService = userService;
             this.exerciseService = exerciseService;
             this.trainingerService = trainingerService;
         }
@@ -52,15 +49,6 @@
                 TempData[ErrorMessage] = "Only trainers can add training plan!";
 
                 return RedirectToAction("Index", "Home");
-            }
-
-            var userExist = await userService.IsUserExistByIdAsync(User.GetId());
-
-            if (!userExist)
-            {
-                TempData[ErrorMessage] = "User with provided id does not exist! Please try again!"; ;
-
-                return RedirectToAction("CreateTrainingPlan");
             }
 
             var model = HttpContext.Session.GetObject<TrainingPlanModel>("TrainingPlan");
@@ -113,15 +101,6 @@
             {
                 HttpContext.Session.SetObject("TrainingPlan", sessionTrainingPlan);
                 return View(model);
-            }
-
-            var userExist = await userService.IsUserExistByIdAsync(User.GetId());
-
-            if (!userExist)
-            {
-                TempData[ErrorMessage] = "User with provided id does not exist! Please try again!"; ;
-
-                return RedirectToAction("CreateTrainingPlan");
             }
 
             try
@@ -304,15 +283,6 @@
         [HttpPost]
         public async Task<IActionResult> EditTrainingPlan(TrainingPlanModel model, string id)
         {
-            var userExist = await userService.IsUserExistByIdAsync(User.GetId());
-
-            if (!userExist)
-            {
-                TempData[ErrorMessage] = "User with provided id does not exist! Please try again!"; ;
-
-                return RedirectToAction("CreateTrainingPlan");
-            }
-
             var isTrainingPlanExist = await trainingPlanService.IsTrainingPlanExistByIdAsync(id);
 
             if (!isTrainingPlanExist)
@@ -551,7 +521,8 @@
             }
 
             if (trainingPlan!.AddedExercises
-                .Any(e => e.Id == exercise.Id && e.Name == exercise.Name))
+                .Any(e => e.Id.ToLower() == exercise.Id.ToLower() && 
+                e.Name.ToLower() == exercise.Name.ToLower()))
             {
                 TempData[ErrorMessage] = $"You already added {exercise.Name} in training plan!";
 
