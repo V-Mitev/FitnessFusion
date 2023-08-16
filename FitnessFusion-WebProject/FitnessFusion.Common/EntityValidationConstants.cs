@@ -78,6 +78,12 @@
 
             public const int DescriptionMinLength = 5;
             public const int DescriptionMaxLength = 100;
+
+            public const string CvvPatern = "^[0-9]{3}$";
+
+            public const int CardNumberLength = 16;
+
+            public const string ExpirationDatePatern = "^(0[1-9]|1[0-2])\\/?([0-9]{2})$";
         }
 
         public static class Trainer

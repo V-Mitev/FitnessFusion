@@ -19,7 +19,7 @@
             this.dbContext = dbContext;
         }
 
-        public async Task AddSubscription(SubscriptionModel model)
+        public async Task AddSubscriptionAsync(SubscriptionModel model)
         {
             var subscription = new Subscription()
             {
@@ -35,7 +35,7 @@
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteSubscription(string subscriptionId)
+        public async Task DeleteSubscriptionAsync(string subscriptionId)
         {
             var subscription = await dbContext.Subscriptions
                 .FirstOrDefaultAsync( s => s.Id.ToString() == subscriptionId);
@@ -50,7 +50,7 @@
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task Edit(SubscriptionModel model, string subscriptionId)
+        public async Task EditAsync(SubscriptionModel model, string subscriptionId)
         {
             var subscription = await dbContext.Subscriptions
                 .FindAsync(Guid.Parse(subscriptionId));
@@ -70,7 +70,7 @@
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<ICollection<SubscriptionModel>> GetAllSubscriptions()
+        public async Task<ICollection<SubscriptionModel>> GetAllSubscriptionsAsync()
         {
             var subscriptions = await dbContext.Subscriptions
                 .Select(s => new SubscriptionModel
@@ -87,7 +87,7 @@
             return subscriptions;
         }
 
-        public async Task<SubscriptionModel> GetSubscription(string subscriptionId)
+        public async Task<SubscriptionModel> GetSubscriptionAsync(string subscriptionId)
         {
             var subscription = await dbContext.Subscriptions
                 .FindAsync(Guid.Parse(subscriptionId));
@@ -108,6 +108,26 @@
             };
 
             return subscriptionModel;
+        }
+
+        public async Task<bool> IsSubscribeValidAsync(string userId)
+        {
+            var user = await dbContext.ApplicationUsers
+              .FindAsync(Guid.Parse(userId));
+
+            if (user == null)
+            {
+                throw new NullReferenceException("Unexpected error user doesn't exist!");
+            }
+
+            if (user.StartSubscription == user.EndSubscription)
+            {
+                 return user.IsSubscribeValid = false;
+            }
+            else
+            {
+                return user.IsSubscribeValid = true;
+            }
         }
 
         public async Task<bool> IsSubscriptionExistByIdAsync(string id)
@@ -136,17 +156,14 @@
                 throw new NullReferenceException("Unexpected error user doesn't exist!");
             }
 
-            user.StartSubscription = DateTime.UtcNow;
-            user.EndSubscription = DateTime.UtcNow.AddDays(SubscriptionPeriodForAllPlans);
+            var startSubscription = DateTime.UtcNow.ToString("D");
 
-            if (user.StartSubscription == user.EndSubscription)
-            {
-                user.IsSubscribeValid = false;
-            }
-            else
-            {
-                user.IsSubscribeValid = true;
-            }
+            var endSuscription = DateTime.UtcNow.AddDays(SubscriptionPeriodForAllPlans).ToString("D");
+
+            user.StartSubscription = DateTime.Parse(startSubscription);
+            user.EndSubscription = DateTime.Parse(endSuscription);
+            
+            user.IsSubscribeValid = true;
 
             subscriptionPlan.Users.Add(user);
 

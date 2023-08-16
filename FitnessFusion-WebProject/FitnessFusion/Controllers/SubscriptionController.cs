@@ -18,7 +18,7 @@
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            var subscriptions = await subscriptionService.GetAllSubscriptions();
+            var subscriptions = await subscriptionService.GetAllSubscriptionsAsync();
 
             return View(subscriptions);
         }
@@ -48,7 +48,7 @@
 
             try
             {
-                await subscriptionService.AddSubscription(model);
+                await subscriptionService.AddSubscriptionAsync(model);
 
                 return RedirectToAction("All");
             }
@@ -79,7 +79,7 @@
 
             try
             {
-                var model = await subscriptionService.GetSubscription(id);
+                var model = await subscriptionService.GetSubscriptionAsync(id);
 
                 return View(model);
             }
@@ -108,7 +108,7 @@
 
             try
             {
-                await subscriptionService.Edit(model, id);
+                await subscriptionService.EditAsync(model, id);
 
                 return RedirectToAction("All");
             }
@@ -125,14 +125,16 @@
 
             if (!subsciptionExist)
             {
-                TempData[ErrorMessage] = "Meal with provided id does not exist! Please try again!";
+                TempData[ErrorMessage] = "Subscription with provided id does not exist! Please try again!";
 
                 return RedirectToAction("All");
             }
 
             try
             {
-                var model = await subscriptionService.GetSubscription(id);
+                var model = await subscriptionService.GetSubscriptionAsync(id);
+
+                TempData["SubscriptionId"] = id;
 
                 return View(model);
             }
@@ -163,7 +165,7 @@
 
             try
             {
-                await subscriptionService.DeleteSubscription(id);
+                await subscriptionService.DeleteSubscriptionAsync(id);
 
                 return RedirectToAction("All");
             }
@@ -173,17 +175,44 @@
             }
         }
 
-        //[HttpGet]
-        //public Task<IActionResult> Subscribe()
-        //{
+        [HttpGet]
+        public async Task<IActionResult> SubscribeAsync()
+        {
+            if (!await subscriptionService.IsSubscribeValidAsync(User.GetId()))
+            {
+                TempData[ErrorMessage] = "You are already subscribed, when the subscription expires, try again!";
 
-        //}
+                return RedirectToAction("Index", "Home");
+            }
 
-        //[HttpPost]
-        //public Task<IActionResult> Subscribe()
-        //{
+            var model = new SubscribeViewModel();
 
-        //}
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Subscribe(SubscribeViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            if (TempData.TryGetValue("SubscriptionId", out object? subscriptionId) && subscriptionId != null)
+            {
+                string id = subscriptionId.ToString() ?? string.Empty;
+
+                await subscriptionService.SubscribeAsync(id, User.GetId());
+
+                TempData[SuccessMessage] = "You have successfully subscribed!";
+
+                TempData.Remove("SubscriptionId");
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            return GeneralError();
+        }
 
         private IActionResult GeneralError()
         {

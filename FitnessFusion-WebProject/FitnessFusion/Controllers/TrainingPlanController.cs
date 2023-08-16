@@ -15,20 +15,31 @@
         private readonly ITrainingPlanService trainingPlanService;
         private readonly IExerciseService exerciseService;
         private readonly ITrainerService trainingerService;
+        private readonly ISubscriptionService subscriptionService;
 
         public TrainingPlanController(
             ITrainingPlanService trainingPlanService,
             IExerciseService exerciseService,
-            ITrainerService trainingerService)
+            ITrainerService trainingerService,
+            ISubscriptionService subscriptionService)
         {
             this.trainingPlanService = trainingPlanService;
             this.exerciseService = exerciseService;
             this.trainingerService = trainingerService;
+            this.subscriptionService = subscriptionService;
         }
 
         [HttpGet]
         public async Task<IActionResult> All()
         {
+            if (!await subscriptionService.IsSubscribeValidAsync(User.GetId()) ||
+                !await trainingerService.IsUserTrainerAsync(User.GetId()))
+            {
+                TempData[ErrorMessage] = "You need to be trainer or subscriber to can see training plans!";
+
+                return RedirectToAction("Index", "Home");
+            }
+
             var trainingPlan = HttpContext.Session.GetObject<TrainingPlanModel>("TrainingPlan");
 
             if (trainingPlan != null)
@@ -507,7 +518,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditAndAddExistingExercise(string exerciseKey)
+        public async Task<IActionResult> AddExistingExerciseInEditAction(string exerciseKey)
         {
             var trainingPlan = HttpContext.Session.GetObject<TrainingPlanModel>("TrainingPlan");
 
@@ -521,7 +532,7 @@
             }
 
             if (trainingPlan!.AddedExercises
-                .Any(e => e.Id.ToLower() == exercise.Id.ToLower() && 
+                .Any(e => e.Id!.ToLower() == exercise.Id!.ToLower() && 
                 e.Name.ToLower() == exercise.Name.ToLower()))
             {
                 TempData[ErrorMessage] = $"You already added {exercise.Name} in training plan!";
