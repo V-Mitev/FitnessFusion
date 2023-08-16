@@ -1,7 +1,7 @@
 ﻿namespace FitnessFusion.Data
 {
     using FitnessFusion.Data.Configuration;
-    using FitnessFusion.Data.Models;    
+    using FitnessFusion.Data.Models;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
@@ -31,13 +31,11 @@
 
             builder.ApplyConfiguration<Exercise>(new ExerciseConfiguration());
 
+            builder.ApplyConfiguration<Subscription>(new SubscriptionConfiguration());
+
             builder.ApplyConfiguration<Trainer>(new TrainerConfiguration());
 
             builder.ApplyConfiguration<ApplicationUser>(new ApplicationUserConfiguration());
-
-            builder.Entity<Subscription>()
-                .Property(t => t.Price)
-                .HasPrecision(5, 2);
 
             base.OnModelCreating(builder);
         }

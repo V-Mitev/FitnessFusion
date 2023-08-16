@@ -2,13 +2,13 @@
 {
     using Microsoft.AspNetCore.Identity;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
     using static Common.EntityValidationConstants.User;
 
     public class ApplicationUser : IdentityUser<Guid>
     {
         public ApplicationUser()
         {
-            Subscriptions = new List<Subscription>();
             IsTrainer = false;
             IsSubscribeValid = false;
         }
@@ -31,6 +31,9 @@
 
         public bool IsSubscribeValid { get; set; }
 
-        public ICollection<Subscription> Subscriptions { get; set; }
+        [ForeignKey(nameof(Subscription))]
+        public Guid? SubscriptionId { get; set; }
+
+        public Subscription? Subscription { get; set; }
     }
 }

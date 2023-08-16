@@ -12,32 +12,17 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitnessFusion.Data.Migrations
 {
     [DbContext(typeof(FitnessFusionDbContext))]
-    [Migration("20230719105642_EditTrainingPlanAndSeedTestTrainers")]
-    partial class EditTrainingPlanAndSeedTestTrainers
+    [Migration("20230816113947_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.18")
+                .HasAnnotation("ProductVersion", "6.0.20")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("ApplicationUserSubscription", b =>
-                {
-                    b.Property<Guid>("SubscriptionsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UsersId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("SubscriptionsId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("ApplicationUserSubscription");
-                });
 
             modelBuilder.Entity("ExerciseTrainingPlan", b =>
                 {
@@ -70,9 +55,6 @@ namespace FitnessFusion.Data.Migrations
                     b.Property<string>("CurrentCaloriesGoal")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("DateOfBirth")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -84,11 +66,13 @@ namespace FitnessFusion.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime?>("EndSubscription")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("ImgUrl")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("IsSubscribeValid")
                         .HasColumnType("bit");
@@ -97,7 +81,9 @@ namespace FitnessFusion.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -125,6 +111,12 @@ namespace FitnessFusion.Data.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("StartSubscription")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("SubscriptionId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -142,9 +134,34 @@ namespace FitnessFusion.Data.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("SubscriptionId");
+
                     b.ToTable("AspNetUsers", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("ApplicationUser");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("8b31291b-0f00-49aa-964d-e3242a0fd13e"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "a261c776-c934-4545-aba5-a6fcd77104bc",
+                            Email = "admin@fitnessfusion.bg",
+                            EmailConfirmed = false,
+                            FirstName = "Admin",
+                            IsSubscribeValid = false,
+                            IsTrainer = false,
+                            LastName = "Admin",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "admin@fitnessfusion.bg",
+                            NormalizedUserName = "admin@fitnessfusion.bg",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOPoeseqZBKeJz+kHcdfeqms2Ybvpr0NIAP394j3GDdQasf+JDrjvR80dRGW4fG4Rg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "4086a2a8-4ccc-430e-916b-ceda5be3ab94",
+                            SubscriptionId = new Guid("ce8bb39f-685a-4c7f-9ccf-55b627121474"),
+                            TwoFactorEnabled = false,
+                            UserName = "admin@fitnessfusion.bg"
+                        });
                 });
 
             modelBuilder.Entity("FitnessFusion.Data.Models.Exercise", b =>
@@ -185,7 +202,7 @@ namespace FitnessFusion.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2385a59d-524b-478e-a26d-041052107d91"),
+                            Id = new Guid("3fe4514f-f772-4491-af1e-02165b7af9a7"),
                             Description = "It involves lying on a bench and pressing weight upward using either a barbell or a pair of dumbbells. During a bench press, you lower the weight down to chest level and then press upwards while extending your arms.",
                             Difficulty = 1,
                             ImagePath = "BenchPress.jfif",
@@ -195,7 +212,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("26151384-8d77-4197-8841-744957dfb758"),
+                            Id = new Guid("6eb428f7-d7e3-4a7f-ad50-05004e49611b"),
                             Description = "An exercise in which a standing person lowers to a position in which the torso is erect and the knees are deeply bent and then rises to an upright position.",
                             Difficulty = 1,
                             ImagePath = "Squat.jfif",
@@ -205,7 +222,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("96db6580-9bb1-4da1-9719-b05fa8b3a901"),
+                            Id = new Guid("dea182ff-973f-4b78-902a-70414f4f997b"),
                             Description = "A pull-up is an upper-body exercise that involves hanging from a pull-up bar by your hands with your palms facing away from you, and lifting your entire body up with your arm and back muscles until your chest touches the bar.",
                             Difficulty = 1,
                             ImagePath = "PullUp.jfif",
@@ -244,7 +261,7 @@ namespace FitnessFusion.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("c991d8c8-382b-4f1b-9694-6ab9122affc2"),
+                            Id = new Guid("7a38068d-8cb6-458b-9906-5a09fded0cf5"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "Musli.png",
                             MealType = 0,
@@ -252,7 +269,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("e8b8609c-5f56-4004-a556-26ec18c0d2f5"),
+                            Id = new Guid("7e906067-ca50-4f97-9df6-f1ae07c8070c"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "Egg.png",
                             MealType = 1,
@@ -260,7 +277,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("4c4d9f1a-e7c0-4630-8ee5-e5d1da1008ef"),
+                            Id = new Guid("6c392ee1-b651-470a-a5f4-f9a98ad319a1"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "Egg.png",
                             MealType = 3,
@@ -268,7 +285,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("42a01ea8-4f3c-4e84-8b7c-1834c0450f8f"),
+                            Id = new Guid("947cf4a1-11e8-400a-98ad-a3f2dac6ed6e"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "Egg.png",
                             MealType = 2,
@@ -282,24 +299,42 @@ namespace FitnessFusion.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PeriodOfSubscription")
-                        .HasColumnType("int");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(5, 2)
                         .HasColumnType("decimal(5,2)");
 
-                    b.Property<string>("TypeOfSubscription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("TypeOfSubscription")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.ToTable("Subscriptions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("ce8bb39f-685a-4c7f-9ccf-55b627121474"),
+                            Description = "Test description to subscription",
+                            Image = "RandomImage",
+                            Name = "Test Subscription",
+                            Price = 30m,
+                            TypeOfSubscription = 1
+                        });
                 });
 
             modelBuilder.Entity("FitnessFusion.Data.Models.TrainingPlan", b =>
@@ -308,13 +343,19 @@ namespace FitnessFusion.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("DescriptionОfЕxercises")
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(5000)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<Guid>("TrainerId")
                         .HasColumnType("uniqueidentifier");
@@ -474,36 +515,25 @@ namespace FitnessFusion.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("06bc952c-75a0-4fa2-a004-123c6b98000f"),
+                            Id = new Guid("d972ec1a-3fa7-48b6-aafa-11509efbd920"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9f5e1b24-3434-40e8-9c39-7e2e131b5727",
+                            ConcurrencyStamp = "6c2a0753-2f08-4d0a-a96f-0b1ea3fbba29",
                             Email = "trainer@abv.bg",
                             EmailConfirmed = true,
                             FirstName = "Test",
-                            IsSubscribeValid = true,
+                            IsSubscribeValid = false,
                             IsTrainer = true,
                             LastName = "Trainer",
-                            LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEPhh0pr831mLCefuSmLpO1vo18sVbiOgLcYVO9MZA/tO5tJDSf7TjXu1WfRX55DdQQ==",
+                            LockoutEnabled = true,
+                            NormalizedEmail = "TRAINER@ABV.BG",
+                            NormalizedUserName = "TRAINER@ABV.BG",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMKvKYNVdzbd/uQxiqJJz5usn8bMk/vjmAPrTmiF/ac58B2I7AMfRm5ectLNCcuQOQ==",
                             PhoneNumberConfirmed = false,
+                            SecurityStamp = "f321b542-d4d0-4eb0-afa7-38e09e666a92",
                             TwoFactorEnabled = false,
+                            UserName = "trainer@abv.bg",
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vestibulum sollicitudin est, varius vehicula erat pulvinar vel. Morbi molestie accumsan dolor, in bibendum mauris faucibus eu. Donec finibus a quam consectetur fermentum. Pellentesque faucibus at neque et iaculis. Sed consequat urna pulvinar feugiat finibus."
                         });
-                });
-
-            modelBuilder.Entity("ApplicationUserSubscription", b =>
-                {
-                    b.HasOne("FitnessFusion.Data.Models.Subscription", null)
-                        .WithMany()
-                        .HasForeignKey("SubscriptionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FitnessFusion.Data.Models.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("ExerciseTrainingPlan", b =>
@@ -519,6 +549,16 @@ namespace FitnessFusion.Data.Migrations
                         .HasForeignKey("TrainingPlansId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("FitnessFusion.Data.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("FitnessFusion.Data.Models.Subscription", "Subscription")
+                        .WithMany("Users")
+                        .HasForeignKey("SubscriptionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Subscription");
                 });
 
             modelBuilder.Entity("FitnessFusion.Data.Models.TrainingPlan", b =>
@@ -581,6 +621,11 @@ namespace FitnessFusion.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("FitnessFusion.Data.Models.Subscription", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("FitnessFusion.Data.Models.Trainer", b =>

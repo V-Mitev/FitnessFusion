@@ -8,177 +8,189 @@
 
     public class SubscriptionController : Controller
     {
-        private readonly ISubscriptionService subscriptionService;
+        //private readonly ISubscriptionService subscriptionService;
 
-        public SubscriptionController(ISubscriptionService subscriptionService)
-        {
-            this.subscriptionService = subscriptionService;
-        }
+        //public SubscriptionController(ISubscriptionService subscriptionService)
+        //{
+        //    this.subscriptionService = subscriptionService;
+        //}
 
-        [HttpGet]
-        public async Task<IActionResult> All()
-        {
-            var subscriptions = await subscriptionService.GetAllSubscriptions();
+        //[HttpGet]
+        //public async Task<IActionResult> All()
+        //{
+        //    var subscriptions = await subscriptionService.GetAllSubscriptions();
 
-            return View(subscriptions);
-        }
+        //    return View(subscriptions);
+        //}
 
-        [HttpGet]
-        public IActionResult Add()
-        {
-            if (!User.IsAdmin())
-            {
-                TempData[ErrorMessage] = "Only administators can add subscriptions!";
+        //[HttpGet]
+        //public IActionResult Add()
+        //{
+        //    if (!User.IsAdmin())
+        //    {
+        //        TempData[ErrorMessage] = "Only administators can add subscriptions!";
 
-                return RedirectToAction("Index", "Home");
-            }
+        //        return RedirectToAction("Index", "Home");
+        //    }
 
-            var model = new SubscriptionModel();
+        //    var model = new SubscriptionModel();
 
-            return View(model);
-        }
+        //    return View(model);
+        //}
 
-        [HttpPost]
-        public async Task<IActionResult> Add(SubscriptionModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+        //[HttpPost]
+        //public async Task<IActionResult> Add(SubscriptionModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(model);
+        //    }
 
-            try
-            {
-                await subscriptionService.AddSubscription(model, User.GetId());
+        //    try
+        //    {
+        //        await subscriptionService.AddSubscription(model, User.GetId());
 
-                return RedirectToAction("All");
-            }
-            catch (Exception)
-            {
-                return GeneralError();
-            }
-        }
+        //        return RedirectToAction("All");
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return GeneralError();
+        //    }
+        //}
 
-        [HttpGet]
-        public async Task<IActionResult> Edit(string id)
-        {
-            if (!User.IsAdmin())
-            {
-                TempData[ErrorMessage] = "Only administators can edit subscriptions!";
+        //[HttpGet]
+        //public async Task<IActionResult> Edit(string id)
+        //{
+        //    if (!User.IsAdmin())
+        //    {
+        //        TempData[ErrorMessage] = "Only administators can edit subscriptions!";
 
-                return RedirectToAction("Index", "Home");
-            }
+        //        return RedirectToAction("Index", "Home");
+        //    }
 
-            var subsciptionExist = await subscriptionService.IsSubscriptionExistByIdAsync(id);
+        //    var subsciptionExist = await subscriptionService.IsSubscriptionExistByIdAsync(id);
 
-            if (!subsciptionExist)
-            {
-                TempData[ErrorMessage] = "Subscription with provided id does not exist! Please try again!";
+        //    if (!subsciptionExist)
+        //    {
+        //        TempData[ErrorMessage] = "Subscription with provided id does not exist! Please try again!";
 
-                return RedirectToAction("All");
-            }
+        //        return RedirectToAction("All");
+        //    }
 
-            try
-            {
-                var model = await subscriptionService.GetSubscription(id);
+        //    try
+        //    {
+        //        var model = await subscriptionService.GetSubscription(id);
 
-                return View(model);
-            }
-            catch (Exception)
-            {
-                return GeneralError();
-            }
-        }
+        //        return View(model);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return GeneralError();
+        //    }
+        //}
 
-        [HttpPost]
-        public async Task<IActionResult> Edit (string id, SubscriptionModel model)
-        {
-            var subsciptionExist = await subscriptionService.IsSubscriptionExistByIdAsync(id);
+        //[HttpPost]
+        //public async Task<IActionResult> Edit (string id, SubscriptionModel model)
+        //{
+        //    var subsciptionExist = await subscriptionService.IsSubscriptionExistByIdAsync(id);
 
-            if (!subsciptionExist)
-            {
-                TempData[ErrorMessage] = "Subscription with provided id does not exist! Please try again!";
+        //    if (!subsciptionExist)
+        //    {
+        //        TempData[ErrorMessage] = "Subscription with provided id does not exist! Please try again!";
 
-                return RedirectToAction("All");
-            }
+        //        return RedirectToAction("All");
+        //    }
 
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(model);
+        //    }
 
-            try
-            {
-                await subscriptionService.Edit(model, id);
+        //    try
+        //    {
+        //        await subscriptionService.Edit(model, id);
 
-                return RedirectToAction("All");
-            }
-            catch (Exception)
-            {
-                return GeneralError();
-            }
-        }
+        //        return RedirectToAction("All");
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return GeneralError();
+        //    }
+        //}
 
-        [HttpGet]
-        public async Task<IActionResult> Details(string id)
-        {
-            var subsciptionExist = await subscriptionService.IsSubscriptionExistByIdAsync(id);
+        //[HttpGet]
+        //public async Task<IActionResult> Details(string id)
+        //{
+        //    var subsciptionExist = await subscriptionService.IsSubscriptionExistByIdAsync(id);
 
-            if (!subsciptionExist)
-            {
-                TempData[ErrorMessage] = "Meal with provided id does not exist! Please try again!";
+        //    if (!subsciptionExist)
+        //    {
+        //        TempData[ErrorMessage] = "Meal with provided id does not exist! Please try again!";
 
-                return RedirectToAction("All");
-            }
+        //        return RedirectToAction("All");
+        //    }
 
-            try
-            {
-                var model = await subscriptionService.GetSubscription(id);
+        //    try
+        //    {
+        //        var model = await subscriptionService.GetSubscription(id);
 
-                return View(model);
-            }
-            catch (Exception)
-            {
-                return GeneralError();
-            }
-        }
+        //        return View(model);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return GeneralError();
+        //    }
+        //}
 
-        [HttpPost]
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (!User.IsAdmin())
-            {
-                TempData[ErrorMessage] = "Only administators can delete subscriptions!";
+        //[HttpPost]
+        //public async Task<IActionResult> Delete(string id)
+        //{
+        //    if (!User.IsAdmin())
+        //    {
+        //        TempData[ErrorMessage] = "Only administators can delete subscriptions!";
 
-                return RedirectToAction("Index", "Home");
-            }
+        //        return RedirectToAction("Index", "Home");
+        //    }
 
-            var subsciptionExist = await subscriptionService.IsSubscriptionExistByIdAsync(id);
+        //    var subsciptionExist = await subscriptionService.IsSubscriptionExistByIdAsync(id);
 
-            if (!subsciptionExist)
-            {
-                TempData[ErrorMessage] = "Subscription with provided id does not exist! Please try again!";
+        //    if (!subsciptionExist)
+        //    {
+        //        TempData[ErrorMessage] = "Subscription with provided id does not exist! Please try again!";
 
-                return RedirectToAction("All");
-            }
+        //        return RedirectToAction("All");
+        //    }
 
-            try
-            {
-                await subscriptionService.DeleteSubscription(id);
+        //    try
+        //    {
+        //        await subscriptionService.DeleteSubscription(id);
 
-                return RedirectToAction("All");
-            }
-            catch (Exception)
-            {
-                return GeneralError();
-            }
-        }
+        //        return RedirectToAction("All");
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return GeneralError();
+        //    }
+        //}
 
-        private IActionResult GeneralError()
-        {
-            TempData[ErrorMessage] =
-                "Unexpected error occurred! Please try again later or contact administrator";
+        ////[HttpGet]
+        ////public Task<IActionResult> Subscribe()
+        ////{
 
-            return RedirectToAction("Index", "Home");
-        }
+        ////}
+
+        ////[HttpPost]
+        ////public Task<IActionResult> Subscribe()
+        ////{
+
+        ////}
+
+        //private IActionResult GeneralError()
+        //{
+        //    TempData[ErrorMessage] =
+        //        "Unexpected error occurred! Please try again later or contact administrator";
+
+        //    return RedirectToAction("Index", "Home");
+        //}
     }
 }

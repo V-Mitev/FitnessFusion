@@ -36,6 +36,6 @@
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; } = null!;
 
-        public ICollection<ApplicationUser> Users { get; set; }
+        public virtual ICollection<ApplicationUser> Users { get; set; }
     }
 }
