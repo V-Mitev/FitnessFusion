@@ -40,8 +40,8 @@
                     Id = u.Id.ToString(),
                     Email = u.Email,
                     FullName = u.FirstName + " " + u.LastName,
-                    //StartSubscription = u.StartSubscription.ToString(),
-                    //EndSubscription = u.EndSubscription.ToString()
+                    StartSubscription = u.StartSubscription.ToString(),
+                    EndSubscription = u.EndSubscription.ToString()
                 })
                 .ToListAsync();
 

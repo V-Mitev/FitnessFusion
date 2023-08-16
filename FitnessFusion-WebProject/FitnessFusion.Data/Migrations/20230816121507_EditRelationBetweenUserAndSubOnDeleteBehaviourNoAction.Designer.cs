@@ -4,6 +4,7 @@ using FitnessFusion.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitnessFusion.Data.Migrations
 {
     [DbContext(typeof(FitnessFusionDbContext))]
-    partial class FitnessFusionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230816121507_EditRelationBetweenUserAndSubOnDeleteBehaviourNoAction")]
+    partial class EditRelationBetweenUserAndSubOnDeleteBehaviourNoAction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +36,7 @@ namespace FitnessFusion.Data.Migrations
 
                     b.HasIndex("TrainingPlansId");
 
-                    b.ToTable("ExerciseTrainingPlan", (string)null);
+                    b.ToTable("ExerciseTrainingPlan");
                 });
 
             modelBuilder.Entity("FitnessFusion.Data.Models.ApplicationUser", b =>
@@ -143,7 +145,7 @@ namespace FitnessFusion.Data.Migrations
                         {
                             Id = new Guid("8b31291b-0f00-49aa-964d-e3242a0fd13e"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f9899fdc-3727-420a-9537-51d09f5d9b09",
+                            ConcurrencyStamp = "021ccbeb-556f-4aea-8c7b-67e65cce338e",
                             Email = "admin@fitnessfusion.bg",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -153,7 +155,7 @@ namespace FitnessFusion.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@fitnessfusion.bg",
                             NormalizedUserName = "admin@fitnessfusion.bg",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJV0VfbPfal+C+gOqySlmoCnddE6kxIXuCYJVu5TWSEwAXonAM2qYM70ZV5iVK3l0A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELhNx6lmdehB+gG7UbM9cfVS5CggS4yHlKncL1frfjVCr0AhqyRHg1meGZeXQvpOlQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "4086a2a8-4ccc-430e-916b-ceda5be3ab94",
                             SubscriptionId = new Guid("ce8bb39f-685a-4c7f-9ccf-55b627121474"),
@@ -195,12 +197,12 @@ namespace FitnessFusion.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Exercises", (string)null);
+                    b.ToTable("Exercises");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("893cf870-d243-49c2-9ee4-491f5fcffc5a"),
+                            Id = new Guid("091fe7ba-40ea-4b85-9f86-d9d93fdb50a1"),
                             Description = "It involves lying on a bench and pressing weight upward using either a barbell or a pair of dumbbells. During a bench press, you lower the weight down to chest level and then press upwards while extending your arms.",
                             Difficulty = 1,
                             ImagePath = "BenchPress.jfif",
@@ -210,7 +212,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("05dedb58-0fca-480a-9a27-ced130aaf85d"),
+                            Id = new Guid("0129419c-cf94-4665-abeb-6bc760113764"),
                             Description = "An exercise in which a standing person lowers to a position in which the torso is erect and the knees are deeply bent and then rises to an upright position.",
                             Difficulty = 1,
                             ImagePath = "Squat.jfif",
@@ -220,7 +222,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("c655c316-1fc5-4687-80ff-5333bcbb5aa1"),
+                            Id = new Guid("a91942e6-2c67-483f-ad9b-d5663f23a88a"),
                             Description = "A pull-up is an upper-body exercise that involves hanging from a pull-up bar by your hands with your palms facing away from you, and lifting your entire body up with your arm and back muscles until your chest touches the bar.",
                             Difficulty = 1,
                             ImagePath = "PullUp.jfif",
@@ -254,12 +256,12 @@ namespace FitnessFusion.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Meals", (string)null);
+                    b.ToTable("Meals");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3035ab13-9f6a-49bb-8652-3cda29df512d"),
+                            Id = new Guid("c1f0f031-b8c3-4b74-b450-830da5b016bf"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "Musli.png",
                             MealType = 0,
@@ -267,7 +269,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("8ea6c2b1-ca97-47c8-9f22-fd616e7a31ce"),
+                            Id = new Guid("45a2fbc5-624e-47b7-bbb3-0132951dd302"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "Egg.png",
                             MealType = 1,
@@ -275,7 +277,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("97d2029a-d397-4f7b-9d77-a44922bc98b5"),
+                            Id = new Guid("e0a37db6-dca7-4ef6-8b6c-5f611c017571"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "Egg.png",
                             MealType = 3,
@@ -283,7 +285,7 @@ namespace FitnessFusion.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("aad09e22-eab2-421e-85c2-1a98d55ef164"),
+                            Id = new Guid("f4096306-7819-4b25-8705-c3a5669aecc1"),
                             CaloriesPer100g = 300.0,
                             ImageUrl = "Egg.png",
                             MealType = 2,
@@ -321,7 +323,7 @@ namespace FitnessFusion.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Subscriptions", (string)null);
+                    b.ToTable("Subscriptions");
 
                     b.HasData(
                         new
@@ -362,7 +364,7 @@ namespace FitnessFusion.Data.Migrations
 
                     b.HasIndex("TrainerId");
 
-                    b.ToTable("TrainingPlans", (string)null);
+                    b.ToTable("TrainingPlans");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -515,7 +517,7 @@ namespace FitnessFusion.Data.Migrations
                         {
                             Id = new Guid("d972ec1a-3fa7-48b6-aafa-11509efbd920"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "adf875c4-7e48-4ac1-850d-85735a81ef7f",
+                            ConcurrencyStamp = "df5a2cef-4998-4e75-8441-4a1cbe42f0fa",
                             Email = "trainer@abv.bg",
                             EmailConfirmed = true,
                             FirstName = "Test",
@@ -525,7 +527,7 @@ namespace FitnessFusion.Data.Migrations
                             LockoutEnabled = true,
                             NormalizedEmail = "TRAINER@ABV.BG",
                             NormalizedUserName = "TRAINER@ABV.BG",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGXxBCRRdnE+QnW+JI8zaaUvMrZ0I0JTOCECt8FSKco2gvcQ+YOlrwlHO03ij+4HfA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDMUNze8+cFg9AmTw733GvjFrcx8wxqa9xujMA9oCiVELoveskkCtW+c5kjH6GD5gg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "f321b542-d4d0-4eb0-afa7-38e09e666a92",
                             TwoFactorEnabled = false,
@@ -554,7 +556,7 @@ namespace FitnessFusion.Data.Migrations
                     b.HasOne("FitnessFusion.Data.Models.Subscription", "Subscription")
                         .WithMany("Users")
                         .HasForeignKey("SubscriptionId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Subscription");
                 });

@@ -8,158 +8,149 @@
     using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using static Common.GeneralApplicationConstants;
 
     public class SubscriptionService : ISubscriptionService
     {
-        //private readonly FitnessFusionDbContext dbContext;
+        private readonly FitnessFusionDbContext dbContext;
 
-        //public SubscriptionService(FitnessFusionDbContext dbContext)
-        //{
-        //    this.dbContext = dbContext;
-        //}
+        public SubscriptionService(FitnessFusionDbContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
 
-        //public async Task AddSubscription(SubscriptionModel model, string userId)
-        //{
-        //    var subscription = new Subscription()
-        //    {
-        //        Name = model.Name,
-        //        Image = model.Image,
-        //        Price = model.Price,
-        //        Description = model.Description,
-        //        TypeOfSubscription = (TypeOfSubscription)model.TypeOfSubscription!
-        //    };
+        public async Task AddSubscription(SubscriptionModel model)
+        {
+            var subscription = new Subscription()
+            {
+                Name = model.Name,
+                Image = model.Image,
+                Price = model.Price,
+                Description = model.Description,
+                TypeOfSubscription = (TypeOfSubscription)model.TypeOfSubscription!
+            };
 
-        //    var user = await dbContext.ApplicationUsers
-        //        .FindAsync(Guid.Parse(userId));
+            await dbContext.Subscriptions.AddAsync(subscription);
 
-        //    if (user == null)
-        //    {
-        //        throw new NullReferenceException("User doesn't exists");
-        //    }
+            await dbContext.SaveChangesAsync();
+        }
 
-        //    subscription.Users.Add(user);
+        public async Task DeleteSubscription(string subscriptionId)
+        {
+            var subscription = await dbContext.Subscriptions
+                .FirstOrDefaultAsync( s => s.Id.ToString() == subscriptionId);
 
-        //    await dbContext.Subscriptions.AddAsync(subscription);
+            if (subscription == null)
+            {
+                throw new NullReferenceException("Subscription doesn't exists");
+            }
 
-        //    await dbContext.SaveChangesAsync();
-        //}
+            dbContext.Subscriptions.Remove(subscription);  
 
-        //public async Task DeleteSubscription(string subscriptionId)
-        //{
-        //    var subscription = await dbContext.Subscriptions
-        //        .FindAsync(Guid.Parse(subscriptionId));
+            await dbContext.SaveChangesAsync();
+        }
 
-        //    if (subscription == null)
-        //    {
-        //        throw new NullReferenceException("Subscription doesn't exists");
-        //    }
+        public async Task Edit(SubscriptionModel model, string subscriptionId)
+        {
+            var subscription = await dbContext.Subscriptions
+                .FindAsync(Guid.Parse(subscriptionId));
 
-        //    dbContext.Subscriptions.Remove(subscription);
+            if (subscription == null)
+            {
+                throw new NullReferenceException("Subscription doesn't exists");
+            }
 
-        //    await dbContext.SaveChangesAsync();
-        //}
+            subscription.Id = Guid.Parse(model.Id!);
+            subscription.Name = model.Name;
+            subscription.Description = model.Description;
+            subscription.Price = model.Price;
+            subscription.Image = model.Image;
+            subscription.TypeOfSubscription = (TypeOfSubscription)model.TypeOfSubscription!;
 
-        //public async Task Edit(SubscriptionModel model, string subscriptionId)
-        //{
-        //    var subscription = await dbContext.Subscriptions
-        //        .FindAsync(Guid.Parse(subscriptionId));
+            await dbContext.SaveChangesAsync();
+        }
 
-        //    if (subscription == null)
-        //    {
-        //        throw new NullReferenceException("Subscription doesn't exists");
-        //    }
+        public async Task<ICollection<SubscriptionModel>> GetAllSubscriptions()
+        {
+            var subscriptions = await dbContext.Subscriptions
+                .Select(s => new SubscriptionModel
+                {
+                    Id = s.Id.ToString(),
+                    Name = s.Name,
+                    Description = s.Description,
+                    Image = s.Image,
+                    TypeOfSubscription = s.TypeOfSubscription,
+                    Price = s.Price
+                })
+                .ToListAsync();
 
-        //    subscription.Id = Guid.Parse(model.Id!);
-        //    subscription.Name = model.Name;
-        //    subscription.Description = model.Description;
-        //    subscription.Price = model.Price;
-        //    subscription.Image = model.Image;
-        //    subscription.TypeOfSubscription = (TypeOfSubscription)model.TypeOfSubscription!;
+            return subscriptions;
+        }
 
-        //    await dbContext.SaveChangesAsync();
-        //}
+        public async Task<SubscriptionModel> GetSubscription(string subscriptionId)
+        {
+            var subscription = await dbContext.Subscriptions
+                .FindAsync(Guid.Parse(subscriptionId));
 
-        //public async Task<ICollection<SubscriptionModel>> GetAllSubscriptions()
-        //{
-        //    var subscriptions = await dbContext.Subscriptions
-        //        .Select(s => new SubscriptionModel
-        //        {
-        //            Id = s.Id.ToString(),
-        //            Name = s.Name,
-        //            Description = s.Description,
-        //            Image = s.Image,
-        //            TypeOfSubscription = s.TypeOfSubscription,
-        //            Price = s.Price
-        //        })
-        //        .ToListAsync();
+            if (subscription == null)
+            {
+                throw new NullReferenceException("Subscription doesn't exists");
+            }
 
-        //    return subscriptions;
-        //}
+            var subscriptionModel = new SubscriptionModel()
+            {
+                Id = subscriptionId,
+                Name = subscription.Name,
+                Price = subscription.Price,
+                Description = subscription.Description,
+                Image = subscription.Image,
+                TypeOfSubscription = subscription.TypeOfSubscription
+            };
 
-        //public async Task<SubscriptionModel> GetSubscription(string subscriptionId)
-        //{
-        //    var subscription = await dbContext.Subscriptions
-        //        .FindAsync(Guid.Parse(subscriptionId));
+            return subscriptionModel;
+        }
 
-        //    if (subscription == null)
-        //    {
-        //        throw new NullReferenceException("Subscription doesn't exists");
-        //    }
+        public async Task<bool> IsSubscriptionExistByIdAsync(string id)
+        {
+            var resutl = await dbContext.Subscriptions
+                .AnyAsync(s => s.Id.ToString() == id);
 
-        //    var subscriptionModel = new SubscriptionModel()
-        //    {
-        //        Id = subscriptionId,
-        //        Name = subscription.Name,
-        //        Price = subscription.Price,
-        //        Description = subscription.Description,
-        //        Image = subscription.Image,
-        //        TypeOfSubscription = subscription.TypeOfSubscription
-        //    };
+            return resutl;
+        }
 
-        //    return subscriptionModel;
-        //}
+        public async Task SubscribeAsync(string subscriptionId, string userId)
+        {
+            var subscriptionPlan = await dbContext.Subscriptions
+                .FindAsync(Guid.Parse(subscriptionId));
 
-        //public async Task<bool> IsSubscriptionExistByIdAsync(string id)
-        //{
-        //    var resutl = await dbContext.Subscriptions
-        //        .AnyAsync(s => s.Id.ToString() == id);
+            if (subscriptionPlan == null)
+            {
+                throw new NullReferenceException("Unexpected error subscription plan doesn't exist!");
+            }
 
-        //    return resutl;
-        //}
+            var user = await dbContext.ApplicationUsers
+               .FindAsync(Guid.Parse(userId));
 
-        ////public async Task SubscribeAsync(string subscriptionId, string userId)
-        ////{
-        ////    var subscriptionPlan = await dbContext.Subscriptions
-        ////        .FindAsync(Guid.Parse(subscriptionId));
+            if (user == null)
+            {
+                throw new NullReferenceException("Unexpected error user doesn't exist!");
+            }
 
-        ////    if (subscriptionPlan == null)
-        ////    {
-        ////        throw new NullReferenceException("Unexpected error subscription plan doesn't exist!");
-        ////    }
+            user.StartSubscription = DateTime.UtcNow;
+            user.EndSubscription = DateTime.UtcNow.AddDays(SubscriptionPeriodForAllPlans);
 
-        ////    var user = await dbContext.ApplicationUsers
-        ////       .FindAsync(Guid.Parse(userId));
+            if (user.StartSubscription == user.EndSubscription)
+            {
+                user.IsSubscribeValid = false;
+            }
+            else
+            {
+                user.IsSubscribeValid = true;
+            }
 
-        ////    if (user == null)
-        ////    {
-        ////        throw new NullReferenceException("Unexpected error user doesn't exist!");
-        ////    }
+            subscriptionPlan.Users.Add(user);
 
-        ////    user.StartSubscription = DateTime.UtcNow;
-        ////    user.EndSubscription = DateTime.UtcNow.AddDays(SubscriptionPeriodForAllPlans);
-
-        ////    if (user.StartSubscription == user.EndSubscription)
-        ////    {
-        ////        user.IsSubscribeValid = false;
-        ////    }
-        ////    else
-        ////    {
-        ////        user.IsSubscribeValid = true;
-        ////    }
-
-        ////    subscriptionPlan.Users.Add(user);
-
-        ////    await dbContext.SaveChangesAsync(); 
-        ////}
+            await dbContext.SaveChangesAsync(); 
+        }
     }
 }
