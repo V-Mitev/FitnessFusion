@@ -10,6 +10,7 @@
             <th><label>Email</label></th>
             <th><label>Full Name</label></th>
             <th><label>User Is Trianer</label></th>
+            <th><label>Delete User</label></th>
         </tr>
     </thead>
     <tbody>
@@ -27,6 +28,22 @@
                     {
                         <label class="text-center">❌</label>
                     }
+                </td>
+                <td>
+                    <label>
+                        @if (user.IsTrainer)
+                        {
+                            <form asp-area="Admin" asp-controller="Trainer" asp-action="Delete" asp-route-id="@user.Id">
+                                <input type="submit" value="Delete" class="btn-sl btn-danger" onclick="return confirm('Are you sure you want to delete trainer: @user.FullName')" />
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-area="Admin" asp-controller="User" asp-action="Delete" asp-route-id="@user.Id">
+                                <input type="submit" value="Delete" class="btn-sl btn-danger" onclick="return confirm('Are you sure you want to delete user: @user.FullName')" />
+                            </form>
+                        }
+                    </label>
                 </td>
             </tr>
         }

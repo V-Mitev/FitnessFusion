@@ -50,6 +50,28 @@
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (!await trainerService.IsUserTrainerAsync(id))
+            {
+                TempData[ErrorMessage] = "Trainer with provided id does not exist! Please try again!";
+
+                return RedirectToAction("All");
+            }
+
+            try
+            {
+                await trainerService.RemoveTrainerAsync(id);
+
+                return RedirectToAction("All", "User");
+            }
+            catch (Exception)
+            {
+                return GeneralError();
+            }
+        }
+
         private IActionResult GeneralError()
         {
             TempData[ErrorMessage] =

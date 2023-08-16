@@ -21,6 +21,7 @@
             var allUsers = await dbContext.ApplicationUsers
                 .Select(u => new UserViewModel()
                 {
+                    Id = u.Id.ToString(),
                     Email = u.Email,
                     FullName = u.FirstName + " " + u.LastName,
                     IsTrainer = u.IsTrainer
@@ -28,6 +29,21 @@
                 .ToListAsync();
 
             return allUsers;
+        }
+
+        public async Task DeleteAsync(string userId)
+        {
+            var user = await dbContext.ApplicationUsers
+                .FindAsync(Guid.Parse(userId));
+
+            if (user == null)
+            {
+                throw new NullReferenceException("Unexpected error user doesn't exist!");
+            }
+
+            dbContext.ApplicationUsers.Remove(user);
+
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task<string> GetFullNameByEmailAsyncAsync(string email)

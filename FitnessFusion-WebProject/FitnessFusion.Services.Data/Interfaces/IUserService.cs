@@ -9,5 +9,7 @@
         public Task<bool> IsUserExistByIdAsync(string userId);
 
         public Task<ICollection<UserViewModel>> AllAsync();
+
+        public Task DeleteAsync(string userId);
     }
 }

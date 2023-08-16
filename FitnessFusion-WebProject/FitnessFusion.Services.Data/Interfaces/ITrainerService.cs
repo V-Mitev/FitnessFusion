@@ -9,5 +9,7 @@
         public Task AddTrainerAsync(TrainerViewModel model);
 
         public Task<bool> IsEmailAlreadyAdded(string email);
+
+        public Task RemoveTrainerAsync(string trainerId);
     }
 }

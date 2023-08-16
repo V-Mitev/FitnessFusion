@@ -59,5 +59,20 @@
 
             return trainer!.IsTrainer;
         }
+
+        public async Task RemoveTrainerAsync(string trainerId)
+        {
+            var trainer = await dbContext.Trainers
+                .FirstOrDefaultAsync(t => t.IsTrainer && t.Id.ToString() == trainerId);
+
+            if (trainer == null)
+            {
+                throw new NullReferenceException("Unexpected error trainer does't exist!");
+            }
+
+            dbContext.Trainers.Remove(trainer);
+
+            await dbContext.SaveChangesAsync();
+        }
     }
 }
