@@ -8,8 +8,6 @@
 
         public double Calories { get; set; }
 
-        public double Weight { get; set; }
-
         public string MealType { get; set; } = null!;
 
         public string Image { get; set; } = null!;

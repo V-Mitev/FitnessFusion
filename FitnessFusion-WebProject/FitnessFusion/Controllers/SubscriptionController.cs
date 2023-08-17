@@ -184,7 +184,7 @@
         [HttpGet]
         public async Task<IActionResult> SubscribeAsync()
         {
-            if (!await subscriptionService.IsSubscribeValidAsync(User.GetId()))
+            if (await subscriptionService.IsSubscribeValidAsync(User.GetId()))
             {
                 TempData[ErrorMessage] = "You are already subscribed, when the subscription expires, try again!";
 
