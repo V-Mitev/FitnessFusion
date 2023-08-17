@@ -38,7 +38,7 @@
                 !await trainingerService.IsUserTrainerAsync(User.GetId()) &&
                 !User.IsAdmin())
             {
-                TempData[ErrorMessage] = "You need to be trainer or subscriber to can see training plans!";
+                TempData[ErrorMessage] = "You need to be subscriber to can see training plans!";
 
                 return RedirectToAction("Index", "Home");
             }
@@ -127,6 +127,8 @@
 
                 HttpContext.Session.Remove("TrainingPlan");
 
+                TempData[SuccessMessage] = "You have successfully added the training plan";
+
                 return RedirectToAction("All");
             }
             catch (Exception)
@@ -158,6 +160,8 @@
             }
 
             trainingPlan!.AddedExercises.Add(exercise);
+
+            TempData[SuccessMessage] = "You have successfully add an exercise";
 
             HttpContext.Session.SetObject("TrainingPlan", trainingPlan);
 
@@ -220,6 +224,8 @@
 
                 await trainingPlanService.AddExerciseToExistingPlanAsync(model, trainingPlan.Id);
 
+                TempData[SuccessMessage] = "You have successfully add an exercise";
+
                 HttpContext.Session.SetObject("TrainingPlan", trainingPlan);
 
                 return RedirectToAction("EditTrainingPlan", new { trainingPlan.Id });
@@ -247,6 +253,8 @@
                 trainingPlanService.AddExerciseToPlan(model, trainingPlan);
 
                 HttpContext.Session.SetObject("TrainingPlan", trainingPlan);
+
+                TempData[SuccessMessage] = "You have successfully add an exercise";
 
                 return RedirectToAction("CreateTrainingPlan");
             }
@@ -323,6 +331,8 @@
 
                 HttpContext.Session.Remove("TrainingPlan");
 
+                TempData[SuccessMessage] = "You have successfully edit the training plan";
+
                 return RedirectToAction("All");
             }
             catch (Exception)
@@ -346,6 +356,8 @@
             try
             {
                 await trainingPlanService.DeleteTrainingPlanAsync(id);
+
+                TempData[SuccessMessage] = "You have successfully delete the training plan";
 
                 return RedirectToAction("All");
             }
@@ -453,6 +465,8 @@
             {
                 await exerciseService.EditExerciseAsync(id, exercisesTp);
 
+                TempData[SuccessMessage] = "You have successfully edit the exercise";
+
                 return RedirectToAction("EditTrainingPlan", new { trainingPlan.Id });
             }
             catch (Exception)
@@ -512,6 +526,8 @@
 
                 await trainingPlanService.RemoveExerciseFromPlan(trainingPlan.Id, id);
 
+                TempData[SuccessMessage] = "You have successfully remove exercise from the training plan";
+
                 return RedirectToAction("EditTrainingPlan", new { id = trainingPlan.Id });
             }
             catch (Exception)
@@ -547,6 +563,8 @@
 
             HttpContext.Session.SetObject("TrainingPlan", trainingPlan);
 
+            TempData[SuccessMessage] = "You have successfully add exercise in the training plan";
+
             return RedirectToAction("EditTrainingPlan", new { trainingPlan.Id });
         }
 
@@ -573,6 +591,8 @@
             }
 
             trainingPlan.AddedExercises.Remove(exercise);
+
+            TempData[SuccessMessage] = "You have successfully remove exercise from the training plan";
 
             if (trainingPlan.AddedExercises.Count == 0)
             {

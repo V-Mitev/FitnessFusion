@@ -61,6 +61,8 @@
             {
                 await exerciseService.AddExerciseAsync(model);
 
+                TempData[SuccessMessage] = "You have successfully added an exercise";
+
                 return RedirectToAction("All");
             }
             catch (Exception)
@@ -145,6 +147,8 @@
             {
                 await exerciseService.EditExerciseAsync(id, model);
 
+                TempData[SuccessMessage] = "You have successfully edit an exercise";
+
                 return RedirectToAction("All");
             }
             catch (Exception)
@@ -175,6 +179,8 @@
             try
             {
                 await exerciseService.DeleteExerciseAsync(id);
+
+                TempData[SuccessMessage] = "You have successfully deleted an exercise";
 
                 return RedirectToAction("All");
             }

@@ -50,6 +50,8 @@
             {
                 await mealService.AddMealAsync(model);
 
+                TempData[SuccessMessage] = "You have successfully add the meal";
+
                 return RedirectToAction("All", "Meal");
             }
             catch (Exception)
@@ -80,6 +82,8 @@
             try
             {
                 await mealService.DeleteMealAsync(id);
+
+                TempData[SuccessMessage] = "You have successfully delete the meal";
 
                 return RedirectToAction("All", "Meal");
             }
@@ -141,6 +145,8 @@
             try
             {
                 await mealService.EditMealAsync(id, model);
+
+                TempData[SuccessMessage] = "You have successfully edit the meal";
 
                 return RedirectToAction("All");
             }

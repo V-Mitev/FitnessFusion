@@ -50,6 +50,8 @@
             {
                 await subscriptionService.AddSubscriptionAsync(model);
 
+                TempData[SuccessMessage] = "You have successfully added the subscription";
+
                 return RedirectToAction("All");
             }
             catch (Exception)
@@ -110,6 +112,8 @@
             {
                 await subscriptionService.EditAsync(model, id);
 
+                TempData[SuccessMessage] = "You have successfully edit the subscription";
+
                 return RedirectToAction("All");
             }
             catch (Exception)
@@ -166,6 +170,8 @@
             try
             {
                 await subscriptionService.DeleteSubscriptionAsync(id);
+
+                TempData[SuccessMessage] = "You have successfully delete the subscription";
 
                 return RedirectToAction("All");
             }
