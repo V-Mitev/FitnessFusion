@@ -15,36 +15,34 @@ namespace FitnessFusion.Services.Tests.Meal
 
         private IMealService mealService;
 
-        public MealServiceTest()
-        {
-
-        }
+        private string firstMealId;
+        private string secondMealId;
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
             dbOptions = new DbContextOptionsBuilder<FitnessFusionDbContext>()
-                .UseInMemoryDatabase("FitnessFusionInMemory" + Guid.NewGuid().ToString())
-                .Options;
+               .UseInMemoryDatabase(Guid.NewGuid().ToString())
+               .Options;
 
             dbContext = new FitnessFusionDbContext(dbOptions);
 
-            mealService = new MealService(dbContext);
+            SeedMeal(dbContext);
 
-            SeedDataBase(dbContext);
+            mealService = new MealService(dbContext);
         }
 
         [SetUp]
         public void Setup()
         {
+            firstMealId = "35ea94c3-ed8c-4aba-acc6-f7caaf07560a";
+            secondMealId = "9d61e7df-20b6-42af-9137-085b84d507ac";
         }
 
         [Test]
         public async Task IsMealExistByIdAsyncShouldReturnTrueIfExists()
         {
-            string mealId = FirstMeal.Id.ToString();
-
-            var result = await mealService.IsMealExistByIdAsync(mealId);
+            var result = await mealService.IsMealExistByIdAsync(firstMealId);
 
             Assert.IsTrue(result);
         }
@@ -52,9 +50,9 @@ namespace FitnessFusion.Services.Tests.Meal
         [Test]
         public async Task IsMealExistByIdAsyncShouldReturnFalseIfDoesntExists()
         {
-            string mealId = "";
+            string id = "InvalidId";
 
-            var result = await mealService.IsMealExistByIdAsync(mealId);
+            var result = await mealService.IsMealExistByIdAsync(id);
 
             Assert.IsFalse(result);
         }
@@ -102,46 +100,42 @@ namespace FitnessFusion.Services.Tests.Meal
         [Test]
         public async Task FindMealAsyncShouldReturnAddMealModel()
         {
-            var mealId = FirstMeal.Id.ToString();
-
-            var mealModel = await mealService.FindMealAsync(mealId);
+            var mealModel = await mealService.FindMealAsync(firstMealId);
 
             Assert.IsInstanceOf<AddMealModel>(mealModel, "Model should be AddMealModel");
         }
 
         [Test]
-        public void FindMealAsyncShouldReturnInvalidOperationException()
+        public void FindMealAsyncShouldReturnInvalidOperationExceptionAsync()
         {
-            var mealId = "e3bd3a41-5004-40c3-8637-93bc5da460dd";
+            string invalidId = "7d64efd8-d576-43d6-bd79-e959f440db95";
 
             Assert.ThrowsAsync<InvalidOperationException>(async () =>
             {
-                await mealService.FindMealAsync(mealId);
+                await mealService.FindMealAsync(invalidId);
             }, "Meal should not exists");
         }
 
         [Test]
-        public async Task DeleteMealAsyncShouldDeleteMealSuccessfuly()
+        public async Task DeleteMealAsyncShouldDeleteMealSuccessfulyAsync()
         {
-            var mealId = SecondMeal.Id.ToString();
-
-            await mealService.DeleteMealAsync(mealId);
+            await mealService.DeleteMealAsync(secondMealId);
 
             var deletedMeal = await dbContext.Meals
-                .Where(m => m.Id.ToString() == mealId)
+                .Where(m => m.Id.ToString() == secondMealId)
                 .FirstOrDefaultAsync();
 
             Assert.Null(deletedMeal, "The meal should have been deleted");
         }
 
         [Test]
-        public void DeleteMealAsyncShouldReturnInvalidOperationException()
+        public void DeleteMealAsyncShouldReturnInvalidOperationExceptionAsync()
         {
-            var mealId = "e3bd3a41-5004-40c3-8637-93bc5da460dd";
+            string invalidId = "7d64efd8-d576-43d6-bd79-e959f440db95";
 
             Assert.ThrowsAsync<InvalidOperationException>(async () =>
             {
-                await mealService.DeleteMealAsync(mealId);
+                await mealService.DeleteMealAsync(invalidId);
             }, "Meal should not exists");
         }
 
@@ -153,6 +147,7 @@ namespace FitnessFusion.Services.Tests.Meal
             var mealsFromService = mealService.AllAsync().Result.Count;
 
             Assert.That(mealsFromService, Is.EqualTo(mealsFromDb), "Number of meals should be equal");
+
         }
 
         [Test]
@@ -166,18 +161,19 @@ namespace FitnessFusion.Services.Tests.Meal
                 MealType = MealType.Dinner
             };
 
-            await mealService.EditMealAsync(FirstMeal.Id.ToString(), meal);
+            await mealService.EditMealAsync(firstMealId, meal);
 
-            var editedMeal = dbContext.Meals.FirstOrDefault(m => m.Id == FirstMeal.Id);
+            var editedMeal = dbContext.Meals.FirstOrDefault(m => m.Id.ToString() == firstMealId);
 
             Assert.That(meal.Name, Is.EqualTo(editedMeal!.Name));
             Assert.That(meal.Calories, Is.EqualTo(editedMeal!.CaloriesPer100g));
             Assert.That(meal.ImageUrl, Is.EqualTo(editedMeal!.ImageUrl));
             Assert.That(meal.MealType, Is.EqualTo(editedMeal!.MealType));
+
         }
 
         [Test]
-        public void EditMealAsyncShoultThrowNullReferenceExceptionWhenMealDoesntExist()
+        public void EditMealAsyncShoultThrowNullReferenceExceptionWhenMealDoesntExistAsync()
         {
             var meal = new AddMealModel()
             {

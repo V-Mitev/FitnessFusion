@@ -6,73 +6,13 @@
 
     public static class DataSeeder
     {
-        public static ICollection<Meal> Meals = new List<Meal>();
-        public static Meal FirstMeal;
-        public static Meal SecondMeal;
-        public static ApplicationUser ApplicationUser;
-        public static Trainer Trainer;
-        public static Exercise Exercise;
-        public static Subscription Subscription;
-        public static TrainingPlan TrainingPlan;
-
-        public static void SeedDataBase(FitnessFusionDbContext dbContext)
+        public static ICollection<Exercise> SeedExercise(FitnessFusionDbContext dbContext)
         {
+            ICollection<Exercise> exercises = new List<Exercise>();
 
-            FirstMeal = new Meal()
-            {
-                Id = Guid.Parse("35ea94c3-ed8c-4aba-acc6-f7caaf07560a"),
-                Name = "Ham",
-                CaloriesPer100g = 100,
-                MealType = MealType.Breakfast,
-                ImageUrl = "Ham.png"
-            };
+            Exercise exercise;
 
-            SecondMeal = new Meal()
-            {
-                Id = Guid.Parse("9d61e7df-20b6-42af-9137-085b84d507ac"),
-                Name = "Bacon",
-                CaloriesPer100g = 100,
-                MealType = MealType.Breakfast,
-                ImageUrl = "Bacon"
-            };
-
-            ApplicationUser = new ApplicationUser()
-            {
-                Id = Guid.Parse("b7dc9a5e-80d2-49e0-9047-5c42a7a2a2a6\r\n"),
-                FirstName = "Gosho",
-                LastName = "Goshov",
-                UserName = "Gosho",
-                NormalizedUserName = "GOSHO",
-                Email = "gosho@abv.bg",
-                NormalizedEmail = "GOSHO@ABV.BG",
-                EmailConfirmed = true,
-                IsSubscribeValid = true,
-                ConcurrencyStamp = "2a8f0ee6-76ba-4f5c-a443-75c87e6c6e0b",
-                SecurityStamp = "58f0a7be-7297-418b-b195-29834b3366fd",
-                PasswordHash = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
-                TwoFactorEnabled = false,
-                SubscriptionId = Guid.Parse("aa9ba662-a330-43a4-a4fa-5dc0233ac34b")
-            };
-
-            Trainer = new Trainer()
-            {
-                Id = Guid.Parse("a19a795b-b45f-4c53-9958-d8fd71e1212a"),
-                FirstName = "Ivan",
-                LastName = "Ivanov",
-                Description = "Test description for trainer",
-                UserName = "Ivan",
-                NormalizedUserName = "IVAN",
-                Email = "ivan@abv.bg",
-                NormalizedEmail = "IVAN@ABV.BG",
-                EmailConfirmed = true,
-                IsSubscribeValid = true,
-                ConcurrencyStamp = "844ea471-856a-405c-b019-35cfdc53d5e0",
-                SecurityStamp = "359ecadb-93ab-444d-91b2-7183c16f9c0f",
-                PasswordHash = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
-                TwoFactorEnabled = false,
-            };
-
-            Exercise = new Exercise()
+            exercise = new Exercise()
             {
                 Id = Guid.Parse("57fb1075-0c17-41f6-82e1-499c7b18dbf2"),
                 Name = "Pull Up",
@@ -82,38 +22,127 @@
                 MuscleGroup = MuscleGroups.Back,
                 VideoLink = "ExerciseLink"
             };
+            exercises.Add(exercise);
 
-            Subscription = new Subscription()
+            exercise = new Exercise()
             {
-                Id = Guid.Parse("aa9ba662-a330-43a4-a4fa-5dc0233ac34b"),
-                Name = "Test subscription",
-                Description = "Test description for subscription",
-                Price = 30M,
-                TypeOfSubscription = TypeOfSubscription.Standard,
-                Image = "SubscriptionImage"
+                Id = Guid.Parse("4297b564-6913-4538-b4e9-ab6f24c3d5ec"),
+                Name = "Test",
+                Description = "Test description for exercise",
+                ImagePath = "Test",
+                Difficulty = ExerciseLevelOfDificulty.Beginner,
+                MuscleGroup = MuscleGroups.Chest,
+                VideoLink = "ExerciseLink"
             };
+            exercises.Add(exercise);
 
-            TrainingPlan = new TrainingPlan()
-            {
-                Id = Guid.Parse("d6c89f41-9ea4-4ed3-a585-7b3650c04d8f"),
-                Name = "Test training plan",
-                Description = "Test training plan description",
-                Image = "Test image",
-                Trainer = Trainer,
-                Exercises = new[] { Exercise }
-            };
-
-            Meals.Add(FirstMeal);
-            Meals.Add(SecondMeal);
-
-            dbContext.Trainers.Add(Trainer);
-            dbContext.Exercises.Add(Exercise);
-            dbContext.ApplicationUsers.Add(ApplicationUser);
-            dbContext.Meals.AddRange(Meals);
-            dbContext.Subscriptions.Add(Subscription);
-            dbContext.TrainingPlans.Add(TrainingPlan);
+            dbContext.AddRangeAsync(exercises);
 
             dbContext.SaveChanges();
+
+            return exercises;
         }
+
+        public static void SeedMeal(FitnessFusionDbContext dbContext)
+        {
+            ICollection<Meal> meals = new List<Meal>();
+
+            Meal meal;
+
+            meal = new Meal()
+            {
+                Id = Guid.Parse("35ea94c3-ed8c-4aba-acc6-f7caaf07560a"),
+                Name = "Ham",
+                CaloriesPer100g = 100,
+                MealType = MealType.Breakfast,
+                ImageUrl = "Ham.png"
+            };
+            meals.Add(meal);
+
+            meal = new Meal()
+            {
+                Id = Guid.Parse("9d61e7df-20b6-42af-9137-085b84d507ac"),
+                Name = "Bacon",
+                CaloriesPer100g = 100,
+                MealType = MealType.Breakfast,
+                ImageUrl = "Bacon"
+            };
+            meals.Add(meal);
+
+            dbContext.Meals.AddRangeAsync(meals);
+        }
+
+        //public static void SeedDataBase(FitnessFusionDbContext dbContext)
+        //{
+        //    ApplicationUser = new ApplicationUser()
+        //    {
+        //        Id = Guid.Parse("b7dc9a5e-80d2-49e0-9047-5c42a7a2a2a6\r\n"),
+        //        FirstName = "Gosho",
+        //        LastName = "Goshov",
+        //        UserName = "Gosho",
+        //        NormalizedUserName = "GOSHO",
+        //        Email = "gosho@abv.bg",
+        //        NormalizedEmail = "GOSHO@ABV.BG",
+        //        EmailConfirmed = true,
+        //        IsSubscribeValid = true,
+        //        ConcurrencyStamp = "2a8f0ee6-76ba-4f5c-a443-75c87e6c6e0b",
+        //        SecurityStamp = "58f0a7be-7297-418b-b195-29834b3366fd",
+        //        PasswordHash = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+        //        TwoFactorEnabled = false,
+        //        SubscriptionId = Guid.Parse("aa9ba662-a330-43a4-a4fa-5dc0233ac34b")
+        //    };
+
+        //    Trainer = new Trainer()
+        //    {
+        //        Id = Guid.Parse("a19a795b-b45f-4c53-9958-d8fd71e1212a"),
+        //        FirstName = "Ivan",
+        //        LastName = "Ivanov",
+        //        Description = "Test description for trainer",
+        //        UserName = "Ivan",
+        //        NormalizedUserName = "IVAN",
+        //        Email = "ivan@abv.bg",
+        //        NormalizedEmail = "IVAN@ABV.BG",
+        //        EmailConfirmed = true,
+        //        IsSubscribeValid = true,
+        //        ConcurrencyStamp = "844ea471-856a-405c-b019-35cfdc53d5e0",
+        //        SecurityStamp = "359ecadb-93ab-444d-91b2-7183c16f9c0f",
+        //        PasswordHash = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+        //        TwoFactorEnabled = false,
+        //    };
+
+
+
+        //    Subscription = new Subscription()
+        //    {
+        //        Id = Guid.Parse("aa9ba662-a330-43a4-a4fa-5dc0233ac34b"),
+        //        Name = "Test subscription",
+        //        Description = "Test description for subscription",
+        //        Price = 30M,
+        //        TypeOfSubscription = TypeOfSubscription.Standard,
+        //        Image = "SubscriptionImage"
+        //    };
+
+        //    TrainingPlan = new TrainingPlan()
+        //    {
+        //        Id = Guid.Parse("d6c89f41-9ea4-4ed3-a585-7b3650c04d8f"),
+        //        Name = "Test training plan",
+        //        Description = "Test training plan description",
+        //        Image = "Test image",
+        //        Trainer = Trainer,
+        //        Exercises = new[] { Exercise }
+        //    };
+
+        //    Meals.Add(FirstMeal);
+        //    Meals.Add(SecondMeal);
+
+        //    dbContext.Trainers.Add(Trainer);
+        //    dbContext.Exercises.Add(Exercise);
+        //    dbContext.ApplicationUsers.Add(ApplicationUser);
+        //    dbContext.Meals.AddRange(Meals);
+        //    dbContext.Subscriptions.Add(Subscription);
+        //    dbContext.TrainingPlans.Add(TrainingPlan);
+
+        //    dbContext.SaveChanges();
+        //}
     }
 }
