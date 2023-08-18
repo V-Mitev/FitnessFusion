@@ -121,9 +121,11 @@
             await dbContext.SaveChangesAsync();
         }
 
-        public static async Task SeedTrainerAsync(FitnessFusionDbContext dbContext)
+        public static async Task SeedTrainersAsync(FitnessFusionDbContext dbContext)
         {
-            Trainer trainer = new Trainer()
+            Trainer trainer;
+
+            trainer = new Trainer()
             {
                 Id = Guid.Parse("a19a795b-b45f-4c53-9958-d8fd71e1212a"),
                 FirstName = "Ivan",
@@ -139,6 +141,28 @@
                 SecurityStamp = "359ecadb-93ab-444d-91b2-7183c16f9c0f",
                 PasswordHash = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
                 TwoFactorEnabled = false,
+                IsTrainer = true
+            };
+
+            dbContext.Trainers.Add(trainer);
+
+            trainer = new Trainer()
+            {
+                Id = Guid.Parse("f2ab1a33-7228-4667-9267-b9c5568a31d5"),
+                FirstName = "Petar",
+                LastName = "Tomov",
+                Description = "Test description for second trainer",
+                UserName = "Petar",
+                NormalizedUserName = "PETAR",
+                Email = "petar@abv.bg",
+                NormalizedEmail = "PETAR@ABV.BG",
+                EmailConfirmed = true,
+                IsSubscribeValid = false,
+                ConcurrencyStamp = "e3a2d1de-bf3c-46ba-9d2f-993f512aa894",
+                SecurityStamp = "2cfa045f-9925-4aa6-8aca-2a9aa7c8f85b",
+                PasswordHash = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+                TwoFactorEnabled = false,
+                IsTrainer = true
             };
 
             dbContext.Trainers.Add(trainer);
