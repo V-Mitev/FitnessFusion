@@ -114,6 +114,8 @@
                 SecurityStamp = "58f0a7be-7297-418b-b195-29834b3366fd",
                 PasswordHash = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
                 TwoFactorEnabled = false,
+                StartSubscription = DateTime.UtcNow,
+                EndSubscription = DateTime.UtcNow
             };
 
             dbContext.ApplicationUsers.Add(user);
@@ -136,7 +138,6 @@
                 Email = "ivan@abv.bg",
                 NormalizedEmail = "IVAN@ABV.BG",
                 EmailConfirmed = true,
-                IsSubscribeValid = true,
                 ConcurrencyStamp = "844ea471-856a-405c-b019-35cfdc53d5e0",
                 SecurityStamp = "359ecadb-93ab-444d-91b2-7183c16f9c0f",
                 PasswordHash = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
@@ -157,7 +158,6 @@
                 Email = "petar@abv.bg",
                 NormalizedEmail = "PETAR@ABV.BG",
                 EmailConfirmed = true,
-                IsSubscribeValid = false,
                 ConcurrencyStamp = "e3a2d1de-bf3c-46ba-9d2f-993f512aa894",
                 SecurityStamp = "2cfa045f-9925-4aa6-8aca-2a9aa7c8f85b",
                 PasswordHash = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
@@ -170,39 +170,49 @@
             await dbContext.SaveChangesAsync();
         }
 
-        //public static void SeedDataBase(FitnessFusionDbContext dbContext)
-        //{
-        //    Subscription = new Subscription()
-        //    {
-        //        Id = Guid.Parse("aa9ba662-a330-43a4-a4fa-5dc0233ac34b"),
-        //        Name = "Test subscription",
-        //        Description = "Test description for subscription",
-        //        Price = 30M,
-        //        TypeOfSubscription = TypeOfSubscription.Standard,
-        //        Image = "SubscriptionImage"
-        //    };
+        public static async Task SeedSubscriptions(FitnessFusionDbContext dbContext)
+        {
+            Subscription subscription;
 
-        //    TrainingPlan = new TrainingPlan()
-        //    {
-        //        Id = Guid.Parse("d6c89f41-9ea4-4ed3-a585-7b3650c04d8f"),
-        //        Name = "Test training plan",
-        //        Description = "Test training plan description",
-        //        Image = "Test image",
-        //        Trainer = Trainer,
-        //        Exercises = new[] { Exercise }
-        //    };
+            subscription = new Subscription()
+            {
+                Id = Guid.Parse("aa9ba662-a330-43a4-a4fa-5dc0233ac34b"),
+                Name = "Test subscription",
+                Description = "Test description for subscription",
+                Price = 30M,
+                TypeOfSubscription = TypeOfSubscription.Standard,
+                Image = "SubscriptionImage"
+            };
 
-        //    Meals.Add(FirstMeal);
-        //    Meals.Add(SecondMeal);
+            dbContext.Subscriptions.Add(subscription);
 
-        //    dbContext.Trainers.Add(Trainer);
-        //    dbContext.Exercises.Add(Exercise);
-        //    dbContext.ApplicationUsers.Add(ApplicationUser);
-        //    dbContext.Meals.AddRange(Meals);
-        //    dbContext.Subscriptions.Add(Subscription);
-        //    dbContext.TrainingPlans.Add(TrainingPlan);
+            subscription = new Subscription()
+            {
+                Id = Guid.Parse("d28d8986-4b44-4a0c-958f-13b21e7775ab"),
+                Name = "Test subscription",
+                Description = "Test description for subscription",
+                Price = 30M,
+                TypeOfSubscription = TypeOfSubscription.Premium,
+                Image = "SubscriptionImage"
+            };
 
-        //    dbContext.SaveChanges();
-        //}
+            dbContext.Subscriptions.Add(subscription);
+
+            await dbContext.SaveChangesAsync();
+        }
+
+        public static async Task SeedTrainingPlan(FitnessFusionDbContext dbContext)
+        {
+            TrainingPlan trainingPlan;
+
+            trainingPlan = new TrainingPlan()
+            {
+                Id = Guid.Parse("d6c89f41-9ea4-4ed3-a585-7b3650c04d8f"),
+                Name = "Test training plan",
+                Description = "Test training plan description",
+                Image = "Test image",
+                TrainerId = Guid.Parse("a19a795b-b45f-4c53-9958-d8fd71e1212a")
+            };
+        }
     }
 }

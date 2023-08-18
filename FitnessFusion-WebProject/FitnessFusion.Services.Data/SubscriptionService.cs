@@ -120,7 +120,9 @@
                 throw new NullReferenceException("Unexpected error user doesn't exist!");
             }
 
-            if (user.StartSubscription == user.EndSubscription)
+            if (user.StartSubscription!.Value.Day == user.EndSubscription!.Value.Day &&
+                user.StartSubscription.Value.Month < user.EndSubscription.Value.Month ||
+                user.StartSubscription.Value.Month == user.EndSubscription.Value.Month)
             {
                  return user.IsSubscribeValid = false;
             }
