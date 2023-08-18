@@ -3,10 +3,11 @@
     using FitnessFusion.Data;
     using FitnessFusion.Data.Models;
     using FitnessFusion.Data.Models.Enums;
+    using System.Threading.Tasks;
 
     public static class DataSeeder
     {
-        public static ICollection<Exercise> SeedExercise(FitnessFusionDbContext dbContext)
+        public static async Task SeedExerciseAsync(FitnessFusionDbContext dbContext)
         {
             ICollection<Exercise> exercises = new List<Exercise>();
 
@@ -36,14 +37,12 @@
             };
             exercises.Add(exercise);
 
-            dbContext.AddRangeAsync(exercises);
+            await dbContext.AddRangeAsync(exercises);
 
-            dbContext.SaveChanges();
-
-            return exercises;
+            await dbContext.SaveChangesAsync();
         }
 
-        public static void SeedMeal(FitnessFusionDbContext dbContext)
+        public static async Task SeedMealAsync(FitnessFusionDbContext dbContext)
         {
             ICollection<Meal> meals = new List<Meal>();
 
@@ -69,49 +68,63 @@
             };
             meals.Add(meal);
 
-            dbContext.Meals.AddRangeAsync(meals);
+            await dbContext.Meals.AddRangeAsync(meals);
+
+            await dbContext.SaveChangesAsync();
+        }
+
+        public static async Task SeedUsersAsync(FitnessFusionDbContext dbContext)
+        {
+            ApplicationUser user = new ApplicationUser()
+            {
+                Id = Guid.Parse("b7dc9a5e-80d2-49e0-9047-5c42a7a2a2a6\r\n"),
+                FirstName = "Gosho",
+                LastName = "Goshov",
+                UserName = "Gosho",
+                NormalizedUserName = "GOSHO",
+                Email = "gosho@abv.bg",
+                NormalizedEmail = "GOSHO@ABV.BG",
+                EmailConfirmed = true,
+                IsSubscribeValid = true,
+                ConcurrencyStamp = "2a8f0ee6-76ba-4f5c-a443-75c87e6c6e0b",
+                SecurityStamp = "58f0a7be-7297-418b-b195-29834b3366fd",
+                PasswordHash = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+                TwoFactorEnabled = false,
+                SubscriptionId = Guid.Parse("aa9ba662-a330-43a4-a4fa-5dc0233ac34b")
+            };
+
+            dbContext.ApplicationUsers.Add(user);
+
+            await dbContext.SaveChangesAsync();
+        }
+
+        public static async Task SeedTrainerAsync(FitnessFusionDbContext dbContext)
+        {
+            Trainer trainer = new Trainer()
+            {
+                Id = Guid.Parse("a19a795b-b45f-4c53-9958-d8fd71e1212a"),
+                FirstName = "Ivan",
+                LastName = "Ivanov",
+                Description = "Test description for trainer",
+                UserName = "Ivan",
+                NormalizedUserName = "IVAN",
+                Email = "ivan@abv.bg",
+                NormalizedEmail = "IVAN@ABV.BG",
+                EmailConfirmed = true,
+                IsSubscribeValid = true,
+                ConcurrencyStamp = "844ea471-856a-405c-b019-35cfdc53d5e0",
+                SecurityStamp = "359ecadb-93ab-444d-91b2-7183c16f9c0f",
+                PasswordHash = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+                TwoFactorEnabled = false,
+            };
+
+            dbContext.Trainers.Add(trainer);
+
+            await dbContext.SaveChangesAsync();
         }
 
         //public static void SeedDataBase(FitnessFusionDbContext dbContext)
         //{
-        //    ApplicationUser = new ApplicationUser()
-        //    {
-        //        Id = Guid.Parse("b7dc9a5e-80d2-49e0-9047-5c42a7a2a2a6\r\n"),
-        //        FirstName = "Gosho",
-        //        LastName = "Goshov",
-        //        UserName = "Gosho",
-        //        NormalizedUserName = "GOSHO",
-        //        Email = "gosho@abv.bg",
-        //        NormalizedEmail = "GOSHO@ABV.BG",
-        //        EmailConfirmed = true,
-        //        IsSubscribeValid = true,
-        //        ConcurrencyStamp = "2a8f0ee6-76ba-4f5c-a443-75c87e6c6e0b",
-        //        SecurityStamp = "58f0a7be-7297-418b-b195-29834b3366fd",
-        //        PasswordHash = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
-        //        TwoFactorEnabled = false,
-        //        SubscriptionId = Guid.Parse("aa9ba662-a330-43a4-a4fa-5dc0233ac34b")
-        //    };
-
-        //    Trainer = new Trainer()
-        //    {
-        //        Id = Guid.Parse("a19a795b-b45f-4c53-9958-d8fd71e1212a"),
-        //        FirstName = "Ivan",
-        //        LastName = "Ivanov",
-        //        Description = "Test description for trainer",
-        //        UserName = "Ivan",
-        //        NormalizedUserName = "IVAN",
-        //        Email = "ivan@abv.bg",
-        //        NormalizedEmail = "IVAN@ABV.BG",
-        //        EmailConfirmed = true,
-        //        IsSubscribeValid = true,
-        //        ConcurrencyStamp = "844ea471-856a-405c-b019-35cfdc53d5e0",
-        //        SecurityStamp = "359ecadb-93ab-444d-91b2-7183c16f9c0f",
-        //        PasswordHash = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
-        //        TwoFactorEnabled = false,
-        //    };
-
-
-
         //    Subscription = new Subscription()
         //    {
         //        Id = Guid.Parse("aa9ba662-a330-43a4-a4fa-5dc0233ac34b"),

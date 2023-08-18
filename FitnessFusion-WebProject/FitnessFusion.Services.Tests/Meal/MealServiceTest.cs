@@ -19,7 +19,7 @@ namespace FitnessFusion.Services.Tests.Meal
         private string secondMealId;
 
         [OneTimeSetUp]
-        public void OneTimeSetUp()
+        public async Task OneTimeSetUp()
         {
             dbOptions = new DbContextOptionsBuilder<FitnessFusionDbContext>()
                .UseInMemoryDatabase(Guid.NewGuid().ToString())
@@ -27,7 +27,7 @@ namespace FitnessFusion.Services.Tests.Meal
 
             dbContext = new FitnessFusionDbContext(dbOptions);
 
-            SeedMeal(dbContext);
+            await SeedMealAsync(dbContext);
 
             mealService = new MealService(dbContext);
         }
