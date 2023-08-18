@@ -38,6 +38,7 @@
         public async Task DeleteSubscriptionAsync(string subscriptionId)
         {
             var subscription = await dbContext.Subscriptions
+                .Include(s => s.Users)
                 .FirstOrDefaultAsync( s => s.Id.ToString() == subscriptionId);
 
             if (subscription == null)
@@ -45,7 +46,18 @@
                 throw new NullReferenceException("Subscription doesn't exists");
             }
 
-            dbContext.Subscriptions.Remove(subscription);  
+            dbContext.Subscriptions.Remove(subscription);
+
+            var users = await dbContext.Users
+                .Where(u => u.SubscriptionId.ToString() == subscriptionId)
+                .ToListAsync();
+
+            foreach (var user in users)
+            {
+                user.IsSubscribeValid = false;
+                user.StartSubscription = null;
+                user.EndSubscription = null;
+            }
 
             await dbContext.SaveChangesAsync();
         }
@@ -120,9 +132,12 @@
                 throw new NullReferenceException("Unexpected error user doesn't exist!");
             }
 
-            if (!user.StartSubscription.HasValue && !user.EndSubscription.HasValue)
+            if (user.SubscriptionId == null)
             {
-                return false;
+                user.StartSubscription = null;
+                user.EndSubscription = null;
+
+                return user.IsSubscribeValid = false;
             }
 
             if (user.StartSubscription!.Value.Day == user.EndSubscription!.Value.Day &&

@@ -14,7 +14,7 @@
                .HasOne(u => u.Subscription)
                .WithMany(u => u.Users)
                .HasForeignKey(s => s.SubscriptionId)
-               .OnDelete(DeleteBehavior.Restrict);
+               .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasData(SeedAdministrator());
         }

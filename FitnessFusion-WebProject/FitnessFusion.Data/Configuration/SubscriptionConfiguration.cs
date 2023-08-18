@@ -12,7 +12,7 @@
             builder
                .HasMany(s => s.Users)
                .WithOne(s => s.Subscription)
-               .OnDelete(DeleteBehavior.Restrict);
+               .OnDelete(DeleteBehavior.NoAction);
 
             builder
                 .Property(t => t.Price)
