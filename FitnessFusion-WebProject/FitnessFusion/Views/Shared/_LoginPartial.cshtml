@@ -4,7 +4,7 @@
 @inject UserManager<ApplicationUser> UserManager
 @inject IUserService UserService
 @{
-    var userFullName = await UserService.GetFullNameByEmailAsyncAsync(User.Identity?.Name!);
+    var userFullName = await UserService.GetFullNameByEmailAsync(User.Identity?.Name!);
 }
 
 <ul class="navbar-nav">

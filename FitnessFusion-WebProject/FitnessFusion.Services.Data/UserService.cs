@@ -63,7 +63,7 @@
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<string> GetFullNameByEmailAsyncAsync(string email)
+        public async Task<string> GetFullNameByEmailAsync(string email)
         {
             var user = await dbContext
                 .Users

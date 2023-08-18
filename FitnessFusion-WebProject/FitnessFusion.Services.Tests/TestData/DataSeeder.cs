@@ -75,9 +75,11 @@
 
         public static async Task SeedUsersAsync(FitnessFusionDbContext dbContext)
         {
-            ApplicationUser user = new ApplicationUser()
+            ApplicationUser user;
+
+            user = new ApplicationUser()
             {
-                Id = Guid.Parse("b7dc9a5e-80d2-49e0-9047-5c42a7a2a2a6\r\n"),
+                Id = Guid.Parse("b7dc9a5e-80d2-49e0-9047-5c42a7a2a2a6"),
                 FirstName = "Gosho",
                 LastName = "Goshov",
                 UserName = "Gosho",
@@ -90,7 +92,28 @@
                 SecurityStamp = "58f0a7be-7297-418b-b195-29834b3366fd",
                 PasswordHash = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
                 TwoFactorEnabled = false,
-                SubscriptionId = Guid.Parse("aa9ba662-a330-43a4-a4fa-5dc0233ac34b")
+                SubscriptionId = Guid.Parse("aa9ba662-a330-43a4-a4fa-5dc0233ac34b"),
+                StartSubscription = DateTime.UtcNow,
+                EndSubscription = DateTime.UtcNow.AddDays(30)
+            };
+
+            dbContext.ApplicationUsers.Add(user);
+
+            user = new ApplicationUser()
+            {
+                Id = Guid.Parse("9f11de4f-ca0b-4405-8daf-6e01e4647042"),
+                FirstName = "Ivan",
+                LastName = "Ivanov",
+                UserName = "Ivan",
+                NormalizedUserName = "Ivan",
+                Email = "ivan@abv.bg",
+                NormalizedEmail = "IVAN@ABV.BG",
+                EmailConfirmed = true,
+                IsSubscribeValid = false,
+                ConcurrencyStamp = "2a8f0ee6-76ba-4f5c-a443-75c87e6c6e0b",
+                SecurityStamp = "58f0a7be-7297-418b-b195-29834b3366fd",
+                PasswordHash = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+                TwoFactorEnabled = false,
             };
 
             dbContext.ApplicationUsers.Add(user);
