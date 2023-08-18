@@ -201,7 +201,7 @@
             await dbContext.SaveChangesAsync();
         }
 
-        public static async Task SeedTrainingPlan(FitnessFusionDbContext dbContext)
+        public static async Task SeedTrainingPlanAsync(FitnessFusionDbContext dbContext)
         {
             TrainingPlan trainingPlan;
 
@@ -213,6 +213,48 @@
                 Image = "Test image",
                 TrainerId = Guid.Parse("a19a795b-b45f-4c53-9958-d8fd71e1212a")
             };
+
+            var firstExercise = new Exercise()
+            {
+                Id = Guid.Parse("57fb1075-0c17-41f6-82e1-499c7b18dbf2"),
+                Name = "Pull Up",
+                Description = "Test description for exercise",
+                ImagePath = "PullUp",
+                Difficulty = ExerciseLevelOfDificulty.Intermediate,
+                MuscleGroup = MuscleGroups.Back,
+                VideoLink = "ExerciseLink"
+            };
+
+            var secondExercise = new Exercise()
+            {
+                Id = Guid.Parse("4297b564-6913-4538-b4e9-ab6f24c3d5ec"),
+                Name = "Test",
+                Description = "Test description for exercise",
+                ImagePath = "Test",
+                Difficulty = ExerciseLevelOfDificulty.Beginner,
+                MuscleGroup = MuscleGroups.Chest,
+                VideoLink = "ExerciseLink"
+            };
+
+            trainingPlan.TrainerId = Guid.Parse("a19a795b-b45f-4c53-9958-d8fd71e1212a");
+
+            trainingPlan.Exercises.Add(firstExercise);
+            trainingPlan.Exercises.Add(secondExercise);
+
+            await dbContext.TrainingPlans.AddAsync(trainingPlan);
+
+            trainingPlan = new TrainingPlan()
+            {
+                Id = Guid.Parse("89996373-6df1-4d81-a982-b78c8b188ae8"),
+                Name = "Training plan for delete",
+                Description = "Test training plan for delete description",
+                Image = "Test image",
+                TrainerId = Guid.Parse("a19a795b-b45f-4c53-9958-d8fd71e1212a")
+            };
+
+            dbContext.TrainingPlans.Add(trainingPlan);
+
+            await dbContext.SaveChangesAsync();
         }
     }
 }

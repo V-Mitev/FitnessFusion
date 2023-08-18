@@ -128,21 +128,6 @@
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteExerciseInTrainingPlanAsync(string id)
-        {
-            var exerciseToDelete = await dbContext.Exercises
-                .FindAsync(Guid.Parse(id));
-
-            if (exerciseToDelete == null)
-            {
-                throw new ArgumentNullException(nameof(exerciseToDelete));
-            }
-
-            dbContext.Exercises.Remove(exerciseToDelete);
-
-            await dbContext.SaveChangesAsync();
-        }
-
         public async Task DeleteTrainingPlanAsync(string id)
         {
             var trainingPlan = await dbContext.TrainingPlans
@@ -228,6 +213,8 @@
 
             trainingPlan.Name = model.Name;
             trainingPlan.Image = model.Image;
+            trainingPlan.Description = model.Description;
+            trainingPlan.Exercises = exercises;
 
             await dbContext.SaveChangesAsync();
         }

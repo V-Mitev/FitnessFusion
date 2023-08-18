@@ -21,8 +21,6 @@
 
         public Task<DetailsTrainingPlanModel> DetailsAsync(string id);
 
-        public Task DeleteExerciseInTrainingPlanAsync(string id);
-
         public Task<bool> IsTrainingPlanExistByIdAsync(string id);
 
         public Task AddExerciseWhenEditPlan(string trainingPlanId, string exerciseId);
