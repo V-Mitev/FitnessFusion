@@ -11,10 +11,10 @@
         public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
             builder
-                .HasOne(u => u.Subscription)
-                .WithMany(s => s.Users)
-                .HasForeignKey(u => u.SubscriptionId)
-                .OnDelete(DeleteBehavior.NoAction);
+               .HasOne(u => u.Subscription)
+               .WithMany(u => u.Users)
+               .HasForeignKey(s => s.SubscriptionId)
+               .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasData(SeedAdministrator());
         }

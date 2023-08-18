@@ -10,9 +10,9 @@
         public void Configure(EntityTypeBuilder<Subscription> builder)
         {
             builder
-                .HasMany(s => s.Users)
-                .WithOne(u => u.Subscription)
-                .OnDelete(DeleteBehavior.NoAction);
+               .HasMany(s => s.Users)
+               .WithOne(s => s.Subscription)
+               .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .Property(t => t.Price)
