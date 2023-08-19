@@ -547,7 +547,7 @@
             {
                 TempData[ErrorMessage] = "Exercise with provided id does not exist! Please try again!";
 
-                return RedirectToAction("CreateTrainingPlan");
+                return RedirectToAction("EditTrainingPlan", new {trainingPlan!.Id});
             }
 
             if (trainingPlan!.AddedExercises
@@ -556,7 +556,7 @@
             {
                 TempData[ErrorMessage] = $"You already added {exercise.Name} in training plan!";
 
-                return RedirectToAction("CreateTrainingPlan");
+                return RedirectToAction("EditTrainingPlan", new { trainingPlan!.Id });
             }
 
             await trainingPlanService.AddExerciseWhenEditPlan(trainingPlan.Id!, exerciseKey);

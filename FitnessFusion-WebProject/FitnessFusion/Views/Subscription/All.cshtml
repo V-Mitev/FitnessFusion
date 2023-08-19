@@ -8,11 +8,11 @@
 <hr />
 @foreach (var subscription in Model)
 {
-    <div class="subscription col-md-4">
-        <img src="~/img/@subscription.Image" alt="Subscription Image">
+    <div class="form-group col-md-4 d-inline-block mb-2">
+        <h3>@subscription.Name</h3>
+        <img src="~/img/@subscription.Image" alt="Subscription Image" class="mb-2">
         <div class="subscription-plan-details">
-            <h3>@subscription.Name</h3>
-            <p>@subscription.Price</p>
+            <p>Price: @subscription.Price</p>
             <p>@subscription.TypeOfSubscription</p>
             <div class="btn-group mb-2 inline-block">
                 <a asp-controller="Subscription" asp-action="Details" asp-route-id="@subscription.Id" class="btn btn-primary">Details</a>
@@ -28,7 +28,9 @@
     </div>
 }
 
+<div>
 @if (User.IsAdmin())
 {
     <a asp-controller="Subscription" asp-action="Add" class="btn btn-primary">Add new Subscription</a>
 }
+</div>

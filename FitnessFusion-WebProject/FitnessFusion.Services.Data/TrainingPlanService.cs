@@ -189,7 +189,8 @@
         public async Task EditTrainingPlanAsync(TrainingPlanModel model, string trainingPlanId, string userId)
         {
             var trainingPlan = await dbContext.TrainingPlans
-                .FindAsync(Guid.Parse(trainingPlanId));
+                .Include(tp => tp.Exercises)
+                .FirstOrDefaultAsync(tp => tp.Id.ToString() == trainingPlanId);
 
             if (trainingPlan == null)
             {
@@ -201,20 +202,33 @@
                 throw new InvalidOperationException("You can't edit training plan when you are not creator!");
             }
 
-            var exercises = model.AddedExercises
-                .Select(e => new Exercise()
+            foreach (var exercise in model.AddedExercises)
+            {
+                if (trainingPlan.Exercises.Any(e => e.Id.ToString() == exercise.Id))
                 {
-                    Name = e.Name,
-                    Description = e.Description,
-                    ImagePath = e.Image,
-                    VideoLink = e.VideoLink,
-                    MuscleGroup = (MuscleGroups)e.MuscleGroup!
-                }).ToList();
+                    model.AddedExercises.Remove(exercise);
+                }
+                else
+                {
+                    var newExercise = new Exercise()
+                    {
+                        Id = Guid.Parse(exercise.Id!),
+                        Name = exercise.Name,
+                        Description = exercise.Description,
+                        ImagePath = exercise.Image,
+                        VideoLink = exercise.VideoLink,
+                        MuscleGroup = (MuscleGroups)exercise.MuscleGroup!,
+                        Difficulty = (ExerciseLevelOfDificulty)exercise.Dificulty!
+                    };
+
+                    trainingPlan.Exercises.Add(newExercise);
+                }
+
+            }
 
             trainingPlan.Name = model.Name;
             trainingPlan.Image = model.Image;
             trainingPlan.Description = model.Description;
-            trainingPlan.Exercises = exercises;
 
             await dbContext.SaveChangesAsync();
         }
