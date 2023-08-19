@@ -3,6 +3,7 @@
     using FitnessFusion.Services.Data.Interfaces;
     using FitnessFusion.Web.Infastructure.Extensions;
     using FitnessFusion.Web.ViewModels.Subscription;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using static Common.NotificationMessagesConstant;
 
@@ -181,8 +182,9 @@
             }
         }
 
+        [Authorize]
         [HttpGet]
-        public async Task<IActionResult> SubscribeAsync()
+        public async Task<IActionResult> Subscribe()
         {
             if (await subscriptionService.IsSubscribeValidAsync(User.GetId()))
             {
