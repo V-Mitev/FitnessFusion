@@ -29,8 +29,10 @@ FitnessFusion is a site where you can calculate your daily calorie intake accord
 <hr>
 
 - Here you will see a preview of the site
-
-- Register/Login
+  
+- Login/Register
+![Login](https://github.com/V-Mitev/FitnessFusion/assets/127354641/5ab67173-3f5c-4b10-a9e0-0cbe191623a4)
+![Register](https://github.com/V-Mitev/FitnessFusion/assets/127354641/f6237a59-f8a3-4212-bfdd-477663f750e9)
 
 - Calories Calculator
 ![Calories-Calculator](https://github.com/V-Mitev/FitnessFusion/assets/127354641/7e8ce7bd-53c9-429b-8eb0-a99dddc0532e)
@@ -47,6 +49,7 @@ FitnessFusion is a site where you can calculate your daily calorie intake accord
 ![TrainingPlans](https://github.com/V-Mitev/FitnessFusion/assets/127354641/9eb427b3-7697-4745-918d-8043bce851f8)
 
 - Training Plans Details
+![TpDetails](https://github.com/V-Mitev/FitnessFusion/assets/127354641/90d0e901-2e10-4faa-bc7d-aaa7842dc147)
 
 - Subscribption
 ![SubDetails](https://github.com/V-Mitev/FitnessFusion/assets/127354641/3090296d-7428-4d28-80ee-1553a08ed476)
@@ -55,3 +58,7 @@ FitnessFusion is a site where you can calculate your daily calorie intake accord
 ![Subscribe](https://github.com/V-Mitev/FitnessFusion/assets/127354641/20d34d38-61c0-4e51-83ba-4767fe832bd7)
 
 - Admin area
+![AdminArea](https://github.com/V-Mitev/FitnessFusion/assets/127354641/71db9e39-d272-4c78-871d-b3c3ad1372f2)
+![AllUsers](https://github.com/V-Mitev/FitnessFusion/assets/127354641/864243c9-8166-4883-aa0f-0fa003663aed)
+![AddSub](https://github.com/V-Mitev/FitnessFusion/assets/127354641/61cc76a8-6c17-4d9f-9b61-80412b7bb674)
+![CreateTrainer](https://github.com/V-Mitev/FitnessFusion/assets/127354641/9272ff8d-190d-44d5-a808-f2e1ff9594c2)
